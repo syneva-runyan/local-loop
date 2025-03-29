@@ -21,6 +21,7 @@
 
 .mainTextDiv {
     min-width: 40%;
+    padding-right: 20px;
 }
 
 .mainTextDiv span {
