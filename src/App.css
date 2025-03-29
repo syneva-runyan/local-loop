@@ -12,8 +12,13 @@
   max-width: 5000px;
 }
 
-p {
-  font-size: 1rem;
+p, li {
+  font-size: 1.3rem;
+  line-height: 2rem;
+}
+
+li svg {
+  padding-right: 10px;
 }
 
 a {
@@ -22,6 +27,7 @@ a {
 
 li {
   margin-bottom: 20px;
+  list-style: none;
 }
 
 section {
