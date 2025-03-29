@@ -21,7 +21,7 @@ function VisitorExample() {
   return (
     <section className="visitorExample">
       <h2>Personalized Tours</h2>
-      <p>Visitors pull up LocalLoop's site, answer a few questions, and have a personalized tour created for them.</p>
+      <p>Visitors pull up LocalLoop's site, answer a few questions, and have a personalized tour created for them in seconds.</p>
       <p className='visitorExampleText'>
                 I have <span>{example[exampleIdx].time}</span> in <span>{example[exampleIdx].city}</span>.<br/><br/>
                 I'm interested in <span>{example[exampleIdx].interest}</span> and am traveling <span>{example[exampleIdx].transport}</span>.
