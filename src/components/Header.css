@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    padding: 20px 0;
+    align-items: center;
+}
+
+.headerTitle {
+    font-size: 2.25rem;
+    margin: 0;
+    margin-left: 20px;
+    font-family: 'Rust';
+}
+
+.logo {
+    width: 80px;
+    height: 70px;
+}

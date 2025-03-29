@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Quicksand";
+    src: url(./assets/fonts/Quicksand-Regular.otf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "Quicksand";
+    src: url(./assets/fonts/Quicksand-Bold.otf);
+    font-weight: bold;
+}
+
+
+@font-face {
+    font-family: 'Rust';
+    src: url('./assets/fonts/introrustg-base2line-webfont.woff2') format('woff2'),
+         url('./assets/fonts/introrustg-base2line-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

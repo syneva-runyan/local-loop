@@ -1,0 +1,63 @@
+
+/* src/App.css */
+:root {
+  --primary-color: #dc8c2e;
+  --primary-color-light: #ea993c;
+}
+
+.App {
+  font-family: 'Quicksand';
+  text-align: left;
+  background-color: #FFFBF4;
+  max-width: 5000px;
+}
+
+p {
+  font-size: 1rem;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+li {
+  margin-bottom: 20px;
+}
+
+section {
+  display: inline-block;
+  padding: 40px 20px;
+  margin: 0;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+section:nth-child(even) {
+  background-color: #f8f1e4;
+}
+
+button, .button {
+  border: 0px;
+  background-color: var(--primary-color-light);
+  color: white;
+  padding: 15px 10px;
+  border-radius: 6px;
+  transition: 0.25s all;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+
+}
+
+button:hover {
+  background-color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+  li {
+    padding-left: 0;
+  }
+}

@@ -1,0 +1,7 @@
+.featuresList li {
+    list-style: none;
+}
+
+.featuresList li svg {
+    padding-right: 10px;
+}
