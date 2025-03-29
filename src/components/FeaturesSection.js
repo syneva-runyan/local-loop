@@ -12,7 +12,7 @@ function FeaturesSection() {
       <ul className="featuresList">
         <li>
             <FontAwesomeIcon icon={faBriefcase} />
-            <strong>Local businesses</strong> provide information and history on their company.
+            <strong>Local businesses</strong> share their stories and offerings with Local Loop.
         </li>
         <li>
             <FontAwesomeIcon icon={faPerson} />
