@@ -63,8 +63,6 @@ button:hover {
   background-color: var(--primary-color);
 }
 
-@media (max-width: 600px) {
-  ul {
-    padding-left: 0;
-  }
+ul {
+  padding-left: 0;
 }

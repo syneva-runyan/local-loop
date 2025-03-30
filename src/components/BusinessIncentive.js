@@ -20,6 +20,7 @@ function BusinessIncentiveSection() {
           to showcase their company’s story and connection to the community
           </li>
       </ul>
+      <a className='button'href="https://mailchi.mp/1b524f0a113a/local-loop-beta-program" target='_blank' rel='noreferrer noopener'>Learn about our Beta Program</a>
     </section>
   );
 }
