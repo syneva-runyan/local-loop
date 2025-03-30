@@ -14,7 +14,7 @@ function BusinessIncentiveSection() {
         </li>
         <li>
           <FontAwesomeIcon icon={faPlug} />
-          have a direct channel to visitors</li>
+          a direct channel to visitors</li>
         <li>
           <FontAwesomeIcon icon={faHeart} />
           to showcase their company’s story and connection to the community
