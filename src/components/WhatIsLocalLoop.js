@@ -4,7 +4,7 @@ function WhatIsLocalLoop() {
   return (
     <section >
       <h2>What is Local Loop?</h2>
-      <p>An AI-powered platform that helps visitors effortlessly discover local businesses and experiences. Local Loop generates personalized tours that highlight local businesses and experiences based on a visitor's interests.</p>
+      <p>An AI-powered platform that helps visitors effortlessly discover local businesses and experiences. Local Loop generates personalized tours based on a visitor's interests.</p>
     </section>
   );
 }
