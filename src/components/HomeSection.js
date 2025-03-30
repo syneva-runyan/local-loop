@@ -12,7 +12,7 @@ function HomeSection() {
             <p className='heroTitle'>Help visitors
                 <br/>
             <span>Embrace Local</span></p>
-            <a className='heroCTA button'href="mailTo:localloop907@gmail.com" target='_blank' rel='noreferrer noopener'>Learn about our Beta Program</a>
+            <a className='heroCTA button'href="https://mailchi.mp/1b524f0a113a/local-loop-beta-program" target='_blank' rel='noreferrer noopener'>Learn about our Beta Program</a>
         </div>
         <div>
             <img className="hero" src="./hero.png" alt="local loop tour"/>
