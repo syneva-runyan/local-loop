@@ -1,12 +1,12 @@
 @font-face {
     font-family: "Quicksand";
-    src: url(./assets/fonts/Quicksand-Regular.otf);
+    src: url('./assets/fonts/Quicksand-Regular.otf') format("opentype");
     font-weight: normal;
 }
 
 @font-face {
     font-family: "Quicksand";
-    src: url(./assets/fonts/Quicksand-Bold.otf);
+    src: url('./assets/fonts/Quicksand-Bold.otf') format("opentype");
     font-weight: bold;
 }
 
