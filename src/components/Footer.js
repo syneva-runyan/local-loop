@@ -6,7 +6,7 @@ function Footer() {
   return (
     <section className="footer">
       <p className='footerText'>© Local Loop LLC, {new Date().getFullYear()}</p>
-      <p className='footerText'>Questions or suggestions? Contact <a href="mailTo:localloop907@gmail.com" target='_blank' rel='noreferrer noopener'>localloop907@gmail.com</a></p>
+      <p className='footerText'>Questions or suggestions? Contact us via <a href="mailTo:syneva@localloopcommunity.com" target='_blank' rel='noreferrer noopener'>email</a></p>
     </section>
   );
 }
