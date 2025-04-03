@@ -3,6 +3,8 @@
 :root {
   --primary-color: #dc8c2e;
   --primary-color-light: #ea993c;
+  --secondary-color: #2E7EDC;
+  --secondary-color--light: #4690E6;
 }
 
 .App {

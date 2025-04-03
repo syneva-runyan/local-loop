@@ -9,6 +9,7 @@ import BusinessIncentiveSection from './components/BusinessIncentive';
 import KeepInTheLoop from './components/KeepInTheLoop';
 import Footer from './components/Footer'
 import WhatIsLocalLoop from './components/WhatIsLocalLoop';
+import CustomerDiscovery from './components/CustomerDiscovery';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <FeaturesSection />
         <VisitorExample />
         <BusinessIncentiveSection />
+        <CustomerDiscovery />
         <KeepInTheLoop />
       <Footer />
     </div>

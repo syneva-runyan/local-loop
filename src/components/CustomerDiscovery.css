@@ -1,0 +1,15 @@
+#customer-discovery .button {
+    background-color: var(--secondary-color);
+    margin-right: 20px;
+}
+
+#customer-discovery .button:hover {
+    background-color: var(--secondary-color--light);
+}
+
+@media (max-width: 600px) {
+    #customer-discovery .button {
+        margin: 0 0 20px 0;
+        width: 100%;
+    }
+}
