@@ -1,0 +1,20 @@
+.durationInput {
+    width: 45%; 
+}
+
+.howMuchTimeDoYouHaveInputs:last-child() {
+    margin-right: 0;
+}
+
+.howMuchTimeDoYouHaveInputs .durationInput {
+    margin-right: 20px;
+}
+
+.howMuchTimeDoYouHaveQuestion {
+    margin-bottom: 0;
+}
+
+.howMuchTimeDoYouHaveInputs {
+    align-items: space-between;
+    display: flex;
+}

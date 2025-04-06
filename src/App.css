@@ -68,3 +68,13 @@ button:hover {
 ul {
   padding-left: 0;
 }
+
+input {
+  width: 100%;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid black;
+  margin: 10px 0;
+  font-size: 1.3rem;
+  line-height: 2rem;
+}

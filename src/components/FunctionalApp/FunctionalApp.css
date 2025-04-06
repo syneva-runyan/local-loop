@@ -1,0 +1,15 @@
+.tourInput {
+    padding: 20px 40px;
+}
+
+.tourInputSection {
+    margin-bottom: 40px;
+}
+
+p, label {
+    font-size: 1rem;
+}
+
+.primaryQuestion {
+    font-weight: bold;
+}

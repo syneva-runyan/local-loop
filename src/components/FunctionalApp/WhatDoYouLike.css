@@ -1,0 +1,40 @@
+.vibes {
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0;
+}
+.vibe {
+    flex-basis: 33%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    justify-content: center;
+    position: relative;
+    border-radius: 10px;
+    transition: 0.25s all;
+}
+
+.vibe.selected {
+    background-color: var(--secondary-color--light);
+}
+.vibe.selected:nth-child(odd) {
+    background-color: var(--primary-color-light);
+}
+
+.vibe.vibe.selected .vibeIcon {
+    color: white !important;
+}
+
+.vibeIcon {
+    padding: 0;
+}
+
+.vibe p {
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+}

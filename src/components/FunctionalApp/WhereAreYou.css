@@ -1,0 +1,20 @@
+.whereAreYou {
+    position: relative;
+}
+.whereAreYouIcon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+}
+
+.whereAreYouLabel {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.whereAreYouInput {
+    padding-left: 40px;
+    margin: 0;
+    border: 0;
+}

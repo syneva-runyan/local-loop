@@ -1,9 +1,7 @@
 import './Header.css';
-
-// src/components/HomeSection.js
 import React from 'react';
 
-function HomeSection() {
+function Header() {
   return (
     <header className='header'>
       <img src="./LocalLoopLogo.png" alt="local loop logo" className='logo'/>
@@ -12,4 +10,4 @@ function HomeSection() {
   );
 }
 
-export default HomeSection;
+export default Header;

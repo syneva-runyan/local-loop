@@ -10,18 +10,31 @@ import KeepInTheLoop from './components/KeepInTheLoop';
 import Footer from './components/Footer'
 import WhatIsLocalLoop from './components/WhatIsLocalLoop';
 import CustomerDiscovery from './components/CustomerDiscovery';
+import { Routes, Route } from "react-router";
+import FunctionalApp from './components/FunctionalApp/FunctionalApp';
+
+function HomePage() {
+  return (
+    <>
+      <HomeSection />
+      <WhatIsLocalLoop />
+      <FeaturesSection />
+      <VisitorExample />
+      <BusinessIncentiveSection />
+      <CustomerDiscovery />
+      <KeepInTheLoop />
+    </>
+  )
+}
 
 
 function App() {
   return (
     <div className="App">
-        <HomeSection />
-        <WhatIsLocalLoop />
-        <FeaturesSection />
-        <VisitorExample />
-        <BusinessIncentiveSection />
-        <CustomerDiscovery />
-        <KeepInTheLoop />
+        <Routes>
+          <Route index  element={<HomePage />} />
+          <Route path="/app" element={<FunctionalApp />} />
+        </Routes>
       <Footer />
     </div>
   );
