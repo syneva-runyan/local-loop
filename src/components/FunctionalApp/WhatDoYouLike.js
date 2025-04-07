@@ -4,26 +4,32 @@ import vibes from '../../data/vibes';
 import './WhatDoYouLike.css';
 
 function WhatDoYouLike() {
-    const [selectedVibesIdx, setSelectedVibesIdx] = useState([...Array(vibes.length).keys().map(() => false)]);
+    const [vibesState, setVibesState] = useState([...vibes.map(vibe => ({
+        ...vibe,
+        selected: false,
+    }))]);
 
-    const toggleVibe = (vibeIdx) => {
-        const updatedValue = !selectedVibesIdx[vibeIdx];
-        selectedVibesIdx[vibeIdx] = updatedValue;
-        setSelectedVibesIdx([...selectedVibesIdx]);
+    const toggleVibe = (e, vibeIdx) => {
+        e.preventDefault();
+        const updatedValue = !vibesState[vibeIdx].selected;
+        const clonedVibes = [...vibesState];
+        clonedVibes[vibeIdx].selected = updatedValue;
+        console.log(updatedValue);
+        setVibesState([...clonedVibes]);
     }
     return (
         <div className='tourInputSection'>
-        <label className='primaryQuestion'>What are you intersted in?</label>
-        <ul className='vibes'>
-            {vibes.map((vibe, vibeIdx) => {
+        <label className='primaryQuestion whatDoYouLikeLabel'>What are you intersted in?</label>
+        <div className='vibes'>
+            {vibesState.map((vibe, vibeIdx) => {
                 return (
-                    <li key={vibe.vibeName} className={`vibe ${selectedVibesIdx[vibeIdx] && "selected"}`} onClick={() => toggleVibe(vibeIdx)}>
+                    <button key={vibe.vibeName} className={`vibe ${vibe.selected ? "selected" : ''}`} onClick={(e) => toggleVibe(e, vibeIdx)}>
                         <FontAwesomeIcon icon={vibe.icon} style={{"color": `${vibe.color}` }} className='vibeIcon'/>
                         <p><strong>{vibe.vibeName}</strong></p>
-                    </li>
+                    </button>
                 )
             })}
-        </ul>
+        </div>
         </div>
     )
 }

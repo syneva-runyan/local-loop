@@ -5,7 +5,8 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    margin-left: 10px;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .whereAreYouLabel {
@@ -14,7 +15,12 @@
 }
 
 .whereAreYouInput {
-    padding-left: 40px;
+    padding-left: 30px;
     margin: 0;
     border: 0;
+}
+
+.onlyJuneau {
+    margin: 5px 0 0;
+    line-height: 1.3rem;
 }

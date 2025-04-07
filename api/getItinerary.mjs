@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 const supportedVibes = ['nature', 'drinking', 'botiques', 'art', 'history'];
 
 function isValidRequest(parameters) {
@@ -69,5 +70,38 @@ function returnError(error) {
  * Prints the rows of the wedding RSVP spreadsheet
  */
 async function getTourItinerary(parameters) {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+            'x-api-key': '',
+            'anthropic-version': '2023-06-01',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: 'claude-3-5-sonnet-20241022',
+            max_tokens: 1024,
+            messages: [
+            { 
+                role: 'user',
+                content: `
+                Create a personalized tour itinerary for me.  Tour should be walkable and fit within ${parameters.duration.hours} hours and ${parameters.duration.minutes}.
+                I'm particularly interested in ${parameters.vibes}.
 
+                Respond with the format:
+                {
+                    destination:
+                    stops: [{
+                        durationToSpendAt: x,
+                        detailsAboutStop: x,
+                        stopAddress: x,
+                    }]
+                }
+                `
+            }
+            ]
+        })
+    });
+
+    const data = await response.json();
+    console.log(data);
 }

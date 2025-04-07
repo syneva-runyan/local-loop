@@ -1,5 +1,5 @@
 .tourInput {
-    padding: 20px 40px;
+    padding: 20px 30px;
 }
 
 .tourInputSection {
@@ -12,4 +12,8 @@ p, label {
 
 .primaryQuestion {
     font-weight: bold;
+}
+
+.FunctionalApp {
+    background-color: #f8f1e4;
 }

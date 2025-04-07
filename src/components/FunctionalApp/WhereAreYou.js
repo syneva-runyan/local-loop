@@ -13,7 +13,7 @@ function WhereAreYou() {
                 <FontAwesomeIcon icon={faLocation} className='whereAreYouIcon' />
                 <input value="Juneau, Alaska" className="whereAreYouInput" id="whereAreYou" onChange={() => setShowOnlyJuneauMessage(true)} />
             </div>
-            {shownOnlyJuneauMessage && <p><em>Right now we only support Juneau, Alaska.  More are locations coming soon!</em></p>}
+            {shownOnlyJuneauMessage && <p className="onlyJuneau"><em>Right now we only support Juneau, Alaska. <a href="mailTo:syneva@localloopcommunity.com" target='_blank' rel='noreferrer noopener'>Contact us</a> to request a location!</em></p>}
         </div>
     );
 }
