@@ -12,7 +12,7 @@ const vibes = [
         color: '#dc8c2e'
      },
      { 
-        vibeName: "botiques",
+        vibeName: "boutiques",
         icon: faShirt,
         color: '#2E7EDC'
      },     { 
