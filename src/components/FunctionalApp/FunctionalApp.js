@@ -27,7 +27,7 @@ function FunctionalApp() {
             <WhereAreYou />
             <HowMuchTimeDoYouHave />
             <WhatDoYouLike />
-            <button className='button functionalAppSubmission' type="submit">Build Itinerary</button>
+            <button className='button functionalAppSubmission' type="submit">Create Itinerary</button>
         </form>
     </div>
     )
