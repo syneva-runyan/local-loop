@@ -1,14 +1,20 @@
+.functionalAppHeader {
+    color: var(--primary-color);
+    padding-left: 25px;
+    margin-bottom: 0;
+}
+
 .tourInput {
     padding: 20px 30px;
     max-width: 750px;
 }
 
 .tourInputSection {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 p, label {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .primaryQuestion {
@@ -17,4 +23,10 @@ p, label {
 
 .FunctionalApp {
     background-color: #f8f1e4;
+}
+
+@media (max-width: 600px) {
+    .functionalAppSubmission {
+        width: 100%;
+    }
 }

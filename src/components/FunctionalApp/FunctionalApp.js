@@ -22,11 +22,12 @@ function FunctionalApp() {
     return (
       <div className='FunctionalApp'>
         <Header />
+        <h1 className='functionalAppHeader'>Craft a tour</h1>
         <form className='tourInput' onSubmit={onSubmit}>
             <WhereAreYou />
             <HowMuchTimeDoYouHave />
             <WhatDoYouLike />
-            <button className='button' type="submit">Build an Itinerary</button>
+            <button className='button functionalAppSubmission' type="submit">Build Itinerary</button>
         </form>
     </div>
     )
