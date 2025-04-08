@@ -1,8 +1,10 @@
 const local = "http://localhost:6000";
-const prod = "";
+// const prod = "";
 
 const useMe = local;
 
-export default {
+const constsants = {
     GET_ITINERARY_ENDPOINT: `${useMe}/get-itinerary`
 }
+
+export default constsants;

@@ -27,7 +27,7 @@ function HowMuchTimeDoYouHave() {
             <p className="howMuchTimeDoYouHaveQuestion primaryQuestion">How long are you in town for?</p>
             <div className='howMuchTimeDoYouHaveInputs'>
                 <div className="durationInput">
-                    <input type="number" id="hours" value={hours} onChange={validateAndSetHours} />
+                    <input type="number" id="hours" name="hours" value={hours} onChange={validateAndSetHours} />
                     <label htmlFor="hours">Hours</label>
                 </div>
 

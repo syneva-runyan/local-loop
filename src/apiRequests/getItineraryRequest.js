@@ -15,10 +15,10 @@ const getItinerary = (location, duration, vibes) => {
         }
         });
         
-        xhr.open("GET", `${constants.GET_ITINERARY_ENDPOINT}?location=${encodeURIComponent(location)}&duration=${encodeURIComponent(duration)}&vibes=${encodeURIComponent(vibes)}`);
+        xhr.open("GET", `${constants.GET_ITINERARY_ENDPOINT}?location=${encodeURIComponent(location)}&hours=${encodeURIComponent((duration.hours))}&minutes=${encodeURIComponent(duration.minutes)}&vibes=${encodeURIComponent(vibes)}`);
         
         xhr.send();
     });
 }
 
-export  default getItinerary;
+export default getItinerary;
