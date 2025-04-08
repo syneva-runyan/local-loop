@@ -8,7 +8,7 @@ function WhereAreYou() {
     const [ shownOnlyJuneauMessage, setShowOnlyJuneauMessage] = useState(false);
     return (
         <div className='tourInputSection'>
-            <label htmlFor="whereAreYou" className='whereAreYouLabel primaryQuestion'>Where are you?</label>
+            <label htmlFor="whereAreYou" className='whereAreYouLabel primaryQuestion'>What port are you at?</label>
             <div className='whereAreYou'>
                 <FontAwesomeIcon icon={faLocation} className='whereAreYouIcon' />
                 <input value="Juneau, Alaska" className="whereAreYouInput" id="whereAreYou" name="location" onChange={() => setShowOnlyJuneauMessage(true)} />

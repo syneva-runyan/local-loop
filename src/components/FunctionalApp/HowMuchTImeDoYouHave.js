@@ -24,7 +24,7 @@ function HowMuchTimeDoYouHave() {
     }
     return (
         <div className="tourInputSection howMuchTimeDoYouHave">
-            <p className="howMuchTimeDoYouHaveQuestion primaryQuestion">How long do you want your tour to be?</p>
+            <p className="howMuchTimeDoYouHaveQuestion primaryQuestion">How long do you have to explore?</p>
             <div className='howMuchTimeDoYouHaveInputs'>
                 <div className="durationInput">
                     <input type="number" id="hours" name="hours" value={hours} onChange={validateAndSetHours} />
