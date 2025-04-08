@@ -18,3 +18,7 @@
     align-items: space-between;
     display: flex;
 }
+
+.secondaryLabel {
+    font-size: 1rem;
+}

@@ -10,7 +10,7 @@ function FunctionalApp() {
 
     const onSubmit=(e) => {
         e.preventDefault();
-        const location = e.target.elements.location.value;
+        const location = e.target.elements.location.value.replace(",", "+");
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
         const vibes = e.target.elements.vibes.value;

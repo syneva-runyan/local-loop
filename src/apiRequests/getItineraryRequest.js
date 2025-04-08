@@ -14,6 +14,11 @@ const getItinerary = (location, duration, vibes) => {
             }
         }
         });
+
+
+        // const urlParams = new URLSearchParams();
+        // urlParams.append(location, encodeURIComponent(location));
+
         
         xhr.open("GET", `${constants.GET_ITINERARY_ENDPOINT}?location=${encodeURIComponent(location)}&hours=${encodeURIComponent((duration.hours))}&minutes=${encodeURIComponent(duration.minutes)}&vibes=${encodeURIComponent(vibes)}`);
         

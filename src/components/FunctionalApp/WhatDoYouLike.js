@@ -12,7 +12,7 @@ function WhatDoYouLike() {
     const toggleVibe = (e, vibeIdx) => {
         e.preventDefault();
         const updatedValue = !vibesState[vibeIdx].selected;
-        const clonedVibes = [...vibesState];
+        const clonedVibes = [...vibesState]
         clonedVibes[vibeIdx].selected = updatedValue;
         setVibesState([...clonedVibes]);
     }
@@ -21,7 +21,7 @@ function WhatDoYouLike() {
     return (
         <div className='tourInputSection'>
         <label className='primaryQuestion whatDoYouLikeLabel'>What are you intersted in?</label>
-        <input hidden id="vibes" value={selectedVibes.toString(",")} readOnly />
+        <input hidden id="vibes" value={selectedVibes.toString().replace(",", "+")} readOnly />
         <div className='vibes'>
             {vibesState.map((vibe, vibeIdx) => {
                 return (
