@@ -48,22 +48,13 @@ function returnSuccess(data) {
   return {
     statusCode: 200,
     body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json',
-      "Access-Control-Allow-Origin": "*",
-
-    },
   };
 }
 
 function returnError(error) {
   return {
     statusCode: 500,
-    body: JSON.stringify({ error }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
+    body: JSON.stringify({ error })
   };
 }
 
@@ -76,7 +67,7 @@ async function getTourItinerary(parameters) {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
-            'x-api-key': 'XXX',
+            'x-api-key': 'xxx',
             'anthropic-version': '2023-06-01',
             'content-type': 'application/json'
         },
@@ -106,8 +97,11 @@ async function getTourItinerary(parameters) {
         })
     });
 
+    try {
     const data = await response.json();
-
     const constructJSON = JSON.parse(data.content[0].text);
     return returnSuccess(constructJSON);
+    } catch(e) {
+      return returnError(e.toString());
+    }
 }

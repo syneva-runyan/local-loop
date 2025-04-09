@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 const app = express();
-const port = 8000;
+const port = 3030;
 
 
 dotenv.config();
@@ -22,20 +22,13 @@ app.use(function(req, res, next) {
 
 app.get('/get-itinerary', async (req, res) => {
     console.log("got the request");
-    res.send(JSON.stringify({ "status": 200, body: "hello word"}));
     // const resp = await getItinerary({
     //     queryStringParameters: req.query
     // });
-    // res.send({
-    //     statusCode: 200,
-    //     body: `{"tourName":"Juneau Nature Walk & Waterfront Experience","tourDescription":"A scenic walking tour through downtown Juneau focusing on natural attractions 
-    //       and waterfront views, perfectly suited for nature enthusiasts. This 2.5-hour tour combines urban trails, forest paths, and seaside walks.","stops":[{"stopName":"Mount Roberts Trailhead","durationToSpendAt":"30 minutes","detailsAboutStop":"Start at the lower portion of the famous Mount Roberts Trail. Even a short trek offers 
-    //       beautiful forest views and potential wildlife sightings. The beginning section is manageable for most visitors.","stopAddress":"490 S Franklin St, Juneau, AK 99801"},{"stopName":"Cope Park","durationToSpendAt":"25 minutes","detailsAboutStop":"A peaceful urban park with Gold Creek running through it. Offers excellent salmon viewing opportunities (in season) and walking trails surrounded by local vegetation.","stopAddress":"12th Street, Juneau, AK 99801"},{"stopName":"Evergreen Cemetery Trail","durationToSpendAt":"20 minutes","detailsAboutStop":"A serene wooded path with old-growth trees and occasional wildlife sightings. The trail connects to the historic cemetery which tells stories of Juneau's past.","stopAddress":"635 Seater St, Juneau, AK 99801"},{"stopName":"Seawalk","durationToSpendAt":"45 minutes","detailsAboutStop":"A waterfront promenade offering spectacular views of the Gastineau Channel, mountains, and potential whale sightings. Great for spotting seabirds and harbor seals.","stopAddress":"South Franklin Street, Juneau, AK 99801"},{"stopName":"Capital Park and Whale Sculpture","durationToSpendAt":"30 minutes","detailsAboutStop":"End your tour at this waterfront park featuring the famous bronze whale sculpture. Excellent spot for photography and viewing the natural harbor landscape.","stopAddress":"127 S Franklin St, Juneau, AK 99801"}]}`,
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Access-Control-Allow-Origin': '*'
-    //     }
-    // });
+    res.json({
+        "statusCode": 200,
+        "body": "{\"tourName\":\"Juneau Arts & Boutiques Walking Tour\",\"tourDescription\":\"A charming 2.5-hour walking tour through downtown Juneau focusing on local art galleries, unique boutiques, and cultural spots. This route is easily walkable and showcases the best of Juneau's artistic side.\",\"stops\":[{\"stopName\":\"Juneau Arts & Culture Center\",\"durationToSpendAt\":\"30 minutes\",\"detailsAboutStop\":\"Start at this community hub featuring rotating exhibitions of local artists and Alaska Native art. The center often hosts temporary exhibits and has a gift shop with local artisan works.\",\"stopAddress\":\"350 Whittier St, Juneau, AK 99801\"},{\"stopName\":\"Alaska Native Arts & Crafts\",\"durationToSpendAt\":\"25 minutes\",\"detailsAboutStop\":\"Traditional Native Alaskan art gallery featuring authentic pieces including carved masks, jewelry, and textiles.\",\"stopAddress\":\"348 S Franklin St, Juneau, AK 99801\"},{\"stopName\":\"Annie Kaill's\",\"durationToSpendAt\":\"25 minutes\",\"detailsAboutStop\":\"Local art gallery and gift shop featuring Alaskan artists, jewelry, and unique gifts. Known for its curated collection of contemporary Alaskan art.\",\"stopAddress\":\"244 Front St, Juneau, AK 99801\"},{\"stopName\":\"Sketch\",\"durationToSpendAt\":\"20 minutes\",\"detailsAboutStop\":\"Boutique featuring local designers, unique clothing, and accessories with an Alaskan twist.\",\"stopAddress\":\"113 Seward St, Juneau, AK 99801\"},{\"stopName\":\"The Canvas Community Art Studio & Gallery\",\"durationToSpendAt\":\"30 minutes\",\"detailsAboutStop\":\"Community art space featuring works by local artists with disabilities. Includes a gallery shop with unique pieces.\",\"stopAddress\":\"223 Seward St, Juneau, AK 99801\"},{\"stopName\":\"Caribou Crossing\",\"durationToSpendAt\":\"20 minutes\",\"detailsAboutStop\":\"Boutique featuring Alaskan-made products, art pieces, and unique gifts.\",\"stopAddress\":\"387 S Franklin St, Juneau, AK 99801\"}]}"
+    });
 })
 
 app.listen(port, () => {

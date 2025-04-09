@@ -4,11 +4,13 @@ import WhereAreYou from './WhereAreYou';
 import HowMuchTimeDoYouHave from './HowMuchTImeDoYouHave';
 import Header from '../Header';
 import getItineraryRequest from '../../apiRequests/getItineraryRequest';
+import Tour from './Tour/Tour';
 
 import './FunctionalApp.css';
 
 function FunctionalApp() {
     const [isCreating, setIsCreating] = useState(false);
+    const [tour, setTour] = useState(null);
 
     const onSubmit= async (e) => {
         setIsCreating(true);
@@ -17,24 +19,38 @@ function FunctionalApp() {
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
         const vibes = e.target.elements.vibes.value;
-        
-        await getItineraryRequest(location, { hours, minutes}, vibes);
+        // TODO handle error
+        const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
+        setTour(tourItinerary);
         setIsCreating(false);
 
+    }
+
+    let innerContent;
+    if (tour) {
+        innerContent =  (
+            <Tour tour={tour} />
+        )
+    } else {
+        innerContent = (
+            <>
+            <h1 className='functionalAppHeader'>Craft a tour</h1>
+            <form className='tourInput' onSubmit={onSubmit}>
+                <WhereAreYou />
+                <HowMuchTimeDoYouHave />
+                <WhatDoYouLike />
+                <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
+                    {isCreating ? "Crafting tour..." : "Create Itinerary" }
+                </button>
+            </form>
+            </>
+        )
     }
 
     return (
       <div className='FunctionalApp'>
         <Header />
-        <h1 className='functionalAppHeader'>Craft a tour</h1>
-        <form className='tourInput' onSubmit={onSubmit}>
-            <WhereAreYou />
-            <HowMuchTimeDoYouHave />
-            <WhatDoYouLike />
-            <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
-                {isCreating ? "Crafting tour..." : "Create Itinerary" }
-            </button>
-        </form>
+        {innerContent}
     </div>
     )
 }
