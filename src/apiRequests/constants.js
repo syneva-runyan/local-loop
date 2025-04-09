@@ -1,4 +1,4 @@
-const local = "http://localhost:6000";
+const local = "http://127.0.0.1:8000";
 // const prod = "";
 
 const useMe = local;

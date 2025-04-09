@@ -71,7 +71,7 @@ ul {
 
 input {
   width: 100%;
-  background: none;
+  background-color: transparent;
   border: 0;
   border-bottom: 2px solid black;
   margin: 10px 0;

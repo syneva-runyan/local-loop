@@ -1,3 +1,4 @@
+import { useState } from "react";
 import WhatDoYouLike from './WhatDoYouLike';
 import WhereAreYou from './WhereAreYou';
 import HowMuchTimeDoYouHave from './HowMuchTImeDoYouHave';
@@ -7,15 +8,18 @@ import getItineraryRequest from '../../apiRequests/getItineraryRequest';
 import './FunctionalApp.css';
 
 function FunctionalApp() {
+    const [isCreating, setIsCreating] = useState(false);
 
-    const onSubmit=(e) => {
+    const onSubmit= async (e) => {
+        setIsCreating(true);
         e.preventDefault();
         const location = e.target.elements.location.value.replace(",", "+");
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
         const vibes = e.target.elements.vibes.value;
         
-        getItineraryRequest(location, { hours, minutes}, vibes)
+        await getItineraryRequest(location, { hours, minutes}, vibes);
+        setIsCreating(false);
 
     }
 
@@ -27,7 +31,9 @@ function FunctionalApp() {
             <WhereAreYou />
             <HowMuchTimeDoYouHave />
             <WhatDoYouLike />
-            <button className='button functionalAppSubmission' type="submit">Create Itinerary</button>
+            <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
+                {isCreating ? "Crafting tour..." : "Create Itinerary" }
+            </button>
         </form>
     </div>
     )
