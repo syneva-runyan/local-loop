@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { Readable } from 'stream';
+
 const app = express();
 const port = 3030;
 
@@ -14,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use(function(req, res, next) {
+    console.log("getting reqest")
     res.header("Access-Control-Allow-Origin", "*");
     res.header("")
     next();
@@ -21,15 +24,38 @@ app.use(function(req, res, next) {
 
 
 app.get('/get-itinerary', async (req, res) => {
-    console.log("got the request");
-    // const resp = await getItinerary({
-    //     queryStringParameters: req.query
-    // });
-    res.json({
-        "statusCode": 200,
-        "body": "{\"tourName\":\"Juneau Arts & Boutiques Walking Tour\",\"tourDescription\":\"A charming 2.5-hour walking tour through downtown Juneau focusing on local art galleries, unique boutiques, and cultural spots. This route is easily walkable and showcases the best of Juneau's artistic side.\",\"stops\":[{\"stopName\":\"Juneau Arts & Culture Center\",\"durationToSpendAt\":\"30 minutes\",\"detailsAboutStop\":\"Start at this community hub featuring rotating exhibitions of local artists and Alaska Native art. The center often hosts temporary exhibits and has a gift shop with local artisan works.\",\"stopAddress\":\"350 Whittier St, Juneau, AK 99801\"},{\"stopName\":\"Alaska Native Arts & Crafts\",\"durationToSpendAt\":\"25 minutes\",\"detailsAboutStop\":\"Traditional Native Alaskan art gallery featuring authentic pieces including carved masks, jewelry, and textiles.\",\"stopAddress\":\"348 S Franklin St, Juneau, AK 99801\"},{\"stopName\":\"Annie Kaill's\",\"durationToSpendAt\":\"25 minutes\",\"detailsAboutStop\":\"Local art gallery and gift shop featuring Alaskan artists, jewelry, and unique gifts. Known for its curated collection of contemporary Alaskan art.\",\"stopAddress\":\"244 Front St, Juneau, AK 99801\"},{\"stopName\":\"Sketch\",\"durationToSpendAt\":\"20 minutes\",\"detailsAboutStop\":\"Boutique featuring local designers, unique clothing, and accessories with an Alaskan twist.\",\"stopAddress\":\"113 Seward St, Juneau, AK 99801\"},{\"stopName\":\"The Canvas Community Art Studio & Gallery\",\"durationToSpendAt\":\"30 minutes\",\"detailsAboutStop\":\"Community art space featuring works by local artists with disabilities. Includes a gallery shop with unique pieces.\",\"stopAddress\":\"223 Seward St, Juneau, AK 99801\"},{\"stopName\":\"Caribou Crossing\",\"durationToSpendAt\":\"20 minutes\",\"detailsAboutStop\":\"Boutique featuring Alaskan-made products, art pieces, and unique gifts.\",\"stopAddress\":\"387 S Franklin St, Juneau, AK 99801\"}]}"
+    const resp = await getItinerary({
+        queryStringParameters: req.query
     });
+    res.json(resp);
 })
+
+
+app.get('/get-place-photo', async (req, res) => {
+    console.log("got the request");
+
+    const { ref } = req.query;
+    if (!ref) return res.status(400).send('Missing photo reference');
+  
+    const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxheight=400&photoreference=${ref}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+
+    console.log(photoUrl);
+  
+    try {
+      const photoResponse = await fetch(photoUrl, { redirect: 'follow' });
+      
+      // Set appropriate headers
+      res.set('Content-Type', photoResponse.headers.get('content-type') || 'image/jpeg');
+      res.set('Cache-Control', 'public, max-age=86400');
+  
+      const webStream = photoResponse.body;
+      const nodeStream = Readable.fromWeb(webStream); // 👈 convert
+      nodeStream.pipe(res); // ✅ now works!
+    } catch (error) {
+      console.error('Error fetching photo:', error);
+      res.status(500).send('Error retrieving photo');
+    }
+  });
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

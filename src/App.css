@@ -5,6 +5,7 @@
   --primary-color-light: #ea993c;
   --secondary-color: #2E7EDC;
   --secondary-color--light: #4690E6;
+  --secondary-font: 'Rust';
 }
 
 .App {

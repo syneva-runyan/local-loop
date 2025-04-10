@@ -3,8 +3,9 @@ const local = "http://127.0.0.1:3030";
 
 const useMe = local;
 
-const constsants = {
-    GET_ITINERARY_ENDPOINT: `${useMe}/get-itinerary`
+const constants = {
+    GET_ITINERARY_ENDPOINT: `${useMe}/get-itinerary`,
+    GET_PHOTO_ENDPOINT: `${useMe}/get-place-photo`,
 }
 
-export default constsants;
+export default constants;

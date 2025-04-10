@@ -15,7 +15,7 @@ function FunctionalApp() {
     const onSubmit= async (e) => {
         setIsCreating(true);
         e.preventDefault();
-        const location = e.target.elements.location.value.replace(",", "+");
+        const location = e.target.elements.location.value;
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
         const vibes = e.target.elements.vibes.value;

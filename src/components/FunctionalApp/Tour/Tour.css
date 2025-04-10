@@ -1,0 +1,73 @@
+.tourBody {
+    padding: 0 20px;
+}
+
+.tourHeader {
+    padding: 0 20px;
+}
+
+.tourHeader h1 {
+    padding: 0;
+    margin-top: 0;
+}
+
+.tourAsside {
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+.tourStop p:last-child {
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+.tourStops {
+    margin-bottom: 0;
+}
+
+.tourStops li:last-child {
+    margin-bottom: 0;
+}
+
+.szh-accordion__item-btn {
+    cursor: pointer;
+    font-family: var(--secondary-font);
+    background: transparent;
+    border: 0;
+    color: var(--secondary-color);
+    margin: 10px 0 0px;
+    font-size: 1.5rem;
+    position: relative;
+}
+
+.szh-accordion__item-btn:hover {
+    color: var(--secondary-color--light)
+}
+
+.szh-accordion__item-btn::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid var(--secondary-color);;
+    clear: both;
+    top: 11px;
+    rotate: 270deg;
+    margin-left: 8px;
+    transition: .25s all;
+}
+
+.szh-accordion__item-btn[aria-expanded=true]::after {
+    rotate: 0deg;
+}
+
+.startTour {
+    margin-top: 30px;
+    width: 100%;
+}
+
+.tourStopName {
+    margin-bottom: 0;
+}
