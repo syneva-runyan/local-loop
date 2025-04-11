@@ -31,6 +31,18 @@ function isValidRequest(parameters) {
 }
 
 export const handler = async (event) => {
+  // handle options request
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "GET,OPTIONS",
+      },
+      body: '',
+    };
+
   // validate request
   if (!isValidRequest(event)) {
     return returnError("Please provide valid tour parameters");
