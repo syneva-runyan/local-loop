@@ -56,10 +56,10 @@ function FunctionalApp() {
                 <WhereAreYou />
                 <HowMuchTimeDoYouHave />
                 <WhatDoYouLike />
+                {isError && <p className="error">Uh oh! Something happened. Please try again</p>}
                 <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
                     {isCreating ? "Crafting tour..." : "Create Itinerary" }
                 </button>
-                {isError && <p className="error">Uh oh! Something happened. Please try again</p>}
             </form>
             </>
         )
