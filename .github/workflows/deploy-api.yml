@@ -12,11 +12,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: cd api && npm run install-all
-
       - name: Zip get-itinerary code
         run: cd api/get-itinerary && zip -r index.zip .
+
+      - name: Zip get-place-photo code
+        run: cd api/get-place-photo && zip -r index.zip .
 
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.2.0
@@ -26,3 +26,12 @@ jobs:
           aws_region: us-east-1
           function_name: get-itinerary
           zip_file: api/get-itinerary/index.zip
+
+      - name: Upload get-place-photo to AWS Lambda
+        uses: appleboy/lambda-action@v0.2.0
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: get-place-photo
+          zip_file: api/get-place-photo/index.zip

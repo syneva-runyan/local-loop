@@ -4,7 +4,6 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./index.mjs",
-        "install-all": "npm install && cd get-photo && npm install"
     },
     "devDependencies": {
         "cors": "^2.8.5",
