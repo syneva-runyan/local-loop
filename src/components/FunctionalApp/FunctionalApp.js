@@ -7,6 +7,8 @@ import getItineraryRequest from '../../apiRequests/getItineraryRequest';
 import Tour from './Tour/Tour';
 
 import './FunctionalApp.css';
+import WhaleLoading from "./WhaleLoading.js";
+import FadeIn from "./utilComponents/FadeIn";
 
 function FunctionalApp() {
     const [isCreating, setIsCreating] = useState(false);
@@ -26,10 +28,20 @@ function FunctionalApp() {
 
     }
 
+    if (isCreating) {
+        return (
+            <FadeIn>
+                <WhaleLoading />
+            </FadeIn>
+        )
+    }
+
     let innerContent;
     if (tour) {
         innerContent =  (
-            <Tour tour={tour} />
+            <FadeIn>
+                <Tour tour={tour} />
+            </FadeIn>
         )
     } else {
         innerContent = (
