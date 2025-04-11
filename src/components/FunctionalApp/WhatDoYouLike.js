@@ -21,7 +21,7 @@ function WhatDoYouLike() {
     return (
         <div className='tourInputSection'>
         <label className='primaryQuestion whatDoYouLikeLabel'>What are you interested in?</label>
-        <input hidden id="vibes" value={selectedVibes.toString().replace(",", "+")} readOnly />
+        <input hidden id="vibes" value={selectedVibes.toString()} readOnly />
         <div className='vibes'>
             {vibesState.map((vibe, vibeIdx) => {
                 return (

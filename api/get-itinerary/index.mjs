@@ -2,7 +2,6 @@ import supportedLocations from './data/supportedLocations.mjs';
 const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food'];
 
 function isValidRequest(parameters) {
-  console.log(parameters);
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
     return false;
   }
@@ -17,7 +16,8 @@ function isValidRequest(parameters) {
   }
 
   const vibes = decodeURIComponent(parameters.vibes);
-  const vibesArray = vibes.split("+");
+  const vibesArray = vibes.split(",");
+  console.log(vibesArray);
   if (!Array.isArray(vibesArray)) {
     return false;
   }
