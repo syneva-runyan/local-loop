@@ -110,12 +110,13 @@ async function getTourItinerary(parameters) {
                 I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes}.
                 I'm particularly interested in ${parameters.vibes}. I'm traveling on foot.
 
-                Respond with the format:
+                Always respond in this format:
                 {
                     tourName:
                     shortTourDescription:
                     citations:
                     stops: [{
+                        stopName: x,
                         durationToSpendAt: x,
                         detailsAboutStop: x,
                         shortDescription: x,
