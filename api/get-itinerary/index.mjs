@@ -31,31 +31,18 @@ function isValidRequest(parameters) {
 }
 
 export const handler = async (event) => {
-  // handle options request
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "GET,OPTIONS",
-      },
-      body: '',
-    }
-  }
-
   // validate request
-  if (!isValidRequest(event)) {
+  if (!isValidRequest(event.queryStringParameters)) {
     return returnError("Please provide valid tour parameters");
   }
 
-  console.log(`Received request duration ${event.hours} hours and ${event.minutes} minutes with vibes ${event.vibes}`);
-
-  const location = decodeURIComponent(event.location);
+  
+  const location = decodeURIComponent(event.queryStringParameters.location);
+  console.log(`Received request for ${location}, duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
 
   // Call LLM & google maps to create tour
   const [itineraryResponse, mainTourPhoto] = await Promise.all([
-    getTourItinerary(event),
+    getTourItinerary(event.queryStringParameters),
     getMainTourPhoto(location)
   ]);
 
