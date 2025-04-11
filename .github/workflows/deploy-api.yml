@@ -28,7 +28,7 @@ jobs:
           for i in {1..10}; do
             STATUS=$(aws lambda get-function-configuration \
               --function-name get-itinerary \
-              --region "$AWS_REGION" \
+              --region "us-east-1" \
               --query 'LastUpdateStatus' \
               --output text)
             echo "Current status: $STATUS"
