@@ -27,6 +27,7 @@ const getItinerary = async (location, duration, vibes) => {
         return parsedResponse;
     } catch (e) {
         console.error('Error:', e)
+        return { error: true };
     }
 }
 

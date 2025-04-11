@@ -13,6 +13,7 @@ import FadeIn from "./utilComponents/FadeIn";
 function FunctionalApp() {
     const [isCreating, setIsCreating] = useState(false);
     const [tour, setTour] = useState(null);
+    const [isError, setIsError] = useState(false);
 
     const onSubmit= async (e) => {
         setIsCreating(true);
@@ -23,7 +24,11 @@ function FunctionalApp() {
         const vibes = e.target.elements.vibes.value;
         // TODO handle error
         const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
-        setTour(tourItinerary);
+        if (tourItinerary.error) {
+            setIsError(true);
+        } else {
+            setTour(tourItinerary);
+        }
         setIsCreating(false);
 
     }
@@ -54,6 +59,7 @@ function FunctionalApp() {
                 <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
                     {isCreating ? "Crafting tour..." : "Create Itinerary" }
                 </button>
+                {isError && <p className="error">Uh oh! Something happened. Please try again</p>}
             </form>
             </>
         )
