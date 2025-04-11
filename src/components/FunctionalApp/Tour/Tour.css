@@ -11,13 +11,6 @@
     margin-top: 0;
 }
 
-.tourPhoto {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .tourAsside {
     font-size: 1em;
     margin-top: 5px;
