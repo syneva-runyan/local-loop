@@ -1,5 +1,5 @@
 import supportedLocations from './data/supportedLocations.mjs';
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history'];
+const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food'];
 
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
@@ -56,6 +56,11 @@ export const handler = async (event) => {
 function returnSuccess(data) {
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "GET,OPTIONS",
+    },
     body:  JSON.stringify(data),
   };
 }

@@ -1,9 +1,14 @@
+import { useEffect } from 'react';
 import './Tour.css';
 import TourPhoto from './TourPhoto';
 import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 
 
 function Tour({tour }) {
+    useEffect(() =>{
+        // scroll to top when tour is created
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [])
     return (
         <div className='tour'>
             <div className='tourHeader'>
