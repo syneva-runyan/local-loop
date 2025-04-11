@@ -16,7 +16,7 @@ jobs:
         run: cd api && npm run install-all
 
       - name: Zip get-itinerary code
-        run: zip -r get-itinerary.zip ./api/get-itinerary
+        run: cd api/get-itinerary && zip -r index.zip .
 
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.2.0
@@ -25,4 +25,4 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
           function_name: get-itinerary
-          zip_file: get-itinerary.zip
+          zip_file: api/get-itinerary/index.zip
