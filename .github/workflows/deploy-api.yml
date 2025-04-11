@@ -18,6 +18,32 @@ jobs:
       - name: Zip get-itinerary code
         run: zip -r get-itinerary.zip ./api/get-itinerary
 
+      - name: Wait for Lambda to be ready
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+        run: |
+          echo "Checking Lambda update status..."
+          for i in {1..10}; do
+            STATUS=$(aws lambda get-function-configuration \
+              --function-name get-itinerary \
+              --region "$AWS_REGION" \
+              --query 'LastUpdateStatus' \
+              --output text)
+            echo "Current status: $STATUS"
+            if [ "$STATUS" = "Successful" ]; then
+              echo "Lambda is ready for update"
+              break
+            elif [ "$i" -eq 10 ]; then
+              echo "Timeout waiting for Lambda to be ready"
+              exit 1
+            else
+              echo "Lambda update in progress, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
+
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.1.7
         with:
