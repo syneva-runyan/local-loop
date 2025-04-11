@@ -41,7 +41,8 @@ export const handler = async (event) => {
         "Access-Control-Allow-Methods": "GET,OPTIONS",
       },
       body: '',
-    };
+    }
+  }
 
   // validate request
   if (!isValidRequest(event)) {
