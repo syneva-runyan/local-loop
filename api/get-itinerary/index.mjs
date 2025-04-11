@@ -32,17 +32,17 @@ function isValidRequest(parameters) {
 
 export const handler = async (event) => {
   // validate request
-  if (!isValidRequest(event.queryStringParameters)) {
+  if (!isValidRequest(event)) {
     return returnError("Please provide valid tour parameters");
   }
 
-  console.log(`Received request duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
+  console.log(`Received request duration ${event.hours} hours and ${event.minutes} minutes with vibes ${event.vibes}`);
 
-  const location = decodeURIComponent(event.queryStringParameters.location);
+  const location = decodeURIComponent(event.location);
 
   // Call LLM & google maps to create tour
   const [itineraryResponse, mainTourPhoto] = await Promise.all([
-    getTourItinerary(event.queryStringParameters),
+    getTourItinerary(event),
     getMainTourPhoto(location)
   ]);
 
