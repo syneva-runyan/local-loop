@@ -1,0 +1,9 @@
+{
+    "name": "get-photo-api",
+    "version": "0.1.0",
+    "private": true,
+    "devDependencies": {},
+    "dependencies": {
+        "stream": "^0.0.3"
+    }
+}

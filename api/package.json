@@ -3,14 +3,13 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "nodemon ./index.mjs"
+        "start": "nodemon ./index.mjs",
+        "install-all": "npm install && cd get-photo && npm install"
     },
     "devDependencies": {
         "cors": "^2.8.5",
         "express": "^5.1.0",
         "nodemon": "^3.1.9"
     },
-    "dependencies": {
-        "stream": "^0.0.3"
-    }
+    "dependencies": {}
 }
