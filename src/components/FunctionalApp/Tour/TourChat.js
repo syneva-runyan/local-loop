@@ -6,8 +6,8 @@ function TourChat({ stopName}) {
   }
   return (
     <div className="tourChat">
-      <h2>{stopName} questions?</h2>
-      <p>Ask your AI Tour Guide!</p>
+      <h2>Hi there!</h2>
+      <p>{stopName} questions? Ask me!</p>
       <form className="tourQuestion">
         <input className="tourQuestionInput"></input>
         <button className="tourGuideButton" onClick={onSubmit}>Ask</button>

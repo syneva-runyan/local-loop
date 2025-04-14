@@ -25,7 +25,7 @@ function isValidRequest(parameters) {
 
   for (let vibe of vibesArray) {
     if (!supportedVibes.includes(vibe)) {
-      return;
+      return false;
     }
   }
 

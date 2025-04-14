@@ -2,7 +2,9 @@
     min-width: 100%;
     min-height: 250px;
     position: relative;
-    margin-left: 25px;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0 25px;
 }
 
 .tourPhotoImg {
@@ -12,9 +14,9 @@
     font-size: 1rem;
     margin: 0;
     padding-right: 10px;
-    bottom: 0;
+    bottom: 3px;
     position: absolute;
-    left: 0;
+    left: 25px;
     background-color: #ffffffcf;
 }
 
@@ -33,6 +35,7 @@
     .tourPhoto {
         margin-left: 0;
         min-height: 100px;
+        padding: 0;
     }
     .tourPhotoCitation {
         right: 0;

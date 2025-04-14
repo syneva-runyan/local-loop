@@ -2,13 +2,13 @@ import { useState } from "react";
 import WhatDoYouLike from './WhatDoYouLike';
 import WhereAreYou from './WhereAreYou';
 import HowMuchTimeDoYouHave from './HowMuchTImeDoYouHave';
-import Header from '../Header';
 import getItineraryRequest from '../../apiRequests/getItineraryRequest';
 import Tour from './Tour/Tour';
 
 import './FunctionalApp.css';
-import WhaleLoading from "./WhaleLoading.js";
+import ItineraryLoading from "./ItineraryLoading.js";
 import FadeIn from "./utilComponents/FadeIn";
+import AppHeader from "./AppHeader";
 
 function FunctionalApp() {
     const [isCreating, setIsCreating] = useState(false);
@@ -36,7 +36,7 @@ function FunctionalApp() {
     if (isCreating) {
         return (
             <FadeIn>
-                <WhaleLoading />
+                <ItineraryLoading location={"Juneau, Alaska"} />
             </FadeIn>
         )
     }
@@ -51,9 +51,7 @@ function FunctionalApp() {
     } else {
         innerContent = (
             <>
-            <hr className="headerBorder"/>
             <h1 className='functionalAppHeader'>Let's Explore</h1>
-            <hr className="headerBorder"/>
             <form className='tourInput' onSubmit={onSubmit}>
                 <WhereAreYou />
                 <HowMuchTimeDoYouHave />
@@ -69,7 +67,7 @@ function FunctionalApp() {
 
     return (
       <div className='FunctionalApp'>
-        <Header />
+        <AppHeader />
         {innerContent}
     </div>
     )

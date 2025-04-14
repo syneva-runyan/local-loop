@@ -98,7 +98,7 @@ import constants from "./constants";
 
 // get a personalized itinerary based on provided params
 const getItinerary = async (location, duration, vibes) => {
-   // return mockedResponse;
+    // return mockedResponse;
     // construct request url
     const urlParams = new URLSearchParams();
     urlParams.append("location", encodeURIComponent(location));

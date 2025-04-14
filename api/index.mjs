@@ -9,7 +9,8 @@ const port = 3030;
 
 dotenv.config();
 
-import { handler as getItinerary } from "./getItinerary.mjs";
+import { handler as getItinerary } from "./get-itinerary/index.mjs";
+import { handler as askQuestion } from "./ask-question/index.mjs";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,10 +31,15 @@ app.get('/get-itinerary', async (req, res) => {
     res.json(resp);
 })
 
+app.get('/ask-question', async (req, res) => {
+  const resp = await askQuestion({
+      queryStringParameters: req.query
+  });
+  res.json(resp);
+})
+
 
 app.get('/get-place-photo', async (req, res) => {
-    console.log("got the request");
-
     const { ref } = req.query;
     if (!ref) return res.status(400).send('Missing photo reference');
   

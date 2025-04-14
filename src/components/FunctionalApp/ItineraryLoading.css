@@ -26,7 +26,7 @@
     background: white;
     opacity: 0;
     transform: scale(0.5) rotateX(90deg);
-    animation: flipIn 2.5s infinite ease-in-out;
+    animation: flipIn 2.75s infinite ease-in-out;
   }
   
   .loading-text {
@@ -35,6 +35,23 @@
     letter-spacing: 0.5px;
     text-align: center;
     font-family: var(--secondary-font);
+  }
+
+  .itineraryLoadingFunFact {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: var(--secondary-font);
+    padding: 0 20px;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .itineraryLoadingFunFact p {
+    font-size: 1rem;
   }
   
   @keyframes flipIn {
