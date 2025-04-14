@@ -47,7 +47,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 src={
-                    `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCyR9PvCFjB96xC6JyTysIV0b-EpEEfHQc&origin=${getLocation()}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
+                    `https://www.google.com/maps/embed/v1/directions?key={process.env.GOOGLE_MAPS_API_KEY}&origin=${getLocation()}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
                 }
                 allowFullScreen>
             </iframe>
