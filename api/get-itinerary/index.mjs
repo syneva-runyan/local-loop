@@ -1,5 +1,5 @@
 import supportedLocations from './data/supportedLocations.mjs';
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'instagramable places'];
+const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free instagramable places'];
 
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
@@ -18,7 +18,6 @@ function isValidRequest(parameters) {
   const vibes = decodeURIComponent(parameters.vibes);
 
   const vibesArray = vibes.split(",");
-  console.log(vibesArray);
   if (!Array.isArray(vibesArray)) {
     return false;
   }
@@ -43,16 +42,23 @@ export const handler = async (event) => {
   console.log(`Received request for ${location}, duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
 
   // Call LLM & google maps to create tour
-  const [itineraryResponse, mainTourPhoto] = await Promise.all([
-    getTourItinerary(event.queryStringParameters),
-    getMainTourPhoto(location)
-  ]);
+  try {
+    const [itineraryResponse, mainTourPhoto] = await Promise.all([
+      getTourItinerary(event.queryStringParameters),
+      getMainTourPhoto(location)
+    ]);
 
-  const responseBody = {
-    ...itineraryResponse,
-    photo: mainTourPhoto,
+    const responseBody = {
+      ...itineraryResponse,
+      photo: mainTourPhoto,
+    }
+    console.log("Itinerary", itineraryResponse)
+    console.log("Tour Photo", mainTourPhoto)
+    return returnSuccess(responseBody);
+  } catch(e) {
+    console.log(`Received error - Error: ${e}`);
+    returnError(e.toString());
   }
-  return returnSuccess(responseBody);
 }
 
 function returnSuccess(data) {
@@ -104,7 +110,7 @@ async function getTourItinerary(parameters) {
     },
     body: JSON.stringify({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1024,
+      max_tokens: 2024,
       messages: [
         {
           role: 'user',
@@ -116,19 +122,18 @@ async function getTourItinerary(parameters) {
                 DO NOT MAKE THINGS UP and include citation urls.
                 I'm traveling on foot. Minimize Walking distance between stops.
 
-                Always respond in this format:
+                Always respond in a valid JSON format:
                 {
                     tourName:
                     shortTourDescription:
                     citations:
                     stops: [{
-                        stopName: x,
-                        durationToSpendAt: x,
-                        detailsAboutStop: x,
-                        shortDescription: x,
-                        stopAddress: x,
-                        citations: [x..],
-                        timeToNextStop: x or 0,
+                        stopName:
+                        durationToSpendAt:
+                        detailsAboutStop:
+                        shortDescription:
+                        stopAddress:
+                        citations:
                     }]
                 }
                 `
@@ -139,9 +144,10 @@ async function getTourItinerary(parameters) {
 
   try {
     const data = await response.json();
+    console.log(data);
     const tourJSON = JSON.parse(data.content[0].text);
     return tourJSON;
   } catch (e) {
-    return returnError(e.toString());
+    throw new Error(e.toString());
   }
 }

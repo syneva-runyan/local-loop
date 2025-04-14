@@ -12,7 +12,7 @@ const MapLoading = ({ location }) => {
     const factTimer = setTimeout(() => {
       const updatedIdx = (funFactIdx + 1) % facts.length;
       setFunFactIdx(updatedIdx);
-    }, 5000)
+    }, 6000)
 
     return () => {
       clearTimeout(factTimer);

@@ -1,11 +1,5 @@
-import supportedLocations from './data/supportedLocations.mjs';
-
 function isValidRequest(parameters) {
-  const location = decodeURIComponent(parameters.location);
-  if (!supportedVibes.includes(location)) {
-    return false;
-  }
-
+  // TODO
 
   return true;
 }
@@ -69,7 +63,7 @@ async function getAnswer(parameters) {
         {
           role: 'user',
           content: `
-                You are a friendly, whimisical tour guide. I'm on a tour and have a question about ${parameters.location}. 
+                You are a friendly tour guide. I'm on a tour and have a question about ${parameters.location}. 
                 My question is
                 QUESTION START
                 
@@ -82,7 +76,7 @@ async function getAnswer(parameters) {
                 Else, respond in this format:
                 {
                     answer:
-                    citations: []
+                    citations:
                 }
                 `
         }
@@ -92,6 +86,7 @@ async function getAnswer(parameters) {
 
   try {
     const data = await response.json();
+    console.log(data);
     const answerJSON = JSON.parse(data.content[0].text);
     return answerJSON;
   } catch (e) {

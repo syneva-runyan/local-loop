@@ -21,7 +21,7 @@ function FunctionalApp() {
         const location = e.target.elements.location.value;
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
-        const vibes = e.target.elements.vibes.value || "instagramable places";
+        const vibes = e.target.elements.vibes.value || "free instagramable places";
         // TODO handle error
         const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
         if (tourItinerary.error) {

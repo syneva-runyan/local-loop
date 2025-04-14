@@ -14,10 +14,10 @@ function TourPreview({ tour, startTour }) {
         <p>{tour.shortTourDescription}</p>
             <Accordion>
                 <AccordionItem header="Preview Stops">
-                    <ul className='tourStops'>
-                        {tour.stops.map(stop => {
+                    <ul className='tourStopsPreview'>
+                        {tour?.stops?.map(stop => {
                             return (
-                                <li className='tourStop' key={`stop=${stop.stopName}`}>
+                                <li className='previewTourStop tourStop' key={`stop=${stop.stopName}`}>
                                     <p className='tourStopName'><strong>{stop.stopName}</strong></p>
                                     <p className='tourAsside'>{stop.durationToSpendAt}</p>
                                     <p>{stop.shortDescription}</p>

@@ -119,9 +119,9 @@ const getItinerary = async (location, duration, vibes) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const parsedResponse = await response.json()
+        const parsedResponse = await response.json();
         // TOOD validate response
-        return parsedResponse;
+        return JSON.parse(parsedResponse.body);
     } catch (e) {
         console.error('Error:', e)
         return { error: true };

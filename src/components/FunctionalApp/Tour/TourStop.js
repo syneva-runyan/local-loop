@@ -54,7 +54,8 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
             <p className="tourStopDetail">{stop?.stopAddress}</p>
             <p className="tourStopDescription">{stop?.detailsAboutStop}</p>
             <p className="tourStopDetail">
-                {citationsArray.map(citation => {
+                {citationsArray.map((citation, citationIdx) => {
+                    const isLast = citationIdx === citationsArray.length - 1;
                     const citationInfo = getCitationDomain(citation)
                     if (citationInfo.isUrl) {
                         return (
@@ -62,11 +63,11 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
                                 href={citationInfo.citation} 
                                 target="_blank" rel="noopener noreferrer" 
                                 key={citationInfo.citation}>
-                                    {citationInfo.citation}
+                                    {citationInfo.citation}{isLast ? "" : ", "} 
                             </a>
                         );
                     }
-                    return <span key={citationInfo.citation}>{citationInfo.citation}</span>;
+                    return <span key={citationInfo.citation}>{citationInfo.citation}{isLast ? "" : ", "}</span>;
                 })}
             </p>
             <TourChat stopName={stop.stopName} />
