@@ -23,7 +23,6 @@ function getLocation() {
   }
 
 const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) => {
-
     const citationsArray = Array.isArray(stop.citations) ? stop.citations : [stop.citations];
     return (
         <div className="tourStop">
@@ -39,6 +38,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
             <h1 className="tourStopHeading">{stop?.stopName}</h1>
             <p className="tourStopDetail"><strong>Suggested time at stop - {stop?.durationToSpendAt} </strong></p>
             <iframe
+                title="Embedded Directions"
                 style={{
                     width: "100%",
                     height: "350px",
@@ -47,7 +47,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 src={
-                    `https://www.google.com/maps/embed/v1/directions?key={process.env.GOOGLE_MAPS_API_KEY}&origin=${getLocation()}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
+                    `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${getLocation()}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
                 }
                 allowFullScreen>
             </iframe>
@@ -57,9 +57,16 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
                 {citationsArray.map(citation => {
                     const citationInfo = getCitationDomain(citation)
                     if (citationInfo.isUrl) {
-                        return <a href={citation} target="_blank" rel="noopener noreferrer" key={citation}>{getCitationDomain(citation)}</a>
+                        return (
+                            <a 
+                                href={citationInfo.citation} 
+                                target="_blank" rel="noopener noreferrer" 
+                                key={citationInfo.citation}>
+                                    {citationInfo.citation}
+                            </a>
+                        );
                     }
-                    return <span key={citation}>{citationInfo.citation}</span>;
+                    return <span key={citationInfo.citation}>{citationInfo.citation}</span>;
                 })}
             </p>
             <TourChat stopName={stop.stopName} />

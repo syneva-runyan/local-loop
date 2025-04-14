@@ -1,0 +1,55 @@
+.tour-complete-container {
+    text-align: center;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .walker {
+    font-size: 4rem;
+    animation: jump 1.2s ease-in-out infinite;
+  }
+  
+  @keyframes jump {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .complete-text {
+    font-size: 2.5rem;
+    color: black;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeInScale 1s forwards;
+    animation-delay: 0.5s;
+    font-family: var(--secondary-font);
+  }
+  
+  @keyframes fadeInScale {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .confetti::before,
+  .confetti::after {
+    content: "🎉🎊✨🎈🎉🎊";
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    font-size: 2rem;
+    animation: confettiRain 3s linear infinite;
+  }
+  
+  .confetti::after {
+    top: -50px;
+    animation-delay: 1s;
+  }
+  
+  @keyframes confettiRain {
+    0% { transform: translateY(-100%); opacity: 1; }
+    100% { transform: translateY(300px); opacity: 0; }
+  }
+  

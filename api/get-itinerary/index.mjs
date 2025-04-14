@@ -113,7 +113,7 @@ async function getTourItinerary(parameters) {
                 Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
                 I'm particularly interested in ${parameters.vibes}.
                 Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
-                DO NOT MAKE THINGS UP and include citations.
+                DO NOT MAKE THINGS UP and include citation urls.
                 I'm traveling on foot. Minimize Walking distance between stops.
 
                 Always respond in this format:
