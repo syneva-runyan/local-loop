@@ -6,7 +6,7 @@ import { faBullhorn, faChartBar, faHeart } from '@fortawesome/free-solid-svg-ico
 function BusinessIncentiveSection() {
   return (
     <section id="customer-interviews">
-      <h2>Businesses coalition members Get..</h2>
+      <h2>Businesses coalition members get..</h2>
       <ul>
         <li>
           <FontAwesomeIcon icon={faBullhorn} />

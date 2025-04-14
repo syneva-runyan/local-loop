@@ -12,15 +12,15 @@ function FeaturesSection() {
       <ul className="featuresList">
         <li>
             <FontAwesomeIcon icon={faBriefcase} />
-            <strong>Local businesses associations</strong> share information on local businesses with Local Loop.
+            <strong>Local businesses associations</strong> share information on businesses with Local Loop.
         </li>
         <li>
             <FontAwesomeIcon icon={faPerson} />
-            <strong>Visitors</strong> crafts a personalized, self-guided tour for the visitor, featuring the business coalition members.
+            <strong>Visitors</strong> provide information about their interests.
         </li>
         <li>
             <FontAwesomeIcon icon={faMapLocation} />
-            <strong>Local Loop</strong> crafts a personalized, self-guided tour for the visitor, featuring the local community.
+            <strong>Local Loop</strong> crafts a personalized, self-guided tour for the visitor, featuring the business coalition members.
         </li>
       </ul>
     </section>
