@@ -1,5 +1,5 @@
 import supportedLocations from './data/supportedLocations.mjs';
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food'];
+const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'instagramable places'];
 
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
@@ -16,6 +16,7 @@ function isValidRequest(parameters) {
   }
 
   const vibes = decodeURIComponent(parameters.vibes);
+
   const vibesArray = vibes.split(",");
   console.log(vibesArray);
   if (!Array.isArray(vibesArray)) {
@@ -108,8 +109,12 @@ async function getTourItinerary(parameters) {
         {
           role: 'user',
           content: `
-                I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes}.
-                I'm particularly interested in ${parameters.vibes}. I'm traveling on foot.
+                I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. 
+                Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
+                I'm particularly interested in ${parameters.vibes}.
+                Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
+                DO NOT MAKE THINGS UP and include citations.
+                I'm traveling on foot. Minimize Walking distance between stops.
 
                 Always respond in this format:
                 {
@@ -122,7 +127,8 @@ async function getTourItinerary(parameters) {
                         detailsAboutStop: x,
                         shortDescription: x,
                         stopAddress: x,
-                        citations: x
+                        citations: [x..],
+                        timeToNextStop: x or 0,
                     }]
                 }
                 `

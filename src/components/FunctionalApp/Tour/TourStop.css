@@ -1,0 +1,47 @@
+.tourStop {
+    padding: 0 20px;
+}
+
+.tourStopBreadCrumbs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+}
+
+.tourStopBreadcrumb {
+    border: 0;
+    background-color: transparent;
+    color: var(--secondary-color)
+}
+
+.tourStopBreadCrumbsNext {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tourStopDetail {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.tourStopHeading {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.tourStopDescription {
+    padding-top: 20px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.nextCta {
+    width: 250px;
+    margin-top: 40px;
+}
+
+@media (max-width: 650px) {
+    .nextCta {
+        width: 100%;
+    }
+}

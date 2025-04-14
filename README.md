@@ -2,3 +2,5 @@
 
 This app contains code for both the marketing website and the functional app prototype for Local Loop.
 
+##
+TODO - create restricted key for embedded maps

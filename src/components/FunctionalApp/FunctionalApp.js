@@ -21,7 +21,7 @@ function FunctionalApp() {
         const location = e.target.elements.location.value;
         const hours = e.target.elements.hours.value;
         const minutes = e.target.elements.minutes.value;
-        const vibes = e.target.elements.vibes.value;
+        const vibes = e.target.elements.vibes.value || "instagramable places";
         // TODO handle error
         const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
         if (tourItinerary.error) {
@@ -51,7 +51,7 @@ function FunctionalApp() {
     } else {
         innerContent = (
             <>
-            <h1 className='functionalAppHeader'>Craft a tour</h1>
+            <h1 className='functionalAppHeader'>Help Craft your Tour</h1>
             <form className='tourInput' onSubmit={onSubmit}>
                 <WhereAreYou />
                 <HowMuchTimeDoYouHave />

@@ -1,0 +1,30 @@
+.tourChat {
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+.tourQuestion {
+    display: flex;
+}
+
+.tourQuestionInput {
+    margin: 0 10px 0 0;
+}
+
+.tourGuideButton {
+    background: var(--secondary-color);
+    border: 0;
+    color: white;
+    font-family: var(--secondary-font);
+    font-size: 1rem;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 2px 2px 0 #dfe6e9;
+}
+
+.tourGuideButton:hover {
+    background: var(--secondary-color--light);
+    box-shadow: 4px 4px 0 white;
+}
