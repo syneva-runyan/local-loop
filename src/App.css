@@ -13,6 +13,7 @@
   text-align: left;
   background-color: #FFFBF4;
   max-width: 5000px;
+  min-height: 100vh;
 }
 
 p, li {

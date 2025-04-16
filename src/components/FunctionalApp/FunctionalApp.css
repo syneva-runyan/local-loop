@@ -24,6 +24,7 @@ p, label {
 
 .FunctionalApp {
     background-color: #f8f1e4;
+    min-height: 90vh;
 }
 
 .error {
