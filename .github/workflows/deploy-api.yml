@@ -17,6 +17,9 @@ jobs:
 
       - name: Zip get-place-photo code
         run: cd api/get-place-photo && zip -r index.zip .
+      
+      - name: Zip ask-question code
+        run: cd api/ask-question && zip -r index.zip .
 
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.2.0
