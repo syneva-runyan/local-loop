@@ -1,5 +1,5 @@
 import supportedLocations from './data/supportedLocations.mjs';
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free instagramable places'];
+const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
 
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {

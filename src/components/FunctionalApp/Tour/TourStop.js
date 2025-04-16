@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import TourChat from "./TourChat";
 import "./TourStop.css";
 
@@ -13,17 +14,56 @@ function getCitationDomain(citation) {
     }
 }
 
-function getLocation() {
-    return encodeURI("Juneau,Alaska");
-    // if (navigator.geolocation) {
-    //   navigator.geolocation.getCurrentPosition(showPosition);
-    // } else {
-    //   x.innerHTML = "Geolocation is not supported by this browser.";
-    // }
-  }
+function getCurrentLocationPromise() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                resolve(position);
+            }, (error) => {
+                reject(error);
+            });
+        } else {
+            reject(new Error("Geolocation is not supported by this browser."));
+        }
+    });
+}
 
-const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) => {
+function getFallbackLocation(previousStop) {
+    return encodeURIComponent(previousStop || "Downtown Juneau, Alaska");
+
+}
+async function getLocation(previousStop) {
+    if (navigator.geolocation) {
+        try {
+            const location = await getCurrentLocationPromise();
+            console.log("user is at location", location);
+            console.log(`${location.coords.latitude},${location.coords.longitude}`);
+            return encodeURIComponent(`${location.coords.latitude},${location.coords.longitude}`);
+        } catch(e) {
+            console.warn("Error getting user location:", e);
+            getFallbackLocation(previousStop);
+        }
+    }
+
+    console.warn("Geolocation is not supported by this browser.");
+    return getFallbackLocation(previousStop);
+}
+
+const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName }) => {
+    const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName));
     const citationsArray = Array.isArray(stop.citations) ? stop.citations : [stop.citations];
+
+    // get user location for map on component mount
+    useEffect(() => {
+        async function fetchUserLocation() {
+            const location = await getLocation(previousStopName);
+            setUserLocation(location);
+        }
+        
+        fetchUserLocation();
+        
+    }, [previousStopName]);
+
     return (
         <div className="tourStop">
             <div className="tourStopBreadCrumbs">
@@ -47,7 +87,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev }) 
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 src={
-                    `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${getLocation()}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
+                    `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
                 }
                 allowFullScreen>
             </iframe>

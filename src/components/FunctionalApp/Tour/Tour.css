@@ -41,6 +41,7 @@
     margin: 10px 0 0px;
     font-size: 1.5rem;
     position: relative;
+    padding: 0;
 }
 
 .szh-accordion__item-btn:hover {

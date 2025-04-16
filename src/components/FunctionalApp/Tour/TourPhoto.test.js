@@ -15,4 +15,13 @@ describe("Tour Photo", () => {
             minHeight: "780px",
         });
     });
+
+    it('should never exceed 1000px width', () => {
+        window.screen.width = 1200;
+        const photo = screen.getByAltText("tour preview");
+        expect(photo).toHaveStyle({
+            minWidth: "1000px",
+            minHeight: "1200px",
+        });
+    });
 });

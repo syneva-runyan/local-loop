@@ -47,7 +47,7 @@
     font-family: var(--secondary-font);
     padding: 0 20px;
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
   }
 
   .itineraryLoadingFunFact p {
