@@ -28,14 +28,14 @@ app.get('/get-itinerary', async (req, res) => {
     const resp = await getItinerary({
         queryStringParameters: req.query
     });
-    res.json(resp);
+    res.json(JSON.parse(resp.body));
 })
 
 app.get('/ask-question', async (req, res) => {
   const resp = await askQuestion({
       queryStringParameters: req.query
   });
-  res.json(resp);
+  res.json(JSON.parse(resp.body));
 })
 
 

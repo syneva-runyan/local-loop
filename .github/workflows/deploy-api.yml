@@ -35,3 +35,12 @@ jobs:
           aws_region: us-east-1
           function_name: get-place-photo
           zip_file: api/get-place-photo/index.zip
+      
+      - name: Upload ask-question to AWS Lambda
+        uses: appleboy/lambda-action@v0.2.0
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: ask-question 
+          zip_file: api/ask-question/index.zip

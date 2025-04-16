@@ -1,5 +1,5 @@
 const supportedLocations = {
-    "Juneau, Alaska": {
+    "Downtown Juneau, Alaska": {
         googlePlaceId: "ChIJU8srZ53fAFQRrrxJtoUYdjw",
     },
 }

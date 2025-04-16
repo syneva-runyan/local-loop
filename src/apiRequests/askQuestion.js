@@ -24,7 +24,7 @@ const askQuestion = async ( question, stopName) => {
         }
         const parsedResponse = await response.json();
         // TOOD validate response
-        return JSON.parse(parsedResponse.body);
+        return parsedResponse;
     } catch (e) {
         console.error('Error:', e)
         return { error: true };

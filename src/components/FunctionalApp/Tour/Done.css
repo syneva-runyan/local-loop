@@ -25,6 +25,17 @@
     font-family: var(--secondary-font);
   }
   
+.feedbackButton {
+    font-size: 4rem;
+    background-color: transparent;
+    border: 0;
+}
+
+.feedbackButton:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
   @keyframes fadeInScale {
     to {
       opacity: 1;

@@ -117,7 +117,7 @@ async function getTourItinerary(parameters) {
           content: `
                 I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. 
                 Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
-                I'm particularly interested in ${parameters.vibes}.
+                I'm particularly interested in ${parameters.vibes}. Do not choose stops that take more than 20 minutes to walk to from previous stop.
                 Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
                 DO NOT MAKE THINGS UP and include citation urls.
                 I'm traveling on foot. Minimize Walking distance between stops.
@@ -127,6 +127,7 @@ async function getTourItinerary(parameters) {
                     tourName:
                     shortTourDescription:
                     citations:
+                    walkingDistanceCoveredInTour:
                     stops: [{
                         stopName:
                         durationToSpendAt:

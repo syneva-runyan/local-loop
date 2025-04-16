@@ -35,7 +35,7 @@ function Tour({tour }) {
     return (
         <div className='tour'>
             { currentStop !== null ? 
-                <TourStop stop={tour.stops[currentStop]} onNext={goToNextStop} stopNumber={currentStop + 1} totalStops={tour.stops.length} isLastStop={currentStop === tour.stops.length - 1} onPrev={goToPreviousStop} previousStopName={tour.stops[currentStop -1]?.stopName || null} /> 
+                <TourStop stop={tour.stops[currentStop]} onNext={goToNextStop} stopNumber={currentStop + 1} totalStops={tour.stops.length} isLastStop={currentStop === tour.stops.length - 1} onPrev={goToPreviousStop} previousStopName={tour.stops[currentStop -1]?.stopAddress || null} /> 
                 : <TourPreview tour={tour} startTour={setCurrentStop} /> }
          </div>
     );

@@ -36,7 +36,7 @@ function FunctionalApp() {
     if (isCreating) {
         return (
             <FadeIn>
-                <ItineraryLoading location={"Juneau, Alaska"} />
+                <ItineraryLoading location={"Downtown Juneau, Alaska"} />
             </FadeIn>
         )
     }

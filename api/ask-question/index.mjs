@@ -17,7 +17,7 @@ export const handler = async (event) => {
   // Call LLM to answer question
   try {
     const response = await getAnswer(event.queryStringParameters);
-    console.log(`Received answer - Answer: ${response}`);
+    console.log(`Received answer - Answer: ${response.answer}`);
     return returnSuccess(response);
   } catch(e) {
     console.log(`Received error - Error: ${e}`);
@@ -58,22 +58,22 @@ async function getAnswer(parameters) {
     },
     body: JSON.stringify({
       model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 1024,
+      max_tokens: 2024,
       messages: [
         {
           role: 'user',
           content: `
-                You are a friendly tour guide. I'm on a tour and have a question about ${parameters.location}. 
+                You are a friendly. local tour guide. I'm on a tour and have a question about ${parameters.location}. 
                 My question is
                 QUESTION START
                 
                 "${parameters.question}"
 
                 QUESTION END
-                DO NOT MAKE THINGS UP and include citation urls.
-                If the question does not pertain to ${parameters.location}, respond with { error: "out-of-scope" }
+                DO NOT MAKE THINGS UP and include citation urls. Do not elaborate on why you provide or dont provide an answer. Do not apologize.
+                If the question does not pertain to ${parameters.location} or the general subject matter around it, let me know you can't help but dont tell me why in detail and dont offer to provide addtional assistances.
 
-                Else, respond in this format:
+                Always respond in a valid JSON format:
                 {
                     answer:
                     citations:

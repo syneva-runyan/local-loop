@@ -1,18 +1,7 @@
 import { useEffect, useState } from "react";
 import TourChat from "./TourChat";
 import "./TourStop.css";
-
-function getCitationDomain(citation) {
-    try {
-        const url = new URL(citation);
-        return {
-            citation: url.hostname.replace('www.', ''),
-            isUrl: true
-        }
-    } catch(e) {
-        return { citation, isUrl: false };
-    }
-}
+import Citation from "../utilComponents/Citation";
 
 function getCurrentLocationPromise() {
     return new Promise((resolve, reject) => {
@@ -96,18 +85,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
             <p className="tourStopDetail">
                 {citationsArray.map((citation, citationIdx) => {
                     const isLast = citationIdx === citationsArray.length - 1;
-                    const citationInfo = getCitationDomain(citation)
-                    if (citationInfo.isUrl) {
-                        return (
-                            <a 
-                                href={citationInfo.citation} 
-                                target="_blank" rel="noopener noreferrer" 
-                                key={citationInfo.citation}>
-                                    {citationInfo.citation}{isLast ? "" : ", "} 
-                            </a>
-                        );
-                    }
-                    return <span key={citationInfo.citation}>{citationInfo.citation}{isLast ? "" : ", "}</span>;
+                    <Citation isLast={isLast} citation={citation} />
                 })}
             </p>
             <TourChat stopName={stop.stopName} />

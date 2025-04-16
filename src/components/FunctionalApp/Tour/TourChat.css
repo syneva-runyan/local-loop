@@ -26,19 +26,57 @@
 }
 
 .tourGuideButton {
-    background: var(--secondary-color);
-    border: 0;
+    background-color: var(--secondary-color--light);
     color: white;
-    font-family: var(--secondary-font);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     font-size: 1rem;
-    padding: 12px 20px;
-    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 2px 2px 0 #dfe6e9;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .tourGuideButton:hover {
-    background: var(--secondary-color--light);
-    box-shadow: 4px 4px 0 white;
+    background-color: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.tourGuideButton:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.tourChatLoading {
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.tourChatAttribution {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin: 0;
+}
+
+.tourChatUser {
+    color: var(--primary-color);
+}
+
+.tourChatGuide {
+    color: var(--secondary-color);
+}
+
+.tourChatMessage {
+    margin-top: 30px;
+}
+
+.tourChatAnswer {
+    margin-bottom: 5px;
 }
