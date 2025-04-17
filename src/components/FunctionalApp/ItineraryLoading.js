@@ -20,12 +20,14 @@ const MapLoading = ({ location }) => {
   }, [funFactIdx, facts])
   return (
     <div className="map-loading-container">
-      <div className="map-grid">
-        {Array.from({ length: 9 }).map((_, i) => (
-          <div className={`map-tile delay-${i}`} key={i}></div>
-        ))}
+      <div className="itineraryLoadingContainer">
+        <div className="map-grid">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div className={`map-tile delay-${i}`} key={i}></div>
+          ))}
+        </div>
+        <p className="loading-text">Crafting your tour</p>
       </div>
-      <p className="loading-text">Crafting your tour</p>
       <div className='itineraryLoadingFunFact'>
         {
           facts.map((fact, factIdx) => {

@@ -19,8 +19,9 @@ function TourPreview({ tour, startTour }) {
                             return (
                                 <li className='previewTourStop tourStop' key={`stop=${stop.stopName}`}>
                                     <p className='tourStopName'><strong>{stop.stopName}</strong></p>
-                                    <p className='tourAsside'>{stop.durationToSpendAt}</p>
-                                    <p>{stop.shortDescription}</p>
+                                    <p className='tourAsside tourPreviewDurationTitle'>Suggested duration</p>
+                                    <p className='tourAsside tourPreviewDuration'>{stop.durationToSpendAt}</p>
+                                    <p className="tourPreviewStopDescription">{stop.shortDescription}</p>
                                 </li>
                             );
                         })}

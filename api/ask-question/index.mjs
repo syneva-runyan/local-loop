@@ -12,6 +12,7 @@ export const handler = async (event) => {
 
   
   const location = decodeURIComponent(event.queryStringParameters.location);
+  const stopName = decodeURIComponent(event.queryStringParameters.stopName);
   console.log(`Received question for ${location}. Question: ${event.queryStringParameters.question}`);
 
   // Call LLM to answer question
@@ -63,7 +64,7 @@ async function getAnswer(parameters) {
         {
           role: 'user',
           content: `
-                You are a friendly. local tour guide. I'm on a tour and have a question about ${parameters.location}. 
+                You are a friendly. local tour guide. I'm on a tour and have a question about ${parameters.stopName} in ${parameters.location}. 
                 My question is
                 QUESTION START
                 

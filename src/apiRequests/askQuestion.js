@@ -1,12 +1,13 @@
 import constants from "./constants";
 
 // get a personalized itinerary based on provided params
-const askQuestion = async ( question, stopName) => {
+const askQuestion = async ( question, stopName, location) => {
     // return mockedResponse;
     // construct request url
     const urlParams = new URLSearchParams();
-    urlParams.append("location", encodeURIComponent(stopName));
+    urlParams.append("stopName", encodeURIComponent(stopName));
     urlParams.append("question", encodeURIComponent(question));
+    urlParams.append("location", encodeURIComponent(location));
 
     var url = new URL(constants.ASK_QUESTION_ENDPOINT);
     url.search = urlParams;

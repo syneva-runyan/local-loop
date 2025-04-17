@@ -5,3 +5,18 @@
 .previewTourStop {
     padding: 0
 }
+
+.tourPreviewDurationTitle {
+    margin: 10px 0 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+    line-height: 0.9rem;
+}
+
+.tourPreviewDuration {
+    margin-bottom: 10px;
+}
+
+.tourPreviewStopDescription {
+    margin-top: 10px;
+}

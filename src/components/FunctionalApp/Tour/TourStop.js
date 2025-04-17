@@ -38,7 +38,7 @@ async function getLocation(previousStop) {
     return getFallbackLocation(previousStop);
 }
 
-const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName }) => {
+const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName, location }) => {
     const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName));
     const citationsArray = Array.isArray(stop.citations) ? stop.citations : [stop.citations];
 
@@ -54,43 +54,45 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
     }, [previousStopName]);
 
     return (
-        <div className="tourStop">
-            <div className="tourStopBreadCrumbs">
-                <div>
-                    {(stopNumber !== 1) &&<button className="tourStopBreadcrumb" onClick={onPrev}>Previous Stop</button>}
+        <>
+            <div className="tourStop">
+                <div className="tourStopBreadCrumbs">
+                    <div>
+                        {(stopNumber !== 1) &&<button className="tourStopBreadcrumb" onClick={onPrev}>Previous Stop</button>}
+                    </div>
+                    <p className="tourStopDetail"><strong>Stop {stopNumber}/{totalStops}</strong></p>
+                    <div className="tourStopBreadCrumbsNext">
+                        {!isLastStop && <button className="tourStopBreadcrumb" onClick={onNext}>Next Stop</button>}
+                    </div>
                 </div>
-                <p className="tourStopDetail"><strong>Stop {stopNumber}/{totalStops}</strong></p>
-                <div className="tourStopBreadCrumbsNext">
-                    {!isLastStop && <button className="tourStopBreadcrumb" onClick={onNext}>Next Stop</button>}
-                </div>
+                <h1 className="tourStopHeading">{stop?.stopName}</h1>
+                <p className="tourStopDetail"><strong>Suggested time at stop - {stop?.durationToSpendAt} </strong></p>
+                <iframe
+                    title="Embedded Directions"
+                    style={{
+                        width: "100%",
+                        height: "350px",
+                        "border":"0"
+                    }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={
+                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
+                    }
+                    allowFullScreen>
+                </iframe>
+                <p className="tourStopDetail">{stop?.stopAddress}</p>
+                <p className="tourStopDescription">{stop?.detailsAboutStop}</p>
+                <p className="tourStopDetail">
+                    {citationsArray.map((citation, citationIdx) => {
+                        const isLast = citationIdx === citationsArray.length - 1;
+                        return <Citation isLast={isLast} citation={citation} key={`citation-${citationIdx}-${stop.stopName}`} />
+                    })}
+                </p>
+                <button className="button nextCta" onClick={onNext}>{isLastStop ? "Finish Tour" : "Go To Next Stop"}</button>
             </div>
-            <h1 className="tourStopHeading">{stop?.stopName}</h1>
-            <p className="tourStopDetail"><strong>Suggested time at stop - {stop?.durationToSpendAt} </strong></p>
-            <iframe
-                title="Embedded Directions"
-                style={{
-                    width: "100%",
-                    height: "350px",
-                    "border":"0"
-                }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src={
-                    `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
-                }
-                allowFullScreen>
-            </iframe>
-            <p className="tourStopDetail">{stop?.stopAddress}</p>
-            <p className="tourStopDescription">{stop?.detailsAboutStop}</p>
-            <p className="tourStopDetail">
-                {citationsArray.map((citation, citationIdx) => {
-                    const isLast = citationIdx === citationsArray.length - 1;
-                    <Citation isLast={isLast} citation={citation} />
-                })}
-            </p>
-            <TourChat stopName={stop.stopName} />
-            <button className="button nextCta" onClick={onNext}>{isLastStop ? "Finish Tour" : "Go To Next Stop"}</button>
-        </div>
+            <TourChat stopName={stop.stopName} location={location} />
+        </>
     );
 }
 

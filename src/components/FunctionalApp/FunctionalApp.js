@@ -14,6 +14,7 @@ function FunctionalApp() {
     const [isCreating, setIsCreating] = useState(false);
     const [tour, setTour] = useState(null);
     const [isError, setIsError] = useState(false);
+    const [tourLocation, setTourLocation] = useState("Downtown Juneau, Alaska");
 
     const onSubmit= async (e) => {
         setIsCreating(true);
@@ -30,6 +31,7 @@ function FunctionalApp() {
             setTour(tourItinerary);
         }
         setIsCreating(false);
+        setTourLocation(location)
 
     }
 
@@ -45,7 +47,7 @@ function FunctionalApp() {
     if (tour) {
         innerContent =  (
             <FadeIn>
-                <Tour tour={tour} />
+                <Tour tour={tour} location={tourLocation} />
             </FadeIn>
         )
     } else {

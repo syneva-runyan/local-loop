@@ -1,11 +1,9 @@
 .tourChat {
     background: #FFFBF4;
-    border: 1px solid;
-    border-radius: 10px;
     margin-top: 25px;
-    margin-bottom: 20px;
     max-width: 700px;
     padding: 20px;
+    margin-left: 20px;
 }
 
 .tourChat h2 {
@@ -29,7 +27,7 @@
     background-color: var(--secondary-color--light);
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 6px;
     width: 30px;
     height: 30px;
     font-size: 1rem;
@@ -39,6 +37,8 @@
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: var(--secondary-font);
+    padding: 20px 25px;
 }
 
 .tourGuideButton:hover {
@@ -79,4 +79,18 @@
 
 .tourChatAnswer {
     margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+    .tourChat {
+        margin-left: 0;
+    }
+    .tourQuestion {
+        flex-direction: column;
+    }
+    .tourGuideButton {
+        width: 100%;
+        width: 100%;
+        margin-top: 15px;
+    }
 }

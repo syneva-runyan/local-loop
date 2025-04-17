@@ -5,7 +5,7 @@ import Done from './Done';
 import TourPreview from './TourPreview';
 
 
-function Tour({tour }) {
+function Tour({tour, location }) {
     const [currentStop, setCurrentStop] = useState(null);
     const [isTourDone, setIsTourDone] = useState(false);
 
@@ -35,7 +35,16 @@ function Tour({tour }) {
     return (
         <div className='tour'>
             { currentStop !== null ? 
-                <TourStop stop={tour.stops[currentStop]} onNext={goToNextStop} stopNumber={currentStop + 1} totalStops={tour.stops.length} isLastStop={currentStop === tour.stops.length - 1} onPrev={goToPreviousStop} previousStopName={tour.stops[currentStop -1]?.stopAddress || null} /> 
+                <TourStop 
+                    stop={tour.stops[currentStop]}
+                    onNext={goToNextStop} 
+                    stopNumber={currentStop + 1} 
+                    totalStops={tour.stops.length} 
+                    isLastStop={currentStop === tour.stops.length - 1} 
+                    onPrev={goToPreviousStop} 
+                    previousStopName={tour.stops[currentStop -1]?.stopAddress || null} 
+                    location={location}
+                /> 
                 : <TourPreview tour={tour} startTour={setCurrentStop} /> }
          </div>
     );

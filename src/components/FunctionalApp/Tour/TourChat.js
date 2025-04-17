@@ -4,7 +4,7 @@ import askQuestion from '../../../apiRequests/askQuestion';
 import "./TourChat.css";
 import FadeIn from "../utilComponents/FadeIn";
 
-function TourChat({ stopName }) {
+function TourChat({ stopName, location }) {
   const [chatInput, setChatInput] = useState("");
   const [qAndA, setQAndA] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +25,7 @@ function TourChat({ stopName }) {
     try {
       setIsLoading(true);
       setIsError(false);
-      const answer = await askQuestion(chatInput, stopName);
+      const answer = await askQuestion(chatInput, stopName, location);
       setIsLoading(false);
       const citationsArray = Array.isArray(answer.citations) ? answer.citations : [answer.citations];
       setQAndA((prevQAndA) => [
@@ -53,10 +53,10 @@ function TourChat({ stopName }) {
           aria-label="Submit message"
           disabled={isLoading || chatInput.length === 0}
         >
-          ↑
+          Ask
         </button>
       </form>
-      {isLoading && <p className="tourChatLoading">Surfacing with an answer shortly… 🐳.</p>}
+      {isLoading && <p className="tourChatLoading">Surfacing with an answer shortly 🐳</p>}
       {isError && <p className="error">Uh oh! Something went wrong... try again</p>}
         <FadeIn>
         { reversedQnA.map((qAndA, index) => (
