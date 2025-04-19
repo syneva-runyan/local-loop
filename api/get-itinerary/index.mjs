@@ -131,7 +131,7 @@ async function getTourItinerary(parameters) {
                     walkingDistanceCoveredInTour:
                     stops: [{
                         stopName:
-                        durationToSpendAt:
+                        durationToSpendAt: x minutes
                         detailsAboutStop:
                         shortDescription:
                         stopAddress:
