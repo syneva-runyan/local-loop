@@ -3,6 +3,7 @@ function getCitationDomain(citation) {
         const url = new URL(citation);
         return {
             citation: url.hostname.replace('www.', ''),
+            citationUrl: url,
             isUrl: true
         }
     } catch(e) {
@@ -16,7 +17,7 @@ function Citation({ citation, isLast }) {
         return (
             <>
             <a 
-                href={citationInfo.citation} 
+                href={citationInfo.citationUrl} 
                 target="_blank" rel="noopener noreferrer" 
                 key={citationInfo.citation}>
                     {citationInfo.citation}

@@ -35,6 +35,7 @@ app.get('/ask-question', async (req, res) => {
   const resp = await askQuestion({
       queryStringParameters: req.query
   });
+  console.log("RESPONSE", resp) 
   res.json(JSON.parse(resp.body));
 })
 

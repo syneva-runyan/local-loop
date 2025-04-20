@@ -42,7 +42,7 @@ function Tour({tour, location }) {
                     totalStops={tour.stops.length} 
                     isLastStop={currentStop === tour.stops.length - 1} 
                     onPrev={goToPreviousStop} 
-                    previousStopName={tour.stops[currentStop -1]?.stopAddress || null} 
+                    previousStopName={tour.stops[currentStop -1]?.stopName || null} 
                     location={location}
                 /> 
                 : <TourPreview tour={tour} startTour={setCurrentStop} /> }

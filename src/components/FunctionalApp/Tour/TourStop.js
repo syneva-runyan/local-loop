@@ -3,6 +3,10 @@ import TourChat from "./TourChat";
 import "./TourStop.css";
 import Citation from "../utilComponents/Citation";
 
+function cleanName(name) {
+    return name.replace(/[^A-Za-z0-9\-._~]/g, '');
+}
+
 function getCurrentLocationPromise() {
     return new Promise((resolve, reject) => {
         if (navigator.geolocation) {
@@ -18,7 +22,7 @@ function getCurrentLocationPromise() {
 }
 
 function getFallbackLocation(previousStop) {
-    return encodeURIComponent(previousStop || "Downtown Juneau, Alaska");
+    return encodeURIComponent(cleanName(previousStop) || "Downtown Juneau, Alaska");
 
 }
 async function getLocation(previousStop) {
@@ -77,7 +81,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     src={
-                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(stop.stopAddress)}&mode=walking`
+                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(cleanName(stop.stopName))}&mode=walking`
                     }
                     allowFullScreen>
                 </iframe>

@@ -1,13 +1,21 @@
 import supportedLocations from './data/supportedLocations.mjs';
 const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
 
+function cleanClaudeResponse(text) {
+  return text
+    .replace(/^```json\n/, '')   // Remove leading ```json\n
+    .replace(/^```/, '')         // Just in case it's only ``` at the start
+    .replace(/```$/, '')         // Remove trailing ```
+    .trim();                     // Trim extra whitespace
+}
+
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
     return false;
   }
 
   if (isNaN(parameters.hours) || isNaN(parameters.minutes)) {
-    if (!(parameters.duration.hours > 0 && parameters.duration.hours < 12)) {
+    if (!(parameters.duration.hours > 0 && parameters.duration.hours < 7)) {
       return false;
     }
     if (!(parameters.minutes > 0 && parameters.minutes < 60)) {
@@ -109,19 +117,20 @@ async function getTourItinerary(parameters) {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'claude-3-5-haiku-20241022',
-      max_tokens: 2024,
+      model: 'claude-3-7-sonnet-20250219',
+      max_tokens: 3024,
       messages: [
         {
           role: 'user',
           content: `
                 I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. 
-                Tour should be walkable and fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
+                Tour should be walk between each stop within 20 minutes and the itinerary should fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
                 Don't schedule more than 20 minutes at any specific botique.
-                I'm particularly interested in ${parameters.vibes}. Do not choose stops that take more than 20 minutes to walk to from previous stop.
+                I'm particularly interested in ${parameters.vibes} and locally owned businesses. 
+                Stops chosen should be reviewed highly.
                 Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
                 DO NOT MAKE THINGS UP and include citation urls.
-                I'm traveling on foot. Minimize Walking distance between stops.
+                I'm traveling on foot. Do not choose stops that take more than 20 minutes to walk to from the previous stop.
 
                 Always respond in a valid JSON format:
                 {
@@ -131,10 +140,10 @@ async function getTourItinerary(parameters) {
                     walkingDistanceCoveredInTour:
                     stops: [{
                         stopName:
-                        durationToSpendAt: x minutes
+                        stopAddress:
+                        durationToSpendAt: "x minutes"
                         detailsAboutStop:
                         shortDescription:
-                        stopAddress:
                         citations:
                     }]
                 }
@@ -146,8 +155,9 @@ async function getTourItinerary(parameters) {
 
   try {
     const data = await response.json();
-    console.log(data);
-    const tourJSON = JSON.parse(data.content[0].text);
+
+    const tourJSON = JSON.parse(cleanClaudeResponse(data.content[0].text));
+    
     return tourJSON;
   } catch (e) {
     throw new Error(e.toString());
