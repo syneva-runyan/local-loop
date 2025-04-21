@@ -4,7 +4,7 @@ import "./TourStop.css";
 import Citation from "../utilComponents/Citation";
 
 function cleanName(name) {
-    return name && name.replace(/[^A-Za-z0-9\-._~]/g, '') || null;
+    return name && name.replace(/[^A-Za-z0-9\-._ ~]/g, '') || null;
 }
 
 function getCurrentLocationPromise() {
