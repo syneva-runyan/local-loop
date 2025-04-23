@@ -67,6 +67,14 @@ section:nth-child(even) {
   background-color: var(--primary-color);
 }
 
+.secondaryButton {
+  background-color: var(--secondary-color);
+}
+
+.secondaryButton:hover {
+  background-color: var(--secondary-color--light);
+}
+
 ul {
   padding-left: 0;
 }

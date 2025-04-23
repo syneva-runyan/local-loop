@@ -29,6 +29,10 @@
     margin-bottom: 10px;
 }
 
+.tourStopDescriptionHeader {
+    margin-bottom: 0;
+}
+
 .tourStopDescription {
     padding-top: 20px;
     margin-top: 0;

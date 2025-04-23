@@ -1,4 +1,4 @@
-import { faTree, faBeer, faShirt, faPaintBrush, faBook, faHamburger } from '@fortawesome/free-solid-svg-icons'
+import { faTree, faBeer, faShirt, faPaintBrush, faBookAtlas, faHamburger, faBook, faJar, faIceCream } from '@fortawesome/free-solid-svg-icons'
 
 const vibes = [
     { 
@@ -21,14 +21,29 @@ const vibes = [
         color: '#4690E6'
      },  { 
         vibeName: "history",
-        icon: faBook,
+        icon: faBookAtlas,
         color: '#ea993c'
      },
      { 
         vibeName: "food",
         icon: faHamburger,
         color: "#2E7EDC"
-     }
+     },
+     { 
+      vibeName: "books",
+      icon: faBook,
+      color: "#2E7EDC"
+   },
+   { 
+      vibeName: "pottery",
+      icon: faJar,
+      color: "green"
+   }, {
+      vibeName: "sweets",
+      icon: faIceCream,
+      color: "#ea993c"
+
+   }
 ];
 
 export default vibes;

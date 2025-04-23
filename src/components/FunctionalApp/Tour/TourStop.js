@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import TourChat from "./TourChat";
 import "./TourStop.css";
 import Citation from "../utilComponents/Citation";
+import TourCheckIn from "./TourCheckIn"
 
 function cleanName(name) {
-    return name && name.replace(/[^A-Za-z0-9\-._ ~]/g, '') || null;
+    return (name && name.replace(/[^A-Za-z0-9\-._ ~]/g, '')) || null;
 }
 
 function getCurrentLocationPromise() {
@@ -86,6 +87,8 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     allowFullScreen>
                 </iframe>
                 <p className="tourStopDetail">{stop?.stopAddress}</p>
+                <TourCheckIn stopName={stop?.stopName} />
+                <h2 className="tourStopDescriptionHeader">About</h2>
                 <p className="tourStopDescription">{stop?.detailsAboutStop}</p>
                 <p className="tourStopDetail">
                     {citationsArray.map((citation, citationIdx) => {

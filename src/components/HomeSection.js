@@ -12,7 +12,7 @@ function HomeSection() {
             <p className='heroTitle'>Help visitors
                 <br/>
             <span>Embrace Local</span></p>
-            <a  className="heroCTA button" href="http://eepurl.com/jbh9YQ" target='_blank' rel="noreferrer noopener">Keep in the Loop</a>
+            <a  className="heroCTA button" href="./app">Try a Loop</a>
         </div>
         <div>
             <img className="hero" src="./hero.png" alt="local loop tour"/>
