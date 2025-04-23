@@ -9,7 +9,7 @@ const TourCheckIn = function({ stopName }) {
 
     useEffect(() => {
      const timeout = setTimeout(() => {
-        setCheckedIn(false);
+       // setCheckedIn(false);
      }, 5000);  
      return () => {
         clearTimeout(timeout);
@@ -24,7 +24,7 @@ const TourCheckIn = function({ stopName }) {
                     <div className="tour-checkin-animation-container">
                     <div className="aurora-bg"></div>
                         <img
-                            src="/raven.png"
+                            src="/LocalLoopLogo.png"
                             alt="Flying Raven"
                             className={`raven ${checkedIn ? "landed" : ""}`}
                             />

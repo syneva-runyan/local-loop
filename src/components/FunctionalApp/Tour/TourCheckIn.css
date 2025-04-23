@@ -20,6 +20,7 @@
     font-family: var(--secondary-font);
     z-index: 2;
     color: white;
+    text-align: center;
   }
   
   .aurora-bg {
@@ -40,30 +41,32 @@
     top: 20%;
     width: 120px;
     z-index: 1;
-    animation: ravenLanding 2.5 1 forwards ease-in-out;
+    margin: auto;
+    left: 0;
+    right: 0;
+    
+    transform-origin: center center;
+    animation: iconLanding 2s 1 forwards;
 
   }  
   
   @keyframes auroraMove {
-    0% {
-      transform: translate(-10%, -10%) rotate(0deg);
+        0% {
+        transform: translate(-10%, -10%) rotate(0deg);
+        }
+        100% {
+        transform: translate(10%, 10%) rotate(20deg);
+        }
     }
-    100% {
-      transform: translate(10%, 10%) rotate(20deg);
-    }
-  }
 
-  @keyframes ravenLanding {
+
+  @keyframes iconLanding {
     0% {
-        opacity: 0;
-        left: -200px;
-        transform: translateX(0) rotate(-30deg);;
+        transform:  rotate(0deg);;
     }
     100% {
-      left: 50%;
-      transform: translateX(-50%) rotate(0deg);
-      opacity: 1;
-    }
+        transform: rotate(360deg);
+      }
   }
   
 
