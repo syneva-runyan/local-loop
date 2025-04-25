@@ -131,7 +131,7 @@ async function getTourItinerary(parameters) {
                 I'm particularly interested in ${parameters.vibes} and locally owned businesses. 
                 Stops chosen should be reviewed highly.
                 Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
-                DO NOT MAKE THINGS UP and include citation urls.
+                DO NOT MAKE THINGS UP and include citation urls - citation urls should not 404.
                 I'm traveling on foot. Do not choose stops that take more than 20 minutes to walk to from the previous stop.
 
                 Always respond in a valid JSON format:

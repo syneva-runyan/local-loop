@@ -25,7 +25,7 @@ function FunctionalApp() {
         const vibes = e.target.elements.vibes.value || "free photogenic places";
         // TODO handle error
         const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
-        if (tourItinerary.error) {
+        if (!tourItinerary || tourItinerary.error) {
             setIsError(true);
         } else {
             setTour(tourItinerary);

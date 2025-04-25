@@ -16,6 +16,11 @@
     z-index: 1;
   }
 
+  .fade-out {
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+  }
+
   .tour-checkin-thankyou-title {
     font-family: var(--secondary-font);
     z-index: 2;
