@@ -125,6 +125,9 @@ async function getTourItinerary(parameters) {
           content: `
                 I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. Use https://www.traveljuneau.com/ to select recomendations. 
                 Tour MUST be walkable between each stop within no more than a 20 minute distance and the itinerary should fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
+
+                For every stop on the tour, make sure that the stop is currently open and has good ratings.
+
                 I'm particularly interested in ${parameters.vibes} and locally owned businesses. 
                 Stops chosen should be reviewed highly.
                 Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 

@@ -9,7 +9,7 @@ const TourCheckIn = function({ stopName }) {
 
     useEffect(() => {
      const timeout = setTimeout(() => {
-       // setCheckedIn(false);
+       setCheckedIn(false);
      }, 5000);  
      return () => {
         clearTimeout(timeout);
@@ -21,8 +21,8 @@ const TourCheckIn = function({ stopName }) {
             <button className="tour-checkin-button button secondaryButton" onClick={() => { setCheckedIn(true) }}>Check-in at { stopName }</button>
             {checkedIn && (
                 <FadeIn fadeTimer={100}>
-                    <div className="tour-checkin-animation-container">
-                    <div className="aurora-bg"></div>
+                    <div className="tour-checkin-animation-container" onClick={() => setCheckedIn(false)}>
+                    <div className="aurora-bg" onClick={() => setCheckedIn(false)}></div>
                         <img
                             src="/LocalLoopLogo.png"
                             alt="Flying Raven"
