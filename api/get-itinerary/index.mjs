@@ -123,12 +123,26 @@ async function getTourItinerary(parameters) {
         {
           role: 'user',
           content: `
-                I'm visiting ${parameters.location} Create a personalized tour itinerary for me and sell me on why I should go on it. Use https://www.traveljuneau.com/ to select recomendations. 
-                Tour MUST be walkable between each stop within no more than a 20 minute walking distance, and the itinerary should fit within ${parameters.hours} hours and ${parameters.minutes} - account for the time it take to walk between stops.
-                I'm particularly interested in ${parameters.vibes} and locally owned businesses. 
-                Stops chosen should be highly reviewed.
-                Details about the stop should include a paragraph or two of interesting background about the shop, partiularly featuring history. 
-                DO NOT MAKE THINGS UP and include citation urls.
+                TASK: Generate a personalized walking tour itinerary.
+
+                INPUT PARAMETERS:
+                  location: ${parameters.location}
+                  available_time: ${parameters.hours} hours and ${parameters.minutes} minutes
+                  interest_theme: ${parameters.vibes}
+          
+                REQUIREMENTS:
+                  Source of Truth: Only use data from https://www.traveljuneau.com. Do not fabricate information.
+                  Tour Design:
+                    All stops must be within a 20-minute walking distance of each other.
+                    The entire itinerary must fit within the allotted time, including walking time.
+                
+                Content Guidelines:
+                  Focus on locally owned businesses.
+                  Prioritize highly reviewed locations.
+                  For each stop, include 1–2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
+                  Provide citation URLs for all factual claims or recommendations.
+                
+                Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
 
                 Always respond in a valid JSON format:
                 {
