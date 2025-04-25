@@ -6,8 +6,12 @@
 .footer {
     padding: 20px;
 }
+.footerIcon {
+    color: var(--secondary-color);
+}
 
 .footerIcon:hover {
     transition: 0.25s all;
-    background-color: var(--off-white);
+    color: var(--off-white);
+    background-color: var(--secondary-color--light);
 }
