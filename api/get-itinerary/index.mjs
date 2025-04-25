@@ -60,8 +60,6 @@ export const handler = async (event) => {
       ...itineraryResponse,
       photo: mainTourPhoto,
     }
-    console.log("Itinerary", itineraryResponse)
-    console.log("Tour Photo", mainTourPhoto)
     return returnSuccess(responseBody);
   } catch(e) {
     console.log(`Received error - Error: ${e}`);
@@ -123,27 +121,23 @@ async function getTourItinerary(parameters) {
         {
           role: 'user',
           content: `
-                TASK: Generate a personalized walking tour itinerary.
+          TASK: Generate a personalized walking tour itinerary.
+          TOUR PARAMETERS:
+            location: ${parameters.location}
+            duration: ${parameters.hours} hours and ${parameters.minutes} minutes
+            theme: ${parameters.vibes}
+          REQUIREMENTS:
+            Source of Truth: Only use locations currently listed on https://www.traveljuneau.com. Do not fabricate information.
+            Tour Design:
+              All stops must be within a 20-minute walking distance of each other.
+              The entire itinerary must fit within the allotted time, including walking time.
+          Content Guidelines:
+            Focus on locally owned businesses.
+            Prioritize highly reviewed locations.
+            For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
+            Provide citation URLs for all factual claims or recommendations.
 
-                INPUT PARAMETERS:
-                  location: ${parameters.location}
-                  available_time: ${parameters.hours} hours and ${parameters.minutes} minutes
-                  interest_theme: ${parameters.vibes}
-          
-                REQUIREMENTS:
-                  Source of Truth: Only use data from https://www.traveljuneau.com. Do not fabricate information.
-                  Tour Design:
-                    All stops must be within a 20-minute walking distance of each other.
-                    The entire itinerary must fit within the allotted time, including walking time.
-                
-                Content Guidelines:
-                  Focus on locally owned businesses.
-                  Prioritize highly reviewed locations.
-                  For each stop, include 1–2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
-                  Provide citation URLs for all factual claims or recommendations.
-                
-                Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-
+          Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
                 Always respond in a valid JSON format:
                 {
                     tourName:
@@ -172,6 +166,7 @@ async function getTourItinerary(parameters) {
     
     return tourJSON;
   } catch (e) {
+    console.log(response.json());
     throw new Error(e.toString());
   }
 }

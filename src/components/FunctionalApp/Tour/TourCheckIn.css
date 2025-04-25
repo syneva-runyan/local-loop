@@ -49,10 +49,11 @@
     margin: auto;
     left: 0;
     right: 0;
-    
     transform-origin: center center;
     animation: iconLanding 2s 1 forwards;
-
+    background: #f8f1e4f7;
+    border-radius: 100%;
+    padding: 10px;
   }  
   
   @keyframes auroraMove {

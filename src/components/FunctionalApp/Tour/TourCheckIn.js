@@ -15,7 +15,7 @@ const TourCheckIn = function({ stopName }) {
 
     useEffect(() => {
      const timeout1 = setTimeout(() => {
-        setCheckedInFadeOut(true);
+       setCheckedInFadeOut(true);
      }, 4750); 
      const timeout2 = setTimeout(() => {
         setCheckedIn(false);

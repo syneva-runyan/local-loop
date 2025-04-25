@@ -9,7 +9,7 @@ function HomeSection() {
     <section id="home" className='home'>
         <div className="mainTextDiv">
             <Header />
-            <p className='heroTitle'>Help visitors
+            <p className='heroTitle'>Helping travelers
                 <br/>
             <span>Embrace Local</span></p>
             <a  className="heroCTA button" href="./app">Try a Loop</a>
