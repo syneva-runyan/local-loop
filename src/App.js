@@ -5,7 +5,6 @@ import './App.css';
 import HomeSection from './components/HomeSection';
 import FeaturesSection from './components/FeaturesSection';
 import VisitorExample from './components/VisitorExample';
-import BusinessIncentiveSection from './components/BusinessIncentive';
 import KeepInTheLoop from './components/KeepInTheLoop';
 import Footer from './components/Footer'
 import WhatIsLocalLoop from './components/WhatIsLocalLoop';
@@ -20,7 +19,6 @@ function HomePage() {
       <WhatIsLocalLoop />
       <FeaturesSection />
       <VisitorExample />
-      <BusinessIncentiveSection />
       <CustomerDiscovery />
       <KeepInTheLoop />
     </>

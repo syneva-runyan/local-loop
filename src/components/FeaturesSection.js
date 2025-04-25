@@ -16,7 +16,7 @@ function FeaturesSection() {
         </li>
         <li>
             <FontAwesomeIcon icon={faMapLocation} />
-            <strong>Local Loop</strong> crafts a personalized, self-guided tour for the visitor, featuring the business coalition members.
+            <strong>Local Loop</strong> crafts a personalized, self-guided tour, featuring local businesses.
         </li>
       </ul>
     </section>
