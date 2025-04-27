@@ -1,7 +1,9 @@
+import { GoogleGenAI } from "@google/genai";
 import supportedLocations from './data/supportedLocations.mjs';
+
 const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places', 'pottery', 'books', 'sweets'];
 
-function cleanClaudeResponse(text) {
+function cleanResponse(text) {
   return text
     .replace(/^```json\n/, '')   // Remove leading ```json\n
     .replace(/^```/, '')         // Just in case it's only ``` at the start
@@ -48,7 +50,7 @@ export const handler = async (event) => {
   
   const location = decodeURIComponent(event.queryStringParameters.location);
   console.log(`Received request for ${location}, duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
-
+  
   // Call LLM & google maps to create tour
   try {
     const [itineraryResponse, mainTourPhoto] = await Promise.all([
@@ -88,12 +90,13 @@ function returnError(error) {
 
 async function getMainTourPhoto(location) {
   const googlePlaceId = supportedLocations[location]?.googlePlaceId;
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${googlePlaceId}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${googlePlaceId}&key=${process.env.GOOGLE_PLACES_API_KEY}&maxheight=400`;
   const response = await fetch(url);
   try {
     const json = await response.json();
     // arbitrarily select first photo for now.
-    const photo = json.result.photos[0];
+    const randomSelection = Math.round((json.result.photos.length - 1) * Math.random());
+    const photo = json.result.photos[randomSelection];
     return photo;
   } catch (e) {
     throw new Error("Could not get tour photo", e.toString());
@@ -107,20 +110,10 @@ async function getMainTourPhoto(location) {
  * Prints the rows of the wedding RSVP spreadsheet
  */
 async function getTourItinerary(parameters) {
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': process.env.CLAUDE_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'claude-3-5-haiku-latest',
-      max_tokens: 3024,
-      messages: [
-        {
-          role: 'user',
-          content: `
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const response = await ai.models.generateContent({
+    model: "gemini-2.0-flash",
+    contents: `
           TASK: Generate a personalized walking tour itinerary.
           TOUR PARAMETERS:
             location: ${parameters.location}
@@ -153,20 +146,13 @@ async function getTourItinerary(parameters) {
                         citations:
                     }]
                 }
-                `
-        }
-      ]
-    })
-  });
+        `});
 
   try {
-    const data = await response.json();
-
-    const tourJSON = JSON.parse(cleanClaudeResponse(data.content[0].text));
-    
+    const tourJSON = JSON.parse(cleanResponse(response.text));
     return tourJSON;
   } catch (e) {
-    console.log(response.json());
+    console.log(response.text);
     throw new Error(e.toString());
   }
 }
