@@ -3,7 +3,7 @@ import AWS  from 'aws-sdk';
 
 import supportedLocations from './data/supportedLocations.mjs';
 
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
+const supportedVibes = ['parks', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
 
 function cleanResponse(text) {
   return text
@@ -56,7 +56,7 @@ export const handler = async (event) => {
   // Call LLM & google maps to create tour
   try {
     const [itineraryResponse, mainTourPhoto] = await Promise.all([
-      getTourItinerary(event.queryStringParameters),
+      getTourItinerary(event.queryStringParameters, supportedLocations[location]?.exclude),
       getMainTourPhoto(location)
     ]);
 
@@ -113,7 +113,7 @@ async function getMainTourPhoto(location) {
 /**
  * Prints the rows of the wedding RSVP spreadsheet
  */
-async function getTourItinerary(parameters) {
+async function getTourItinerary(parameters, exclude) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
@@ -124,16 +124,23 @@ async function getTourItinerary(parameters) {
             duration: ${parameters.hours} hours and ${parameters.minutes} minutes
             theme: ${parameters.vibes}
           REQUIREMENTS:
-            Source of Truth: Use locations currently listed on https://www.traveljuneau.com. DO NOT MAKE UP INFORMATION.
-            Douglas Island is not included in this tour.
+            Source of Truth: DO NOT MAKE UP INFORMATION. Get addresses and walking distances from Google maps.
             Tour Design:
-              All stops must be within a 20-minute walking distance of each other.
+              Start the tour in  ${parameters.location}.
+              Only include stops that are within a 20-minute walk (about 1 mile / 1.6 kilometers) of each other
+              Reject locations that would require driving, biking, or public transport
+              Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
               The entire itinerary must fit within the allotted time, including walking time.
           Content Guidelines:
+            Businesses MUST be currently open.
             Focus on locally owned businesses.
             Prioritize highly reviewed locations.
+            Prefer free stops over paid ones.
             For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
             Provide citation URLs for all factual claims or recommendations.
+            DO NOT MAKE UP INFORMATION.
+
+            Do not include ${exclude}
 
           Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
                 Always respond in a valid JSON format:

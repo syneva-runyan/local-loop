@@ -2,7 +2,7 @@ import { faTree, faBeer, faShirt, faPaintBrush, faBookAtlas, faHamburger } from 
 
 const vibes = [
     { 
-        vibeName: "nature",
+        vibeName: "parks",
         icon: faTree,
         color: 'green'
      },

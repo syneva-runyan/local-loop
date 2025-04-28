@@ -39,7 +39,7 @@ const TourCheckIn = function({ stopName }) {
                             alt="Flying Raven"
                             className={`raven ${checkedIn ? "landed" : ""}`}
                             />
-                            <h2 className="tour-checkin-thankyou-title">Thank you for supporting local businesses!</h2>
+                            <h2 className="tour-checkin-thankyou-title">Thank you for supporting local!</h2>
                     </div>
                 </FadeIn>
             )}
