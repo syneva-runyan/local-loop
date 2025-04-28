@@ -1,5 +1,6 @@
 import './Done.css';
 import React, { useState } from "react";
+import shareFeedback from "../../../apiRequests/shareFeedback";
 
 const FeedbackButtons = ({ onFeedback }) => {
   return (
@@ -48,6 +49,8 @@ function FeedbackForm({ setFeedbackSumbited }) {
       const feedbackDetails = e.target.elements.feedbackDetails.value;
       console.log(`Feedback details: ${feedbackDetails}`);
       setFeedbackSumbited(true);
+      const sentiment = thumbSelected ? "positive" : "negative";
+      shareFeedback(sentiment, feedbackDetails);
       // Here you would typically send the feedback to your server
   };
 

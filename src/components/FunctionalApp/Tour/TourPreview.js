@@ -3,6 +3,9 @@ import TourPhoto from './TourPhoto';
 import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 
 function TourPreview({ tour, startTour }) {
+    const retry = () => {
+        window.location.href =  window.location.href.split("?")[0]; //"http://www.newurl.com";
+    }
     return (
     <>
     <div className='tourHeader'>
@@ -28,7 +31,8 @@ function TourPreview({ tour, startTour }) {
                     </ul>
                 </AccordionItem>
             </Accordion>
-            <button className='button startTour' onClick={() => startTour(0) }>Start Tour</button>
+            <button className='button startTour' onClick={() => startTour(0) }>Start Tour</button><br/>
+            <button className='button secondaryButton startTour' onClick={retry}>Craft a Different Tour</button>
         </div>
     </>);
 }

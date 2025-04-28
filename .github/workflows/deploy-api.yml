@@ -36,6 +36,9 @@ jobs:
       - name: Zip get-existing-tour code
         run: cd api/get-existing-tour && zip -r index.zip .
 
+      - name: Zip share-feedback-tour code
+        run: cd api/share-feedback && zip -r index.zip .
+
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.2.0
         with:
@@ -71,3 +74,12 @@ jobs:
           aws_region: us-east-1
           function_name: get-existing-tour 
           zip_file: api/get-existing-tour/index.zip
+      
+      - name: Upload share-feedback to AWS Lambda
+        uses: appleboy/lambda-action@v0.2.0
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: share-feedback 
+          zip_file: api/share-feedback/index.zip
