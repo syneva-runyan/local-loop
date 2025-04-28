@@ -7,7 +7,7 @@ const shareFeedback = async ( sentiment, feedback) => {
     urlParams.append("sentiment", encodeURIComponent(sentiment));
     urlParams.append("feedback", encodeURIComponent(feedback));
 
-    var url = new URL(constants.ASK_QUESTION_ENDPOINT);
+    var url = new URL(constants.SHARE_FEEDBACK_ENDPOINT);
     url.search = urlParams;
 
     try {
