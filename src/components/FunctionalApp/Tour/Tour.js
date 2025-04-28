@@ -21,6 +21,8 @@ function Tour({tour, location }) {
         if (currentStop > 0) {
             setCurrentStop(currentStop - 1);
         }
+        // go back to tour preview
+        setCurrentStop(null);
     }
 
     useEffect(() =>{

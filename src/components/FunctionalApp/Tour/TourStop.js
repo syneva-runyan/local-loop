@@ -63,7 +63,10 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
             <div className="tourStop">
                 <div className="tourStopBreadCrumbs">
                     <div>
-                        {(stopNumber !== 1) &&<button className="tourStopBreadcrumb" onClick={onPrev}>Previous Stop</button>}
+                        {(stopNumber !== 1) ?
+                            <button className="tourStopBreadcrumb" onClick={onPrev}>Previous Stop</button> :
+                            <button className="tourStopBreadcrumb" onClick={onPrev}>Back to Preview</button>
+                        }
                     </div>
                     <p className="tourStopDetail"><strong>Stop {stopNumber}/{totalStops}</strong></p>
                     <div className="tourStopBreadCrumbsNext">

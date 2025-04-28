@@ -11,7 +11,8 @@
 .tourStopBreadcrumb {
     border: 0;
     background-color: transparent;
-    color: var(--secondary-color)
+    color: var(--secondary-color);
+    cursor: pointer;
 }
 
 .tourStopBreadCrumbsNext {
