@@ -11,6 +11,8 @@ dotenv.config();
 
 import { handler as getItinerary } from "./get-itinerary/index.mjs";
 import { handler as askQuestion } from "./ask-question/index.mjs";
+import { handler as getTour } from "./get-existing-tour/index.mjs";
+import { handler as shareFeedback } from "./share-feedback/index.mjs";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,6 +35,14 @@ app.get('/get-itinerary', async (req, res) => {
 
 app.get('/ask-question', async (req, res) => {
   const resp = await askQuestion({
+      queryStringParameters: req.query
+  });
+  console.log("RESPONSE", resp) 
+  res.json(JSON.parse(resp.body));
+})
+
+app.get('/get-existing-tour', async (req, res) => {
+  const resp = await getTour({
       queryStringParameters: req.query
   });
   console.log("RESPONSE", resp) 

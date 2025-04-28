@@ -1,7 +1,9 @@
 import { GoogleGenAI } from "@google/genai";
+import AWS  from 'aws-sdk';
+
 import supportedLocations from './data/supportedLocations.mjs';
 
-const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places', 'pottery', 'books', 'sweets'];
+const supportedVibes = ['nature', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
 
 function cleanResponse(text) {
   return text
@@ -17,7 +19,7 @@ function isValidRequest(parameters) {
   }
 
   if (isNaN(parameters.hours) || isNaN(parameters.minutes)) {
-    if (!(parameters.duration.hours > 0 && parameters.duration.hours < 7)) {
+    if (!(parameters.duration.hours > 0 && parameters.duration.hours < 13)) {
       return false;
     }
     if (!(parameters.minutes > 0 && parameters.minutes < 60)) {
@@ -58,9 +60,11 @@ export const handler = async (event) => {
       getMainTourPhoto(location)
     ]);
 
+    const tourId = await saveGeneratedTour(location, itineraryResponse);
     const responseBody = {
       ...itineraryResponse,
       photo: mainTourPhoto,
+      tourId,
     }
     return returnSuccess(responseBody);
   } catch(e) {
@@ -95,8 +99,8 @@ async function getMainTourPhoto(location) {
   try {
     const json = await response.json();
     // arbitrarily select first photo for now.
-    const randomSelection = Math.round((json.result.photos.length - 1) * Math.random());
-    const photo = json.result.photos[randomSelection];
+    //const randomSelection = Math.round((json.result.photos.length - 1) * Math.random());
+    const photo = json.result.photos[0];
     return photo;
   } catch (e) {
     throw new Error("Could not get tour photo", e.toString());
@@ -120,7 +124,7 @@ async function getTourItinerary(parameters) {
             duration: ${parameters.hours} hours and ${parameters.minutes} minutes
             theme: ${parameters.vibes}
           REQUIREMENTS:
-            Source of Truth: Only use locations currently listed on https://www.traveljuneau.com. Do not fabricate information.
+            Source of Truth: Use locations currently listed on https://www.traveljuneau.com. DO NOT MAKE UP INFORMATION.
             Tour Design:
               All stops must be within a 20-minute walking distance of each other.
               The entire itinerary must fit within the allotted time, including walking time.
@@ -144,6 +148,7 @@ async function getTourItinerary(parameters) {
                         detailsAboutStop:
                         shortDescription:
                         citations:
+                        walkingDistanceToNextStop:
                     }]
                 }
         `});
@@ -155,4 +160,29 @@ async function getTourItinerary(parameters) {
     console.log(response.text);
     throw new Error(e.toString());
   }
+}
+
+async function saveGeneratedTour(location, tour) {
+  const uniqueId = Math.random().toString(36);
+  // Configure your AWS credentials and region
+  AWS.config.update({
+    region: 'us-east-1', // change to your region
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  });
+
+  // Create S3 instance
+  const s3 = new AWS.S3();
+
+  // Upload to S3
+  const params = {
+    Bucket: 'local-loop',
+    Key: `tours/${encodeURIComponent(location)}/${uniqueId}.json`, // Specify the path and filename
+    Body: JSON.stringify(tour),
+    ContentType: 'application/json'
+  };
+
+  const response = await s3.upload(params).promise();
+  console.log(response);
+  return uniqueId;
 }

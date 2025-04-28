@@ -7,6 +7,7 @@ const constants = {
     GET_ITINERARY_ENDPOINT: `${useMe}/get-itinerary`,
     ASK_QUESTION_ENDPOINT: `${useMe}/ask-question`,
     GET_PHOTO_ENDPOINT: `${useMe}/get-place-photo`,
+    GET_TOUR_ENDPOINT: `${useMe}/get-existing-tour`,
 }
 
 export default constants;

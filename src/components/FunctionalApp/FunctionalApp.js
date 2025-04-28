@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WhatDoYouLike from './WhatDoYouLike';
 import WhereAreYou from './WhereAreYou';
 import HowMuchTimeDoYouHave from './HowMuchTImeDoYouHave';
 import getItineraryRequest from '../../apiRequests/getItineraryRequest';
+import getExistingTour from '../../apiRequests/getTour';
 import Tour from './Tour/Tour';
 
 import './FunctionalApp.css';
@@ -15,6 +16,25 @@ function FunctionalApp() {
     const [tour, setTour] = useState(null);
     const [isError, setIsError] = useState(false);
     const [tourLocation, setTourLocation] = useState("Downtown Juneau, Alaska");
+
+    useEffect(() => {
+        const getTour = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const location = decodeURIComponent(urlParams.get('location'));
+            const tourId = decodeURIComponent(urlParams.get('tourId'));
+
+            if (location !== "null" && tourId !== "null") {
+                setIsCreating("Getting tour details...");
+                const tour = await getExistingTour(location, tourId);
+                if (tour && !tour.error) {
+                    setTour(tour);
+                    setIsCreating(false);
+                }
+                setIsCreating(false);
+            }
+        }
+        getTour();
+    }, []);
 
     const onSubmit= async (e) => {
         setIsCreating(true);
@@ -29,6 +49,10 @@ function FunctionalApp() {
             setIsError(true);
         } else {
             setTour(tourItinerary);
+            const url = new URL(window.location);
+            url.searchParams.set('location', encodeURIComponent(location));
+            url.searchParams.set('tourId', encodeURIComponent(tourItinerary.tourId));
+            window.history.pushState({}, '', url);
         }
         setIsCreating(false);
         setTourLocation(location)
@@ -38,7 +62,7 @@ function FunctionalApp() {
     if (isCreating) {
         return (
             <FadeIn>
-                <ItineraryLoading location={"Downtown Juneau, Alaska"} />
+                <ItineraryLoading location={"Downtown Juneau, Alaska"} msg={isCreating} />
             </FadeIn>
         )
     }

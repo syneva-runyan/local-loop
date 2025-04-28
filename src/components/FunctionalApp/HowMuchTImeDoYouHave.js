@@ -7,7 +7,7 @@ function HowMuchTimeDoYouHave() {
 
     const validateAndSetHours = (e) => {
         const updatedValue = e.target.value;
-        if (updatedValue > 6 || updatedValue < 0) {
+        if (updatedValue > 12 || updatedValue < 0) {
             return;
         }
 

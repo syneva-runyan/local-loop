@@ -1,9 +1,8 @@
 {
-    "name": "local-loop-get-itinerary-fn",
+    "name": "local-loop-get-existing-tour-fn",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@google/genai": "^0.10.0",
         "aws-sdk": "^2.1692.0"
     }
 }

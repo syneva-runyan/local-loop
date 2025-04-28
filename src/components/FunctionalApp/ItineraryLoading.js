@@ -3,7 +3,7 @@ import './ItineraryLoading.css';
 import funFacts from '../../data/funFacts';
 import FadeIn from './utilComponents/FadeIn';
 
-const MapLoading = ({ location }) => {
+const MapLoading = ({ location, msg }) => {
   const [funFactIdx, setFunFactIdx] = useState(0);
 
   const facts = funFacts[location];
@@ -26,7 +26,7 @@ const MapLoading = ({ location }) => {
             <div className={`map-tile delay-${i}`} key={i}></div>
           ))}
         </div>
-        <p className="loading-text">Crafting your tour</p>
+        <p className="loading-text">{msg ? msg : "Crafting your tour" }</p>
       </div>
       <div className='itineraryLoadingFunFact'>
         {

@@ -15,8 +15,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
 
-      - name: Install dependencies
+      - name: Install get itinerary dependencies
         working-directory: api/get-itinerary
+        run: npm install
+
+      - name: Install get existing tour dependencies
+        working-directory: api/get-existing-tour
         run: npm install
       
 
@@ -28,6 +32,9 @@ jobs:
       
       - name: Zip ask-question code
         run: cd api/ask-question && zip -r index.zip .
+
+      - name: Zip get-existing-tour code
+        run: cd api/get-existing-tour && zip -r index.zip .
 
       - name: Upload get-itinerary to AWS Lambda
         uses: appleboy/lambda-action@v0.2.0
@@ -55,3 +62,12 @@ jobs:
           aws_region: us-east-1
           function_name: ask-question 
           zip_file: api/ask-question/index.zip
+
+      - name: Upload get-existing-tour to AWS Lambda
+        uses: appleboy/lambda-action@v0.2.0
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: us-east-1
+          function_name: get-existing-tour 
+          zip_file: api/get-existing-tour/index.zip

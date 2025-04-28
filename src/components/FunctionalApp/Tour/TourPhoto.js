@@ -18,7 +18,7 @@ function TourPhoto({tourPhoto = {} }) {
                 alt="tour preview"
                 style={{
                     minWidth: placeholderWidth,
-                    minHeight: placeholderHeight
+                    minHeight: Math.min(placeholderHeight, 400)
                 }}
             />
             <p className='tourPhotoCitation'><em>Photo by <span dangerouslySetInnerHTML={{__html: tourPhoto.html_attributions}} /></em></p>
