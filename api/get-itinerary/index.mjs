@@ -125,6 +125,7 @@ async function getTourItinerary(parameters) {
             theme: ${parameters.vibes}
           REQUIREMENTS:
             Source of Truth: Use locations currently listed on https://www.traveljuneau.com. DO NOT MAKE UP INFORMATION.
+            Douglas Island is not included in this tour.
             Tour Design:
               All stops must be within a 20-minute walking distance of each other.
               The entire itinerary must fit within the allotted time, including walking time.
