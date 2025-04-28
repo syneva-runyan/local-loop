@@ -167,7 +167,7 @@ async function saveGeneratedTour(location, tour) {
   // Configure your AWS credentials and region
   AWS.config.update({
     region: 'us-east-1', // change to your region
-    accessKeyId: process.env.AWS_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID_LAMBDA,
     secretAccessKey: process.env.AWS_SECRET_KEY,
   });
 
