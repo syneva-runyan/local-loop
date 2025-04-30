@@ -136,6 +136,8 @@ async function getTourItinerary(parameters, exclude) {
             Focus on locally owned businesses.
             Prioritize highly reviewed locations.
             Prefer free stops over paid ones.
+            Do not spend more than 20 minutes at a shop.
+            Do not spend less than 20 minutes at a restaurant.
             For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
             Provide citation URLs for all factual claims or recommendations.
             DO NOT MAKE UP INFORMATION.

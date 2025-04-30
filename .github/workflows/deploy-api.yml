@@ -23,6 +23,10 @@ jobs:
         working-directory: api/get-existing-tour
         run: npm install
       
+      - name: Install share feedback dependencies
+        working-directory: api/share-feedback
+        run: npm install
+      
 
       - name: Zip get-itinerary code
         run: cd api/get-itinerary && zip -r index.zip .

@@ -1,0 +1,10 @@
+{
+    "name": "local-loop-share-feedback-fn",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@aws-sdk/client-ses": "^3.799.0",
+        "@google/genai": "^0.10.0",
+        "aws-sdk": "^2.1692.0"
+    }
+}
