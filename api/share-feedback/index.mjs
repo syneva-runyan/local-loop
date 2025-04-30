@@ -6,7 +6,7 @@ export const handler = async (event) => {
   console.log(`Received ${sentiment} feedback ${feedback}`);
   
   try {
-    return await sendEmail(body);
+    return await sendEmail(sentiment, feedback);
   } catch(e) {
     console.log(`Received error - Error: ${e}`);
     returnError(e.toString());
