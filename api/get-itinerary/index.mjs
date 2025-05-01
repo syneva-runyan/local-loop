@@ -57,10 +57,12 @@ export const handler = async (event) => {
   try {
     const [itineraryResponse, mainTourPhoto] = await Promise.all([
       getTourItinerary(event.queryStringParameters, supportedLocations[location]?.exclude),
-      getMainTourPhoto(location)
+      getMainTourPhoto(location),
     ]);
 
-    const tourId = await saveGeneratedTour(location, itineraryResponse);
+    const tour = { ...itineraryResponse }
+
+    const tourId = await saveGeneratedTour(location, tour);
     const responseBody = {
       ...itineraryResponse,
       photo: mainTourPhoto,
@@ -109,10 +111,6 @@ async function getMainTourPhoto(location) {
 }
 
 
-
-/**
- * Prints the rows of the wedding RSVP spreadsheet
- */
 async function getTourItinerary(parameters, exclude) {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   const response = await ai.models.generateContent({
@@ -140,6 +138,7 @@ async function getTourItinerary(parameters, exclude) {
             Do not spend less than 20 minutes at a restaurant.
             For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
             Provide citation URLs for all factual claims or recommendations.
+            Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
             DO NOT MAKE UP INFORMATION.
 
             Do not include ${exclude}
@@ -151,6 +150,7 @@ async function getTourItinerary(parameters, exclude) {
                     shortTourDescription:
                     citations:
                     walkingDistanceCoveredInTour:
+                    welcomeNarration:
                     stops: [{
                         stopName:
                         stopAddress:

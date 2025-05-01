@@ -4,16 +4,17 @@ import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 
 function TourPreview({ tour, startTour }) {
     const retry = () => {
-        window.location.href =  window.location.href.split("?")[0]; //"http://www.newurl.com";
+        window.location.href =  window.location.href.split("?")[0];
     }
     return (
     <>
     <div className='tourHeader'>
         <h1 className='functionalAppHeader'>{tour.tourName}</h1>
-        <p className='tourAsside'><em>✨A tour made just for you</em></p>
+        <p className='tourAsside'><em>✨ A tour made just for you!</em></p>
     </div>
     <TourPhoto tourPhoto={tour.photo} />
     <div className='tourBody'>
+        <p className="tourAsside tourPreviewDurationTitle">Walking Distance: {tour.walkingDistanceCoveredInTour}</p>
         <p>{tour.shortTourDescription}</p>
             <Accordion>
                 <AccordionItem header="Preview Stops">
@@ -31,7 +32,7 @@ function TourPreview({ tour, startTour }) {
                     </ul>
                 </AccordionItem>
             </Accordion>
-            <button className='button startTour' onClick={() => startTour(0) }>Start Tour</button><br/>
+            <button className='button startTour' onClick={() => startTour(-1) }>Start Tour</button><br/>
             <button className='button secondaryButton startTour' onClick={retry}>Craft a Different Tour</button>
         </div>
     </>);

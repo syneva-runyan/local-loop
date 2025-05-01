@@ -65,7 +65,7 @@ function TourChat({ stopName, location }) {
             <p className="tourChatQuestion">{qAndA.question}</p>
             <p className="tourChatGuide tourChatAttribution">AI Tour Guide:</p>
             <p className="tourChatAnswer">{qAndA.answer}</p>
-            {qAndA.citations.map((citation, citationIdx) => {
+            {qAndA?.citations?.map((citation, citationIdx) => {
               const isLast = citationIdx === qAndA.citations.length - 1;
               return <Citation isLast={isLast} citation={citation} key={`qna-${index}-citation-${citationIdx}`} />
             })}

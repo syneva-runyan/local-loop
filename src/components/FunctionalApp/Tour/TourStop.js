@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TourChat from "./TourChat";
 import "./TourStop.css";
+import TourBreadCrumbs from "./TourBreadCrumbs";
 import Citation from "../utilComponents/Citation";
 import TourCheckIn from "./TourCheckIn"
 
@@ -45,7 +46,7 @@ async function getLocation(previousStop) {
 
 const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName, location }) => {
     const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName));
-    const citationsArray = Array.isArray(stop.citations) ? stop.citations : [stop.citations];
+    const citationsArray = Array.isArray(stop?.citations) ? stop?.citations : [stop?.citations];
 
     // get user location for map on component mount
     useEffect(() => {
@@ -61,18 +62,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
     return (
         <>
             <div className="tourStop">
-                <div className="tourStopBreadCrumbs">
-                    <div>
-                        {(stopNumber !== 1) ?
-                            <button className="tourStopBreadcrumb" onClick={onPrev}>Previous Stop</button> :
-                            <button className="tourStopBreadcrumb" onClick={onPrev}>Back to Preview</button>
-                        }
-                    </div>
-                    <p className="tourStopDetail"><strong>Stop {stopNumber}/{totalStops}</strong></p>
-                    <div className="tourStopBreadCrumbsNext">
-                        {!isLastStop && <button className="tourStopBreadcrumb" onClick={onNext}>Next Stop</button>}
-                    </div>
-                </div>
+                <TourBreadCrumbs onPrev={onPrev} onNext={onNext}  stopNumber={stopNumber} totalStops={totalStops} />
                 <h1 className="tourStopHeading">{stop?.stopName}</h1>
                 <p className="tourStopDetail"><strong>Suggested time at stop - {stop?.durationToSpendAt} </strong></p>
                 <iframe
@@ -85,7 +75,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     src={
-                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(cleanName(stop.stopName))}&mode=walking`
+                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(cleanName(stop?.stopName))}&mode=walking`
                     }
                     allowFullScreen>
                 </iframe>
@@ -96,12 +86,12 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                 <p className="tourStopDetail">
                     {citationsArray.map((citation, citationIdx) => {
                         const isLast = citationIdx === citationsArray.length - 1;
-                        return <Citation isLast={isLast} citation={citation} key={`citation-${citationIdx}-${stop.stopName}`} />
+                        return <Citation isLast={isLast} citation={citation} key={`citation-${citationIdx}-${stop?.stopName}`} />
                     })}
                 </p>
                 <button className="button nextCta" onClick={onNext}>{isLastStop ? "Finish Tour" : "Go To Next Stop"}</button>
             </div>
-            <TourChat stopName={stop.stopName} location={location} />
+            <TourChat stopName={stop?.stopName} location={location} />
         </>
     );
 }

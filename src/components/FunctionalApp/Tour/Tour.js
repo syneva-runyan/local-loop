@@ -3,6 +3,7 @@ import './Tour.css';
 import TourStop from './TourStop';
 import Done from './Done';
 import TourPreview from './TourPreview';
+import TourWelcome from './TourWelcome';
 
 
 function Tour({tour, location }) {
@@ -18,8 +19,9 @@ function Tour({tour, location }) {
     }
 
     const goToPreviousStop = () => {
-        if (currentStop > 0) {
+        if (currentStop > -1) {
             setCurrentStop(currentStop - 1);
+            return;
         }
         // go back to tour preview
         setCurrentStop(null);
@@ -33,21 +35,39 @@ function Tour({tour, location }) {
     if(isTourDone) {
         return <Done />
     }
+    
+
+    let body = <TourPreview tour={tour} startTour={setCurrentStop} />
+    
+    switch(currentStop) {
+        case -1:
+            body = (<TourWelcome 
+                welcomeNarration={tour.welcomeNarration} 
+                goToStop={setCurrentStop} 
+                totalStops={tour.stops.length}
+                />);
+            break;
+        case null:
+            body = <TourPreview tour={tour} startTour={setCurrentStop} />
+            break;
+        default:
+            body = <TourStop 
+                stop={tour.stops[currentStop]}
+                onNext={goToNextStop}
+                stopNumber={currentStop} 
+                totalStops={tour.stops.length} 
+                isLastStop={currentStop === tour.stops.length - 1} 
+                onPrev={goToPreviousStop} 
+                previousStopName={tour.stops[currentStop -1]?.stopName || null} 
+                location={location}
+            /> 
+            break;
+
+    }
 
     return (
         <div className='tour'>
-            { currentStop !== null ? 
-                <TourStop 
-                    stop={tour.stops[currentStop]}
-                    onNext={goToNextStop} 
-                    stopNumber={currentStop + 1} 
-                    totalStops={tour.stops.length} 
-                    isLastStop={currentStop === tour.stops.length - 1} 
-                    onPrev={goToPreviousStop} 
-                    previousStopName={tour.stops[currentStop -1]?.stopName || null} 
-                    location={location}
-                /> 
-                : <TourPreview tour={tour} startTour={setCurrentStop} /> }
+            {body}
          </div>
     );
 }

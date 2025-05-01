@@ -1,5 +1,3 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
-
 import constants from "./constants";
 
 const shareFeedback = async ( sentiment, feedback) => {
