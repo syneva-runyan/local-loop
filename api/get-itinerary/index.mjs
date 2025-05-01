@@ -138,6 +138,7 @@ async function getTourItinerary(parameters, exclude) {
             Do not spend less than 20 minutes at a restaurant.
             For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
             Provide citation URLs for all factual claims or recommendations.
+            Include one to two sentences in a short tour description that encourages someone to take the tour.
             Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
             DO NOT MAKE UP INFORMATION.
 
