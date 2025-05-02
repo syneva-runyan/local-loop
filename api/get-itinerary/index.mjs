@@ -56,7 +56,7 @@ export const handler = async (event) => {
   // Call LLM & google maps to create tour
   try {
     const [itineraryResponse, mainTourPhoto] = await Promise.all([
-      getTourItinerary(event.queryStringParameters, supportedLocations[location]?.exclude),
+      getTourItinerary(event.queryStringParameters, supportedLocations[location]),
       getMainTourPhoto(location),
     ]);
 
@@ -110,59 +110,116 @@ async function getMainTourPhoto(location) {
 
 }
 
+function getPrompt(parameters, exclude) {
+  return `
+  TASK: Generate a personalized walking tour itinerary.
+  TOUR PARAMETERS:
+    location: ${parameters.location}
+    duration: ${parameters.hours} hours and ${parameters.minutes} minutes
+    theme: ${parameters.vibes}
+  REQUIREMENTS:
+    Source of Truth: DO NOT MAKE UP INFORMATION. Get addresses and walking distances from Google maps.
+    Tour Design:
+      Start the tour in  ${parameters.location}.
+      Only include stops that are within a 20-minute walk (about 1 mile / 1.6 kilometers) of each other
+      Reject locations that would require driving, biking, or public transport
+      Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
+      The entire itinerary must fit within the allotted time, including walking time.
+  Content Guidelines:
+    Businesses MUST be currently open.
+    Focus on locally owned businesses.
+    Prioritize highly reviewed locations.
+    Prefer free stops over paid ones.
+    Do not spend more than 20 minutes at a shop.
+    Do not spend less than 20 minutes at a restaurant.
+    For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
+    Provide citation URLs for all factual claims or recommendations.
+    Include one to two sentences in a short tour description that encourages someone to take the tour.
+    Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
+    DO NOT MAKE UP INFORMATION.
 
-async function getTourItinerary(parameters, exclude) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    Do not include ${exclude}`
+}
+
+function getSystemInstructions() {
+  return `
+      Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
+      You have access to map data and can answer questions about distances, directions, and points of interest.
+      Always respond in a valid JSON format:
+      {
+          tourName:
+          shortTourDescription:
+          citations:
+          walkingDistanceCoveredInTour:
+          welcomeNarration:
+          stops: [{
+              stopName:
+              stopAddress:
+              durationToSpendAt: "x minutes"
+              detailsAboutStop:
+              shortDescription:
+              citations:
+              walkingDistanceToNextStop:
+          }]
+      }
+  `
+}
+
+
+async function getTourItinerary(parameters, locationDetails) {
+  const ai = new GoogleGenAI({ 
+    vertexai: true,
+    project: 'localloop-456415',
+    location: 'us-west1'
+  });
+
+  // Set up generation config
+  const generationConfig = {
+    maxOutputTokens: 8192,
+    temperature: 1,
+    topP: 0.95,
+    responseModalities: ["TEXT"],
+    safetySettings: [
+      {
+        category: 'HARM_CATEGORY_HATE_SPEECH',
+        threshold: 'OFF',
+      },
+      {
+        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+        threshold: 'OFF',
+      },
+      {
+        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+        threshold: 'OFF',
+      },
+      {
+        category: 'HARM_CATEGORY_HARASSMENT',
+        threshold: 'OFF',
+      }
+    ],
+    tools: [{
+      googleSearch: {},
+      // googleMaps: {
+      //   authConfig: {
+      //     apiKeyConfig: {
+      //       apiKeyString: process.env.GOOGLE_MAPS_API_KEY,
+      //     }
+      //   },
+    }],
+    // toolConfig: {
+    //   "retrieval": {
+    //     "latLng": {
+    //       "latitude": locationDetails.latitude,
+    //       "longitude": locationDetails.longitude
+    //     }
+    //   }
+    //},
+  };
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: `
-          TASK: Generate a personalized walking tour itinerary.
-          TOUR PARAMETERS:
-            location: ${parameters.location}
-            duration: ${parameters.hours} hours and ${parameters.minutes} minutes
-            theme: ${parameters.vibes}
-          REQUIREMENTS:
-            Source of Truth: DO NOT MAKE UP INFORMATION. Get addresses and walking distances from Google maps.
-            Tour Design:
-              Start the tour in  ${parameters.location}.
-              Only include stops that are within a 20-minute walk (about 1 mile / 1.6 kilometers) of each other
-              Reject locations that would require driving, biking, or public transport
-              Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
-              The entire itinerary must fit within the allotted time, including walking time.
-          Content Guidelines:
-            Businesses MUST be currently open.
-            Focus on locally owned businesses.
-            Prioritize highly reviewed locations.
-            Prefer free stops over paid ones.
-            Do not spend more than 20 minutes at a shop.
-            Do not spend less than 20 minutes at a restaurant.
-            For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
-            Provide citation URLs for all factual claims or recommendations.
-            Include one to two sentences in a short tour description that encourages someone to take the tour.
-            Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
-            DO NOT MAKE UP INFORMATION.
-
-            Do not include ${exclude}
-
-          Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-                Always respond in a valid JSON format:
-                {
-                    tourName:
-                    shortTourDescription:
-                    citations:
-                    walkingDistanceCoveredInTour:
-                    welcomeNarration:
-                    stops: [{
-                        stopName:
-                        stopAddress:
-                        durationToSpendAt: "x minutes"
-                        detailsAboutStop:
-                        shortDescription:
-                        citations:
-                        walkingDistanceToNextStop:
-                    }]
-                }
-        `});
+    config: generationConfig,
+    contents: `${getPrompt(parameters, locationDetails.exclude)} ${getSystemInstructions()}`,
+  });
 
   try {
     const tourJSON = JSON.parse(cleanResponse(response.text));
