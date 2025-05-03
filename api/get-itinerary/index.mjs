@@ -113,7 +113,6 @@ async function getMainTourPhoto(location) {
 
 }
 
-<<<<<<< HEAD
 function getPrompt(parameters, exclude) {
   return `
   TASK: Generate a personalized walking tour itinerary.
@@ -223,61 +222,10 @@ async function getTourItinerary(parameters, locationDetails) {
       { googleSearch: {} },
     ],
   };
-=======
-
-async function getTourItinerary(parameters, exclude) {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
->>>>>>> e83d29491946de2019d43e647e1b0ecc368cb39e
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
-    contents: `
-          TASK: Generate a personalized walking tour itinerary.
-          TOUR PARAMETERS:
-            location: ${parameters.location}
-            duration: ${parameters.hours} hours and ${parameters.minutes} minutes
-            theme: ${parameters.vibes}
-          REQUIREMENTS:
-            Source of Truth: DO NOT MAKE UP INFORMATION. Get addresses and walking distances from Google maps.
-            Tour Design:
-              Start the tour in  ${parameters.location}.
-              Only include stops that are within a 20-minute walk (about 1 mile / 1.6 kilometers) of each other
-              Reject locations that would require driving, biking, or public transport
-              Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
-              The entire itinerary must fit within the allotted time, including walking time.
-          Content Guidelines:
-            Businesses MUST be currently open.
-            Focus on locally owned businesses.
-            Prioritize highly reviewed locations.
-            Prefer free stops over paid ones.
-            Do not spend more than 20 minutes at a shop.
-            Do not spend less than 20 minutes at a restaurant.
-            For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
-            Provide citation URLs for all factual claims or recommendations.
-            Include one to two sentences in a short tour description that encourages someone to take the tour.
-            Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
-            DO NOT MAKE UP INFORMATION.
-
-            Do not include ${exclude}
-
-          Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-                Always respond in a valid JSON format:
-                {
-                    tourName:
-                    shortTourDescription:
-                    citations:
-                    walkingDistanceCoveredInTour:
-                    welcomeNarration:
-                    stops: [{
-                        stopName:
-                        stopAddress:
-                        durationToSpendAt: "x minutes"
-                        detailsAboutStop:
-                        shortDescription:
-                        citations:
-                        walkingDistanceToNextStop:
-                    }]
-                }
-        `});
+    contents: `${getPrompt(parameters, locationDetails)}\n${getSystemInstructions()}`,
+  })
 
   try {
     console.log("successfully got tour")
