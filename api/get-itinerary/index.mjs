@@ -188,13 +188,22 @@ async function getTourItinerary(parameters, locationDetails) {
   });
 
 
-  await client.authorize();
+  const { token } = await client.getAccessToken();
   
   const ai = new GoogleGenAI({ 
-    authClient: client,
     vertexai: true,
     project: 'localloop-456415',
-    location: 'us-west1'
+    location: 'us-west1',
+    fetch: (url, options = {}) => {
+      return fetch(url, {
+        ...options,
+        headers: {
+          ...(options.headers || {}),
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    },
   });
 
   // Set up generation config
