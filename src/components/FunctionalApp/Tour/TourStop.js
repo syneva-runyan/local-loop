@@ -58,7 +58,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
         
         fetchUserLocation();
         
-    }, [previousStopName]);
+    }, [previousStopName, location]);
 
     return (
         <>
