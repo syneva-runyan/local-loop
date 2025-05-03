@@ -1,6 +1,8 @@
-import { JWT } from 'google-auth-library';
+import { google } from 'googleapis';
 import { GoogleGenAI } from "@google/genai";
 import AWS  from 'aws-sdk';
+
+const serviceAccountKeyFile = "./credentials.json";
 
 const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
@@ -181,29 +183,19 @@ async function getTourItinerary(parameters, locationDetails) {
   console.log(keyJson);
 
   // Create Google Auth client
-  const client = new JWT({
-    email: keyJson.client_email,
-    key: keyJson.private_key,
+  const auth = new google.auth.GoogleAuth({
+    keyFile: serviceAccountKeyFile,
     scopes: ['https://www.googleapis.com/auth/cloud-platform']
   });
 
 
-  const { token } = await client.getAccessToken();
+  const authClient = await auth.getClient();
   
   const ai = new GoogleGenAI({ 
     vertexai: true,
     project: 'localloop-456415',
     location: 'us-west1',
-    fetch: (url, options = {}) => {
-      return fetch(url, {
-        ...options,
-        headers: {
-          ...(options.headers || {}),
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-    },
+    auth: authClient
   });
 
   // Set up generation config
