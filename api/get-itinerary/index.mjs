@@ -1,6 +1,8 @@
+import { JWT } from 'google-auth-library';
 import { GoogleGenAI } from "@google/genai";
 import AWS  from 'aws-sdk';
 
+const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
 import supportedLocations from './data/supportedLocations.mjs';
 
@@ -112,7 +114,6 @@ async function getMainTourPhoto(location) {
 }
 
 function getPrompt(parameters, exclude) {
-  console.log(exclude);
   return `
   TASK: Generate a personalized walking tour itinerary.
   TOUR PARAMETERS:
@@ -130,6 +131,7 @@ function getPrompt(parameters, exclude) {
   Content Guidelines:
     Focus on locally owned businesses.
     Prefer free stops over paid ones.
+    Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
     Do not spend less than 20 minutes at a restaurant.
     For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
@@ -168,7 +170,25 @@ function getSystemInstructions() {
 }
 
 async function getTourItinerary(parameters, locationDetails) {
+  // Get secret from Secrets Manager
+  const secret = await secretsManager.getSecretValue({
+    SecretId: 'vertext-service-account-credentials'
+  }).promise();
+
+  const keyJson = JSON.parse(JSON.parse(secret.SecretString)?.["service-account.json"]);
+
+  // Create Google Auth client
+  const client = new JWT({
+    email: keyJson.client_email,
+    key: keyJson.private_key,
+    scopes: ['https://www.googleapis.com/auth/cloud-platform']
+  });
+
+
+  await client.authorize();
+  
   const ai = new GoogleGenAI({ 
+    authClient: client,
     vertexai: true,
     project: 'localloop-456415',
     location: 'us-west1'
@@ -209,6 +229,7 @@ async function getTourItinerary(parameters, locationDetails) {
   });
 
   try {
+    console.log("successfully got tour")
     const tourJSON = JSON.parse(cleanResponse(response.text));
     return {
       ...tourJSON,
