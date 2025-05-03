@@ -177,6 +177,9 @@ async function getTourItinerary(parameters, locationDetails) {
 
   const keyJson = JSON.parse(JSON.parse(secret.SecretString)?.["service-account.json"]);
 
+  console.log("Successfully got secret from secrets manager");
+  console.log(keyJson);
+
   // Create Google Auth client
   const client = new JWT({
     email: keyJson.client_email,
