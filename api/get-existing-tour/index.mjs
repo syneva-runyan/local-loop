@@ -52,7 +52,8 @@ import supportedLocations from './data/supportedLocations.mjs';
       const json = await response.json();
       // arbitrarily select first photo for now.
       //const randomSelection = Math.round((json.result.photos.length - 1) * Math.random());
-      const photo = json.result.photos[0];
+      const preferedPhotoIdx = supportedLocations[decodeURIComponent(location)]?.preferedPhotoIdx || 0;
+      const photo = json.result.photos[preferedPhotoIdx];
       return photo;
     } catch (e) {
       throw new Error("Could not get tour photo", e.toString());

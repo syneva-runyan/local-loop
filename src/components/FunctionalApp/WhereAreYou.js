@@ -3,17 +3,30 @@ import { faLocation } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './WhereAreYou.css';
+import funFacts from "../../data/funFacts";
 
-function WhereAreYou() {
-    const [ shownOnlyJuneauMessage, setShowOnlyJuneauMessage] = useState(false);
+function WhereAreYou({ setTourLocation, tourLocation}) {
+    const [ shownOnlyLimitedLocationsMessage, setShowOnlyLimitedLocationsMessage] = useState(false);
+    const changeLocation = (e) => {
+        setTourLocation(e.target.value);
+        setShowOnlyLimitedLocationsMessage(true)
+    }
     return (
         <div className='tourInputSection'>
             <label htmlFor="whereAreYou" className='whereAreYouLabel primaryQuestion'>Where are you?</label>
             <div className='whereAreYou'>
                 <FontAwesomeIcon icon={faLocation} className='whereAreYouIcon' />
-                <input value="Downtown Juneau, Alaska" className="whereAreYouInput" id="whereAreYou" name="location" onChange={() => setShowOnlyJuneauMessage(true)} />
+                <select value={tourLocation} className="whereAreYouInput" id="whereAreYou" name="location" onChange={changeLocation}>
+                    {
+                        Object.keys(funFacts).map((key, index) => {
+                            return (
+                                <option key={index} value={key}>{key}</option>
+                            )
+                        })
+                    }
+                </select>
             </div>
-            {shownOnlyJuneauMessage && <p className="onlyJuneau"><em>Right now we only support Juneau, Alaska. <a href="mailTo:syneva@localloopcommunity.com" target='_blank' rel='noreferrer noopener'>Contact us</a> to request a location!</em></p>}
+            {shownOnlyLimitedLocationsMessage && <p className="onlyJuneau"><em>Right now locations other than Juneau are experimental. <a href="mailTo:syneva@localloopcommunity.com" target='_blank' rel='noreferrer noopener'>Contact us</a> with any feedback!</em></p>}
         </div>
     );
 }

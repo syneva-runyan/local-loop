@@ -13,6 +13,10 @@ function getCitationDomain(citation) {
 
 function Citation({ citation, isLast }) {
     const citationInfo = getCitationDomain(citation)
+
+    if(!isNaN(citation)) {
+        return null;
+    }
     if (citationInfo.isUrl) {
         return (
             <>

@@ -1,4 +1,5 @@
 import TourBreadCrumbs from "./TourBreadCrumbs";
+import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
 function TourWelcome({ welcomeNarration, goToStop, totalStops }) {
     return (
@@ -8,7 +9,7 @@ function TourWelcome({ welcomeNarration, goToStop, totalStops }) {
             <h1 className='functionalAppHeader' style={{"paddingTop": "20px"}}><em>Let's get started!</em></h1>
         </div>
         <div className='tourBody'>
-            <p>{welcomeNarration}</p>
+            <p>{cleanInlineCitations(welcomeNarration)}</p>
             <button className='button startTour' onClick={() => goToStop(0) }>Go to First Stop</button><br/>
         </div>
     </>

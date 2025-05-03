@@ -4,6 +4,7 @@ import "./TourStop.css";
 import TourBreadCrumbs from "./TourBreadCrumbs";
 import Citation from "../utilComponents/Citation";
 import TourCheckIn from "./TourCheckIn"
+import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
 function cleanName(name) {
     return (name && name.replace(/[^A-Za-z0-9\-._ ~]/g, '')) || null;
@@ -23,11 +24,11 @@ function getCurrentLocationPromise() {
     });
 }
 
-function getFallbackLocation(previousStop) {
-    return encodeURIComponent(cleanName(previousStop) || "Downtown Juneau, Alaska");
+function getFallbackLocation(previousStop, tourLocation) {
+    return encodeURIComponent(cleanName(previousStop) || tourLocation);
 
 }
-async function getLocation(previousStop) {
+async function getLocation(previousStop, tourLocation) {
     if (navigator.geolocation) {
         try {
             const location = await getCurrentLocationPromise();
@@ -36,23 +37,23 @@ async function getLocation(previousStop) {
             return encodeURIComponent(`${location.coords.latitude},${location.coords.longitude}`);
         } catch(e) {
             console.warn("Error getting user location:", e);
-            getFallbackLocation(previousStop);
+            getFallbackLocation(previousStop, tourLocation);
         }
     }
 
     console.warn("Geolocation is not supported by this browser.");
-    return getFallbackLocation(previousStop);
+    return getFallbackLocation(previousStop, tourLocation);
 }
 
 const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName, location }) => {
-    const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName));
+    const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName, location));
     const citationsArray = Array.isArray(stop?.citations) ? stop?.citations : [stop?.citations];
 
     // get user location for map on component mount
     useEffect(() => {
         async function fetchUserLocation() {
-            const location = await getLocation(previousStopName);
-            setUserLocation(location);
+            const userLocation = await getLocation(previousStopName, location);
+            setUserLocation(userLocation);
         }
         
         fetchUserLocation();
@@ -82,7 +83,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                 <p className="tourStopDetail">{stop?.stopAddress}</p>
                 <TourCheckIn stopName={stop?.stopName} />
                 <h2 className="tourStopDescriptionHeader">About</h2>
-                <p className="tourStopDescription">{stop?.detailsAboutStop}</p>
+                <p className="tourStopDescription">{ cleanInlineCitations(stop?.detailsAboutStop)}</p>
                 <p className="tourStopDetail">
                     {citationsArray.map((citation, citationIdx) => {
                         const isLast = citationIdx === citationsArray.length - 1;

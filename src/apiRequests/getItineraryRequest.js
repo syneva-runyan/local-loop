@@ -102,8 +102,8 @@ const getItinerary = async (location, duration, vibes) => {
     // construct request url
     const urlParams = new URLSearchParams();
     urlParams.append("location", encodeURIComponent(location));
-    urlParams.append("hours", encodeURIComponent(duration.hours));
-    urlParams.append("minutes", encodeURIComponent(duration.minutes));
+    urlParams.append("hours", encodeURIComponent(duration.hours || "0"));
+    urlParams.append("minutes", encodeURIComponent(duration.minutes || "0"));
     urlParams.append("vibes", encodeURIComponent(vibes));
     var url = new URL(constants.GET_ITINERARY_ENDPOINT);
     url.search = urlParams;
