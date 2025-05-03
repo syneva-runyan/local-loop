@@ -231,9 +231,7 @@ async function getTourItinerary(parameters, locationDetails) {
   try {
     console.log("successfully got tour")
     const tourJSON = JSON.parse(cleanResponse(response.text));
-    return {
-      ...tourJSON,
-    }
+    return tourJSON;
   } catch (e) {
     console.log(response.text);
     throw new Error(e.toString());
