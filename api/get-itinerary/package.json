@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@google/genai": "^0.10.0",
-        "aws-sdk": "^2.1692.0"
+        "aws-sdk": "^2.1692.0",
+        "google-auth-library": "^9.15.1"
     }
 }

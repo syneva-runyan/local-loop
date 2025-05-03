@@ -28,6 +28,7 @@ function FunctionalApp() {
                 const tour = await getExistingTour(location, tourId);
                 if (tour && !tour.error) {
                     setTour(tour);
+                    setTourLocation(tour.location);
                     setIsCreating(false);
                 }
                 setIsCreating(false);
@@ -62,7 +63,7 @@ function FunctionalApp() {
     if (isCreating) {
         return (
             <FadeIn>
-                <ItineraryLoading location={"Downtown Juneau, Alaska"} msg={isCreating} />
+                <ItineraryLoading location={tourLocation} msg={isCreating} />
             </FadeIn>
         )
     }
@@ -79,7 +80,7 @@ function FunctionalApp() {
             <>
             <h1 className='functionalAppHeader'>Let's Explore</h1>
             <form className='tourInput' onSubmit={onSubmit}>
-                <WhereAreYou />
+                <WhereAreYou tourLocation={tourLocation} setTourLocation={setTourLocation} />
                 <HowMuchTimeDoYouHave />
                 <WhatDoYouLike />
                 {isError && <p className="error">Uh oh! Something happened. Please try again</p>}

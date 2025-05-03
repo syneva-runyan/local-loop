@@ -1,6 +1,7 @@
 import "./TourPreview.css";
 import TourPhoto from './TourPhoto';
 import { Accordion, AccordionItem } from '@szhsin/react-accordion';
+import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
 function TourPreview({ tour, startTour }) {
     const retry = () => {
@@ -25,7 +26,7 @@ function TourPreview({ tour, startTour }) {
                                     <p className='tourStopName'><strong>{stop.stopName}</strong></p>
                                     <p className='tourAsside tourPreviewDurationTitle'>Suggested duration</p>
                                     <p className='tourAsside tourPreviewDuration'>{stop.durationToSpendAt}</p>
-                                    <p className="tourPreviewStopDescription">{stop.shortDescription}</p>
+                                    <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
                                 </li>
                             );
                         })}
