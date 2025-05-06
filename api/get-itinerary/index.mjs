@@ -146,7 +146,7 @@ function getPrompt(parameters, exclude) {
 function getSystemInstructions() {
   return `
       Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-      You have access to Google Maps data and should look up questions about distances, directions, and points of interest.
+      You have access to Google Maps data and should look up questions about distances, directions, open hours, and points of interest.
       Do not abstract citation urls to a different part of the response.
 
       Always respond in a valid JSON format:
