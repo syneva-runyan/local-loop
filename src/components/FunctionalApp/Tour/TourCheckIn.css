@@ -16,13 +16,13 @@
   
   .tour-checkin-container-content {
     overflow: scroll;
-    padding: 20px;
+    padding: 20px 20px 40px;
   }
 
   .tourStopDescriptionHeader {
     color: var(--off-white);
     margin-bottom: 0;
-    margin-top: 20px 0 40px;
+    margin-top: 20px;
     text-align: center;
 }
 
