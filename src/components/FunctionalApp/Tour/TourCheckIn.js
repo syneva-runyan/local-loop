@@ -40,7 +40,9 @@ const TourCheckIn = function({ stopName, detailsAboutStop, citationsArray }) {
                                 })}
                             </p>
                         </div>
-                        <button className="button tourStopCheckinBack" onClick={() => { setCheckedIn(false); }}>Back to Itinerary</button>
+                        <div className="tourStopCheckinBackContainer">
+                            <button className="button tourStopCheckinBack" onClick={() => { setCheckedIn(false); }}>Back to Itinerary</button>
+                        </div>
                         </div>
                     </div>
                 </FadeIn>
