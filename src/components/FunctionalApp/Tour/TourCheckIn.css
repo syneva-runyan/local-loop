@@ -22,7 +22,7 @@
   .tourStopDescriptionHeader {
     color: var(--off-white);
     margin-bottom: 0;
-    margin-top: 20px;
+    margin-top: 20px 0 40px;
     text-align: center;
 }
 

@@ -9,6 +9,8 @@ const TourCheckIn = function({ stopName, detailsAboutStop, citationsArray }) {
     const [checkedIn, setCheckedIn] = useState(false);
 
     useEffect(() => {
+        // scroll to top when tour on hide and close of details
+         window.scrollTo({ top: 0, behavior: 'smooth' });
         if (checkedIn) {
             document.body.style.overflow = 'hidden'; // Disable scroll
         } else {
