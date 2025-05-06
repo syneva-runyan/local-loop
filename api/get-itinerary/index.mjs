@@ -1,5 +1,4 @@
 import { JWT } from 'google-auth-library';
-// import { GoogleGenAI } from "@google/genai";
 import AWS  from 'aws-sdk';
 
 const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
@@ -129,6 +128,7 @@ function getPrompt(parameters, exclude) {
       Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
       The entire itinerary, including walking time, must fit within the allotted time.
   Content Guidelines:
+    Do not include stops that are not currenty open.
     Focus on locally owned businesses.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
@@ -261,7 +261,7 @@ async function getTourItinerary(parameters, locationDetails) {
     const tourJSON = JSON.parse(cleanResponse(data.candidates[0]?.content.parts[0]?.text));
     return tourJSON
   } catch (e) {
-    console.log(response.text());
+    console.log(data);
     throw new Error(e.toString());
   }
 }
