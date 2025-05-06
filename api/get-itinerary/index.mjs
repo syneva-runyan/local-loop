@@ -1,5 +1,4 @@
 import { JWT } from 'google-auth-library';
-import { GoogleGenAI } from "@google/genai";
 import AWS  from 'aws-sdk';
 
 const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
@@ -129,6 +128,7 @@ function getPrompt(parameters, exclude) {
       Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
       The entire itinerary, including walking time, must fit within the allotted time.
   Content Guidelines:
+    Do not include stops that are not currenty open.
     Focus on locally owned businesses.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
@@ -146,7 +146,7 @@ function getPrompt(parameters, exclude) {
 function getSystemInstructions() {
   return `
       Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-      You have access to Google data and should look up questions about distances, directions, and points of interest.
+      You have access to Google Maps data and should look up questions about distances, directions, open hours, and points of interest.
       Do not abstract citation urls to a different part of the response.
 
       Always respond in a valid JSON format:
@@ -170,6 +170,9 @@ function getSystemInstructions() {
 }
 
 async function getTourItinerary(parameters, locationDetails) {
+  const gLocation = 'us-west1';
+  const projectId = 'localloop-456415';
+  const modelId = 'gemini-2.0-flash';
   // Get secret from Secrets Manager
   const secret = await secretsManager.getSecretValue({
     SecretId: 'vertext-service-account-credentials'
@@ -186,62 +189,79 @@ async function getTourItinerary(parameters, locationDetails) {
 
 
   const { token } = await client.getAccessToken();
-  
-  const ai = new GoogleGenAI({ 
-    vertexai: true,
-    project: 'localloop-456415',
-    location: 'us-west1',
-    fetch: (url, options = {}) => {
-      return fetch(url, {
-        ...options,
-        headers: {
-          ...(options.headers || {}),
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+
+  const url = `https://${gLocation}-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}:generateContent`;
+
+  const body = {
+    contents: [{
+      "role": "user",
+      "parts": [{
+        "text": `${getPrompt(parameters, locationDetails)}\n${getSystemInstructions()}`,
+      }]
+    }],
+    "tools": [{
+      "googleMaps": {
+        "authConfig": {
+          "apiKeyConfig": {
+            "apiKeyString": process.env.GEMINI_API_KEY,
+          }
+        }
+      }
+    }],
+    "toolConfig": {
+      "retrievalConfig": {
+        "latLng": {
+          "latitude": locationDetails?.latitude || 0,
+          "longitude": locationDetails?.longitude || 0,
+        }
+      }
     },
+    "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
+  };
+
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
   });
 
-  // Set up generation config
-  const generationConfig = {
-    maxOutputTokens: 8192,
-    temperature: 1,
-    topP: 0.95,
-    responseModalities: ["TEXT"],
-    safetySettings: [
-      {
-        category: 'HARM_CATEGORY_HATE_SPEECH',
-        threshold: 'OFF',
-      },
-      {
-        category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-        threshold: 'OFF',
-      },
-      {
-        category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-        threshold: 'OFF',
-      },
-      {
-        category: 'HARM_CATEGORY_HARASSMENT',
-        threshold: 'OFF',
-      }
-    ],
-    tools: [
-      { googleSearch: {} },
-    ],
-  };
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: `${getPrompt(parameters, locationDetails)}\n${getSystemInstructions()}`,
-  })
+  const data = await response.json();
+  // TODO reincorporate more sophisticated generation config
+  // const generationConfig = {
+  //   maxOutputTokens: 8192,
+  //   temperature: 1,
+  //   topP: 0.95,
+  //   responseModalities: ["TEXT"],
+  //   safetySettings: [
+  //     {
+  //       category: 'HARM_CATEGORY_HATE_SPEECH',
+  //       threshold: 'OFF',
+  //     },
+  //     {
+  //       category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+  //       threshold: 'OFF',
+  //     },
+  //     {
+  //       category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+  //       threshold: 'OFF',
+  //     },
+  //     {
+  //       category: 'HARM_CATEGORY_HARASSMENT',
+  //       threshold: 'OFF',
+  //     }
+  //   ],
 
   try {
     console.log("successfully got tour")
-    const tourJSON = JSON.parse(cleanResponse(response.text));
-    return tourJSON;
+    console.log(data.candidates[0]);
+    const tourJSON = JSON.parse(cleanResponse(data.candidates[0]?.content.parts[0]?.text));
+    return tourJSON
   } catch (e) {
-    console.log(response.text);
+    console.log(data);
     throw new Error(e.toString());
   }
 }
