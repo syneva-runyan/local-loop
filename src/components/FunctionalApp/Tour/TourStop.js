@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import TourChat from "./TourChat";
 import "./TourStop.css";
 import TourBreadCrumbs from "./TourBreadCrumbs";
-import Citation from "../utilComponents/Citation";
 import TourCheckIn from "./TourCheckIn"
 import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
@@ -81,15 +80,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     allowFullScreen>
                 </iframe>
                 <p className="tourStopDetail">{stop?.stopAddress}</p>
-                <TourCheckIn stopName={stop?.stopName} />
-                <h2 className="tourStopDescriptionHeader">About</h2>
-                <p className="tourStopDescription">{ cleanInlineCitations(stop?.detailsAboutStop)}</p>
-                <p className="tourStopDetail">
-                    {citationsArray.map((citation, citationIdx) => {
-                        const isLast = citationIdx === citationsArray.length - 1;
-                        return <Citation isLast={isLast} citation={citation} key={`citation-${citationIdx}-${stop?.stopName}`} />
-                    })}
-                </p>
+                <TourCheckIn stopName={stop?.stopName} detailsAboutStop={cleanInlineCitations(stop?.detailsAboutStop)} citationsArray={citationsArray} />
                 <button className="button nextCta" onClick={onNext}>{isLastStop ? "Finish Tour" : "Go To Next Stop"}</button>
             </div>
             <TourChat stopName={stop?.stopName} location={location} />

@@ -8,7 +8,7 @@ const supportedLocations = {
     },
     "Union Market, Washington, D.C.": {
         googlePlaceId: "ChIJx7jHlBC4t4kR2AHuwQcWDqc",
-        exclude: "a generic 'Union Market' stop",
+        exclude: "",
         preferedPhotoIdx: 1,
     },
 }
