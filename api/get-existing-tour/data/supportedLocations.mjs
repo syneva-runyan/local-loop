@@ -7,6 +7,16 @@ const supportedLocations = {
         googlePlaceId: "ChIJx7jHlBC4t4kR2AHuwQcWDqc",
         preferedPhotoIdx: 1,
     },
+    "Am Friedrichshain, Berlin, Germany": {
+        googlePlaceId: "ChIJ9-agmxpOqEcR3vMKSk2RLT0",
+        exclude: "",
+        preferedPhotoIdx: 3,
+    },
+    "Downtown Anchorage, Alaska": {
+        googlePlaceId: "ChIJFUF2WSiWyFYRCBelY6k-8KY",
+        exclude: "",
+        preferedPhotoIdx: 1,
+    },
 }
 
 export default supportedLocations;

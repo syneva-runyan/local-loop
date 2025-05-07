@@ -123,20 +123,21 @@ function getPrompt(parameters, exclude) {
     Source of Truth: DO NOT MAKE UP INFORMATION.
     Tour Design:
       Start the tour in  ${parameters.location}.
-      Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other
-      Reject locations that would require driving, biking, or public transport
+      Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other. Validate walking disatance using google maps.
+      Do not include locations that would take more than ten minutes to walk to from the previous stop.
       Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
       The entire itinerary, including walking time, must fit within the allotted time.
   Content Guidelines:
+    Only include locations in ${parameters.location}.
     Do not include stops that are not currenty open.
     Focus on locally owned businesses.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
     Do not spend less than 20 minutes at a restaurant.
-    For each stop, include 1 to 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance.
+    For each stop, include 2 to 3 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
     Include one to two sentences in a short tour description that encourages someone to take the tour.
-    Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local indigenous culture.
+    Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history.
     DO NOT MAKE UP INFORMATION.
     Only include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
 
@@ -146,7 +147,7 @@ function getPrompt(parameters, exclude) {
 function getSystemInstructions() {
   return `
       Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-      You have access to Google Maps data and should look up questions about distances, directions, open hours, and points of interest.
+      Use Google Maps verify location, distances, directions, open hours, and points of interest.
       Do not abstract citation urls to a different part of the response.
 
       Always respond in a valid JSON format:
