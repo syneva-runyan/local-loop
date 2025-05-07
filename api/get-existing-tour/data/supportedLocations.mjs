@@ -13,9 +13,9 @@ const supportedLocations = {
         preferedPhotoIdx: 3,
     },
     "Downtown Anchorage, Alaska": {
-        googlePlaceId: "ChIJFUF2WSiWyFYRCBelY6k-8KY",
+        googlePlaceId: "ChIJFUF2WSiWyFYRCBelYRk-8KY",
         exclude: "",
-        preferedPhotoIdx: 1,
+        preferedPhotoIdx: 4,
     },
 }
 

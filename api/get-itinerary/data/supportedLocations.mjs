@@ -23,7 +23,7 @@ const supportedLocations = {
     "Downtown Anchorage, Alaska": {
         googlePlaceId: "ChIJFUF2WSiWyFYRCBelYRk-8KY",
         exclude: "",
-        preferedPhotoIdx: 1,
+        preferedPhotoIdx: 4,
         latitude: "61.2176N",
         longitude: "-149.8631W",
     },

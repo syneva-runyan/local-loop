@@ -135,7 +135,7 @@ function getPrompt(parameters, exclude) {
     Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
     Do not spend less than 20 minutes at a restaurant.
-    For each stop, include 2 to 3 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
+    For each stop, include 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history.
     DO NOT MAKE UP INFORMATION.
