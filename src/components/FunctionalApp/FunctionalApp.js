@@ -85,7 +85,7 @@ function FunctionalApp() {
                 <WhatDoYouLike />
                 {isError && <p className="error">Uh oh! Something happened. Please try again</p>}
                 <button className='button functionalAppSubmission' type="submit" disabled={isCreating}>
-                    {isCreating ? "Crafting tour..." : "Create Itinerary" }
+                    {isCreating ? "Crafting Tour..." : "Create Tour" }
                 </button>
             </form>
             </>
