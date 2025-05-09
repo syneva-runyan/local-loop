@@ -8,8 +8,8 @@
 }
 
 .tourPhotoImg {
-    max-width: 100%;
     max-height: 400px;
+    min-width: 100%;
 }
 .tourPhotoCitation {
     font-size: 1rem;

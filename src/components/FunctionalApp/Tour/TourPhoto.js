@@ -4,7 +4,7 @@ import constants from "../../../apiRequests/constants"
 
 function TourPhoto({tourPhoto = {} }) {
     // calculte placeholder size
-    const placeholderWidth = Math.min(window.innerWidth - 50, 1000); // 50 = page padding;
+    const placeholderWidth = Math.min(window.innerWidth , 1000); // 50 = page padding;
     if (!tourPhoto.height || !tourPhoto.width) {
         return null;
     }
