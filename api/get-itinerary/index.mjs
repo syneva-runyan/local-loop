@@ -137,7 +137,7 @@ function getPrompt(parameters, exclude) {
     Do not spend less than 20 minutes at a restaurant.
     For each stop, include 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
     Include one to two sentences in a short tour description that encourages someone to take the tour.
-    Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history.
+    Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
     DO NOT MAKE UP INFORMATION.
     Only include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
 
