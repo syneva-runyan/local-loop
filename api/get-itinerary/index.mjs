@@ -170,7 +170,7 @@ function getSystemInstructions() {
  `
 }
 
- function getGroundedResponsePrompt(itinerary, distancesBetweenLocations) {
+ function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters) {
   return `
     Given the provided walking tour itinerary and walking distance information, ensure replace stops that are not walkable and verify that the places included are open.
     ${itinerary}
@@ -179,6 +179,9 @@ function getSystemInstructions() {
     ${distancesBetweenLocations}
 
     Verify that included stops are open using Google Maps. Replace stop if it is not open or walkable.
+
+    Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes
+
     Response with an updated itinerary using this format:
     {
           tourName:
@@ -292,7 +295,7 @@ async function getTourItinerary(parameters, locationDetails) {
         contents: [{
           "role": "user",
           "parts": [{ 
-            "text": getGroundedResponsePrompt(itinerary, functionCallResponses)
+            "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters)
           }],  
         }],
         "tools": [{
