@@ -21,7 +21,7 @@ function isValidRequest(parameters) {
   }
 
   if (isNaN(parameters.hours) || isNaN(parameters.minutes)) {
-    if (!(parameters.duration.hours >= 0 && parameters.duration.hours < 13)) {
+    if (!(parameters.duration.hours >= 0 && parameters.duration.hours < 6)) {
       return false;
     }
     if (!(parameters.minutes > 0 && parameters.minutes < 60)) {
@@ -125,7 +125,7 @@ async function getDistanceBetweenLocations(location1, location2) {
     if (
       data.status === "OK"
     ) {
-      return `Destination address: ${data.destination_addresses}, Origin address: ${data.origin_addresses}, Duration: ${data.rows[0].elements[0].duration.text}, Walking Duration: ${data.rows[0].elements[0].duration.text}`;
+      return `Origin: ${location1} ${data.origin_addresses}, Destination: ${location2} ${data.destination_addresses}, Distance: ${data.rows[0].elements[0].distance.text}, Walking Distance to Destination: ${data.rows[0].elements[0].duration.text}`;
     } else {
       throw new Error("Could not retrieve distance data");
     } 
@@ -147,42 +147,47 @@ function getPrompt(parameters, exclude) {
       Start the tour in  ${parameters.location}.
       Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other.
       The entire itinerary, including walking time, must fit within the allotted time.
+      Include backup locations in case the first choice is not available.
   Content Guidelines:
     Only include locations in ${parameters.location}.
-    Focus on locally owned businesses.
+    Do not include places that are only open during events or events.
+    Focus on unique locally owned businesses.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
     Do not spend less than 20 minutes at a restaurant.
+    Do not duplicate stops.
+    Do not include ${exclude}`
+}
+
+function getSystemInstructions() {
+  return `
+      After putting together the itinerary, you must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
+      Do not abstract citation urls to a different part of the response.
+ `
+}
+
+ function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters, exclude) {
+  return `
+    Given these distances between locations: ${distancesBetweenLocations},
+    
+    and the provided walking tour itinerary,  replace stops that have more than a 15 minute walk distance from the destination origin.
+    ${itinerary}
+    
+    Try to verify replacement locations with Google to check that the stop is open and is walkable from the previous stop.
+    Exlude these locations when selecting replacement stops: ${exclude}.
+
+    Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes.
+
+
     For each stop, include 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
     DO NOT MAKE UP INFORMATION.
     Only include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
 
-    Do not include ${exclude}`
-}
 
-function getSystemInstructions() {
-  return `
-      You must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
-      Do not abstract citation urls to a different part of the response.
- `
-}
-
- function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters) {
-  return `
-    Given the provided walking tour itinerary and walking distance information, ensure replace stops that are not walkable and verify that the places included are open.
-    ${itinerary}
-
-    The distances between stops are:
-    ${distancesBetweenLocations}
-
-    Verify that included stops are open using Google Maps. Replace stop if it is not open or walkable.
-
-    Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes
-
-    Response with an updated itinerary using this format:
+    ALWAYS Response with an itinerary using this format:
     {
           tourName:
           shortTourDescription:
@@ -241,11 +246,11 @@ async function getTourItinerary(parameters, locationDetails) {
           properties: {
             origin: {
               type: "string",
-              description: "The starting location (e.g., 'Juneau, Alaska')",
+              description: "The starting location name (e.g., 'Shoefly, Juneau')",
             },
             destination: {
               type: "string",
-              description: "The ending location (e.g., 'Skagway, Alaska')",
+              description: "The ending location name (e.g., 'Hertiage Coffee Downtown Juneau, Alaska')",
             },
           },
           required: ["origin", "destination"],
@@ -270,20 +275,18 @@ async function getTourItinerary(parameters, locationDetails) {
     const itinerary = data.candidates[0].content.parts[0].text;
     const functionCallsRequested = data.candidates[0].content.parts.filter(part => part.functionCall);
     const functionCallResponses = [];
+    console.log("function calls requested", data.candidates[0].content.parts);
     for (let callRequest of functionCallsRequested) {
       const callDetails = callRequest.functionCall;
       if(callDetails?.name == "getDistanceBetweenLocations") {
         const distance = await getDistanceBetweenLocations(
           callDetails?.args.origin, callDetails?.args.destination
         );
-        functionCallResponses.push({
-          "functionResponse": {
-            "name": "getDistanceBetweenLocations",
-            "response": JSON.stringify(distance)
-          }
-        });
+        functionCallResponses.push(distance);
       }
     }
+
+    console.log("grounding function callresponses", functionCallResponses);
 
     const groundedResponse = await fetch(url, {
       method: 'POST',
@@ -295,7 +298,7 @@ async function getTourItinerary(parameters, locationDetails) {
         contents: [{
           "role": "user",
           "parts": [{ 
-            "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters)
+            "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters, locationDetails)
           }],  
         }],
         "tools": [{
@@ -321,7 +324,7 @@ async function getTourItinerary(parameters, locationDetails) {
     
 
     const finalData = await groundedResponse.json();
-    console.log("successfully got tour")
+    console.log("successfully got tour", finalData.candidates[0].content.parts);
     const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => part?.text.indexOf("```json") !== -1);
     console.log(importantPartOfResponse)
     const tourJSON = JSON.parse(cleanResponse(importantPartOfResponse[0].text));

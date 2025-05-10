@@ -15,7 +15,7 @@ function TourPreview({ tour, startTour }) {
     </div>
     <TourPhoto tourPhoto={tour.photo} />
     <div className='tourBody'>
-        <p className="tourAsside tourPreviewDurationTitle">Walking Distance: {tour.walkingDistanceCoveredInTour}</p>
+        {/* <p className="tourAsside tourPreviewDurationTitle">Walking Distance: {tour.walkingDistanceCoveredInTour}</p> */}
         <p>{tour.shortTourDescription}</p>
             <Accordion>
                 <AccordionItem header="Preview Stops">

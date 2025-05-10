@@ -58,6 +58,8 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
         fetchUserLocation();
         
     }, [previousStopName, location]);
+    
+    const destination = stop?.stopName + location;
 
     return (
         <>
@@ -75,11 +77,10 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     src={
-                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(cleanName(stop?.stopAddress))}&mode=walking`
+                        `https://www.google.com/maps/embed/v1/directions?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&origin=${userLocation}&destination=${encodeURI(cleanName(destination))}&mode=walking`
                     }
                     allowFullScreen>
                 </iframe>
-                <p className="tourStopDetail">{stop?.stopAddress}</p>
                 <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
                 <TourCheckIn stopName={stop?.stopName} detailsAboutStop={cleanInlineCitations(stop?.detailsAboutStop)} citationsArray={citationsArray} />
                 <TourChat stopName={stop?.stopName} location={location} />
