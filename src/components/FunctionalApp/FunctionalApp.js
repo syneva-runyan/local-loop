@@ -24,6 +24,7 @@ function FunctionalApp() {
             const tourId = decodeURIComponent(urlParams.get('tourId'));
 
             if (location !== "null" && tourId !== "null") {
+                setTourLocation(location);
                 setIsCreating("Getting tour details...");
                 const tour = await getExistingTour(location, tourId);
                 if (tour && !tour.error) {
