@@ -113,10 +113,10 @@ async function getMainTourPhoto(location) {
 }
 
 async function areStopsCurrentlyOpen(placeNames, location) {
-  console.log("looking to see if places are open");
+  console.log("looking to see if places are open, ", placeNames);
   const status = [];
 
-  const places = placeNames.split(",").map(place => place.trim());
+  const places = placeNames.split(";").map(place => place.trim());
 
   for (let placeName of places) {
     
@@ -134,6 +134,11 @@ async function areStopsCurrentlyOpen(placeNames, location) {
         data.status === "OK"
       ) {
         console.log("found place", data);
+
+        if (data.candidates[0].business_status == "CLOSED_TEMPORARILY") {
+          console.log("shop closed temporarily", data);
+          throw new Error("shop closed");
+        }
         status.push({
             stopName: data.candidates[0].name,
             address: data.candidates[0].formatted_address,
@@ -220,7 +225,7 @@ function getPrompt(parameters, exclude) {
 
 function getSystemInstructions() {
   return `
-  You MUST call areStopsCurrentlyOpen to verify that stops are open now.
+  You MUST call areStopsCurrentlyOpen to verify that stops are open now, with each stop separated by a ;.
       After putting together the itinerary, you must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
       Do not abstract citation urls to a different part of the response.
  `
@@ -328,7 +333,7 @@ async function getTourItinerary(parameters, locationDetails) {
           properties: {
             stops: {
               type: "string",
-              description: "Comma separated stop names and locations (e.g., 'Hertiage Coffee Downtown Juneau, Alaska')",
+              description: "Semi colon separated list of stop names and locations (e.g., 'Hertiage Coffee Downtown Juneau, Alaska')",
             },
           },
           required: ["stops"],

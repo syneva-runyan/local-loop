@@ -6,18 +6,18 @@ const funFacts = {
         "Juneau is one of the only US state capital that can't be reached by road - you can only get there by air or sea",
         "Juneau is one of the largest cities in the US by area (3,255 square miles) but it only has about 32,000 residents"
     ],
-    "Union Market, Washington, D.C.": [
-        "Many beloved D.C. food brands got their start here as pop-ups before expanding into brick-and-mortars.",
-        "Did you know there's a secret bar hidden behind a deli counter in the market?",
-        "There’s a rooftop farm ontop of Union Market growing herbs and greens used by restaurants downstairs",
-        "Local vendors like Red Apron sometimes offered hands-on meat-cutting classes and food education workshops in the market.",
+    "National Mall, Washington, D.C.": [
+        "🏛️ The Washington Monument was once the tallest building in the world (until the Eiffel Tower surpassed it in 1889).",
+        "The mall is the most visited urban park in the U.S. — millions of people walk it every year.",
+        "Free museums? Say less. The Smithsonian museums are all zero dollars.",
+        "Don't miss the turtles hanging out in the reflection pool at the Lincoln Memorial. They are the real stars of the show.",
     ],
-    "Am Friedrichshain, Berlin, Germany": [
-        "Did you know Friedrichshain is named after Frederick the Great of Prussia?",
-        "Volkspark Friedrichshain hides a WWII rubble hill called Mont Klamott?",
-        "Did you know Volkspark Friedrichshain was Berlin’s first public park, created over 175 years ago?",
-        "Berliners invented the word \"Kiez\" to describe their hyper-local neighborhood bubbles — and Am Friedrichshain is part of one?"
-    ], 
+    // "Am Friedrichshain, Berlin, Germany": [
+    //     "Did you know Friedrichshain is named after Frederick the Great of Prussia?",
+    //     "Volkspark Friedrichshain hides a WWII rubble hill called Mont Klamott?",
+    //     "Did you know Volkspark Friedrichshain was Berlin’s first public park, created over 175 years ago?",
+    //     "Berliners invented the word \"Kiez\" to describe their hyper-local neighborhood bubbles — and Am Friedrichshain is part of one?"
+    // ], 
     "Downtown Anchorage, Alaska": [
         "Anchorage has over 1,500 moose roaming the city.",
         "There are more than 60 glaciers within 50 miles of Downtown Anchorage.",

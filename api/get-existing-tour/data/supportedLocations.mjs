@@ -3,8 +3,8 @@ const supportedLocations = {
         googlePlaceId: "ChIJU8srZ53fAFQRrrxJtoUYdjw",
         preferedPhotoIdx: 0,
     },
-    "Union Market, Washington, D.C.": {
-        googlePlaceId: "ChIJx7jHlBC4t4kR2AHuwQcWDqc",
+    "National Mall, Washington, D.C.": {
+        googlePlaceId: "ChIJMT3_Wpu3t4kRQScGokyrCDo",
         preferedPhotoIdx: 1,
     },
     "Am Friedrichshain, Berlin, Germany": {

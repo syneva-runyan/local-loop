@@ -7,29 +7,29 @@ const supportedLocations = {
         longitude: "-134.4197",
         preferedPhotoIdx: 0,
     },
-    "Union Market, Washington, D.C.": {
+    "National Mall, Washington, D.C.": {
         name: "Washington, DC",
-        googlePlaceId: "ChIJx7jHlBC4t4kR2AHuwQcWDqc",
+        googlePlaceId: "ChIJMT3_Wpu3t4kRQScGokyrCDo",
         exclude: "",
         preferedPhotoIdx: 1,
-        latitude: "38.9171N",
-        longitude: "-77.0024W",
+        latitude: "38.8895",
+        longitude: "-77.0353",
     },
     "Am Friedrichshain, Berlin, Germany": {
         name: "Berlin, Germany",
         googlePlaceId: "ChIJ9-agmxpOqEcR3vMKSk2RLT0",
         exclude: "",
         preferedPhotoIdx: 3,
-        latitude: "52.5093N",
-        longitude: "13.4251E",
+        latitude: "52.5093",
+        longitude: "13.4251",
     },
     "Downtown Anchorage, Alaska": {
         name: "Anchorage, AK",
         googlePlaceId: "ChIJFUF2WSiWyFYRCBelYRk-8KY",
         exclude: "",
         preferedPhotoIdx: 4,
-        latitude: "61.2176N",
-        longitude: "-149.8631W",
+        latitude: "61.2176",
+        longitude: "-149.8631",
     },
 }
 
