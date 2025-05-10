@@ -112,9 +112,31 @@ async function getMainTourPhoto(location) {
 
 }
 
+async function getDistanceBetweenLocations(location1, location2) {
+  const origin = encodeURIComponent(location1);
+  const destination = encodeURIComponent(location2);
+  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&mode=walking&units=imperial&key=${process.env.GOOGLE_PLACES_API_KEY}`;
+
+  const response = await fetch(url);
+
+  try {
+    const data = await response.json();
+
+    if (
+      data.status === "OK"
+    ) {
+      return `Destination address: ${data.destination_addresses}, Origin address: ${data.origin_addresses}, Duration: ${data.rows[0].elements[0].duration.text}, Walking Duration: ${data.rows[0].elements[0].duration.text}`;
+    } else {
+      throw new Error("Could not retrieve distance data");
+    } 
+  } catch(e) {
+    console.log(`Error fetching distance: ${e}`);
+  }
+}
+
 function getPrompt(parameters, exclude) {
   return `
-  TASK: Generate a personalized walking tour itinerary.
+  TASK: Come up with a personalized walking tour itinerary.
   TOUR PARAMETERS:
     location: ${parameters.location}
     duration: ${parameters.hours} hours and ${parameters.minutes} minutes
@@ -123,13 +145,10 @@ function getPrompt(parameters, exclude) {
     Source of Truth: DO NOT MAKE UP INFORMATION.
     Tour Design:
       Start the tour in  ${parameters.location}.
-      Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other. Validate walking disatance using google maps.
-      Do not include locations that would take more than ten minutes to walk to from the previous stop.
-      Do not invent places or distances. If unsure about walkability, assume it is NOT walkable.
+      Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other.
       The entire itinerary, including walking time, must fit within the allotted time.
   Content Guidelines:
     Only include locations in ${parameters.location}.
-    Do not include stops that are not currenty open.
     Focus on locally owned businesses.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
@@ -141,17 +160,27 @@ function getPrompt(parameters, exclude) {
     DO NOT MAKE UP INFORMATION.
     Only include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
 
-    Absolutely do not include ${exclude}`
+    Do not include ${exclude}`
 }
 
 function getSystemInstructions() {
   return `
-      Tone and Output Goal: Persuasive and immersive — convince the user why this tour is a unique and valuable experience.
-      Use Google Maps verify location, distances, directions, open hours, and points of interest.
+      You must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
       Do not abstract citation urls to a different part of the response.
+ `
+}
 
-      Always respond in a valid JSON format:
-      {
+ function getGroundedResponsePrompt(itinerary, distancesBetweenLocations) {
+  return `
+    Given the provided walking tour itinerary and walking distance information, ensure replace stops that are not walkable and verify that the places included are open.
+    ${itinerary}
+
+    The distances between stops are:
+    ${distancesBetweenLocations}
+
+    Verify that included stops are open using Google Maps. Replace stop if it is not open or walkable.
+    Response with an updated itinerary using this format:
+    {
           tourName:
           shortTourDescription:
           citations: [URLS]
@@ -201,68 +230,100 @@ async function getTourItinerary(parameters, locationDetails) {
       }]
     }],
     "tools": [{
-      "googleMaps": {
-        "authConfig": {
-          "apiKeyConfig": {
-            "apiKeyString": process.env.GEMINI_API_KEY,
-          }
+      function_declarations: [{
+        name: "getDistanceBetweenLocations",
+        description: "Returns the distance in kilometers between two named locations.",
+        parameters: {
+          type: "object",
+          properties: {
+            origin: {
+              type: "string",
+              description: "The starting location (e.g., 'Juneau, Alaska')",
+            },
+            destination: {
+              type: "string",
+              description: "The ending location (e.g., 'Skagway, Alaska')",
+            },
+          },
+          required: ["origin", "destination"],
         }
-      }
+      }],
     }],
-    "toolConfig": {
-      "retrievalConfig": {
-        "latLng": {
-          "latitude": locationDetails?.latitude || 0,
-          "longitude": locationDetails?.longitude || 0,
-        }
-      }
-    },
     "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
   };
 
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
-
-  const data = await response.json();
-  // TODO reincorporate more sophisticated generation config
-  // const generationConfig = {
-  //   maxOutputTokens: 8192,
-  //   temperature: 1,
-  //   topP: 0.95,
-  //   responseModalities: ["TEXT"],
-  //   safetySettings: [
-  //     {
-  //       category: 'HARM_CATEGORY_HATE_SPEECH',
-  //       threshold: 'OFF',
-  //     },
-  //     {
-  //       category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-  //       threshold: 'OFF',
-  //     },
-  //     {
-  //       category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-  //       threshold: 'OFF',
-  //     },
-  //     {
-  //       category: 'HARM_CATEGORY_HARASSMENT',
-  //       threshold: 'OFF',
-  //     }
-  //   ],
-
   try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    const itinerary = data.candidates[0].content.parts[0].text;
+    const functionCallsRequested = data.candidates[0].content.parts.filter(part => part.functionCall);
+    const functionCallResponses = [];
+    for (let callRequest of functionCallsRequested) {
+      const callDetails = callRequest.functionCall;
+      if(callDetails?.name == "getDistanceBetweenLocations") {
+        const distance = await getDistanceBetweenLocations(
+          callDetails?.args.origin, callDetails?.args.destination
+        );
+        functionCallResponses.push({
+          "functionResponse": {
+            "name": "getDistanceBetweenLocations",
+            "response": JSON.stringify(distance)
+          }
+        });
+      }
+    }
+
+    const groundedResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [{
+          "role": "user",
+          "parts": [{ 
+            "text": getGroundedResponsePrompt(itinerary, functionCallResponses)
+          }],  
+        }],
+        "tools": [{
+          "googleMaps": {
+            "authConfig": {
+              "apiKeyConfig": {
+                "apiKeyString": process.env.GEMINI_API_KEY,
+              }
+            }
+          }
+        }],
+        "toolConfig": {
+          "retrievalConfig": {
+            "latLng": {
+              "latitude": locationDetails?.latitude || 0,
+              "longitude": locationDetails?.longitude || 0,
+            }
+          }
+        },
+        "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
+      })
+    }); 
+    
+
+    const finalData = await groundedResponse.json();
     console.log("successfully got tour")
-    console.log(data.candidates[0]);
-    const tourJSON = JSON.parse(cleanResponse(data.candidates[0]?.content.parts[0]?.text));
+    const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => part?.text.indexOf("```json") !== -1);
+    console.log(importantPartOfResponse)
+    const tourJSON = JSON.parse(cleanResponse(importantPartOfResponse[0].text));
     return tourJSON
   } catch (e) {
-    console.log(data);
     throw new Error(e.toString());
   }
 }

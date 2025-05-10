@@ -56,7 +56,7 @@ function TourChat({ stopName, location }) {
           Ask
         </button>
       </form>
-      {isLoading && <p className="tourChatLoading">Surfacing with an answer shortly 🐳</p>}
+      {isLoading && <p className="tourChatLoading">Surfacing with an answer 🐳</p>}
       {isError && <p className="error">Uh oh! Something went wrong... try again</p>}
         <FadeIn>
         { reversedQnA.map((qAndA, index) => (
