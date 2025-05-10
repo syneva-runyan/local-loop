@@ -59,7 +59,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
         
     }, [previousStopName, location]);
     
-    const destination = stop?.stopName + location;
+    const destination = stop?.stopName + ", " + location;
 
     return (
         <>
@@ -81,6 +81,7 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     }
                     allowFullScreen>
                 </iframe>
+                <p className="tourStopDetail">{stop?.stopAddress}</p>
                 <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
                 <TourCheckIn stopName={stop?.stopName} detailsAboutStop={cleanInlineCitations(stop?.detailsAboutStop)} citationsArray={citationsArray} />
                 <TourChat stopName={stop?.stopName} location={location} />

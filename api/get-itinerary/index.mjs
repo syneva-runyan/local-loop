@@ -58,7 +58,7 @@ export const handler = async (event) => {
   // Call LLM & google maps to create tour
   try {
     const [itineraryResponse, mainTourPhoto] = await Promise.all([
-      getTourItinerary(event.queryStringParameters, supportedLocations[location]?.exclude),
+      getTourItinerary(event.queryStringParameters, supportedLocations[location]),
       getMainTourPhoto(location),
     ]);
 
@@ -112,6 +112,63 @@ async function getMainTourPhoto(location) {
 
 }
 
+async function areStopsCurrentlyOpen(placeNames, location) {
+  console.log("looking to see if places are open");
+  const status = [];
+
+  const places = placeNames.split(",").map(place => place.trim());
+
+  for (let placeName of places) {
+    
+    // use google places API to verify if place really does exist and is currently open.
+    const place = encodeURIComponent(`${placeName}, ${location.name}`);
+    console.log("looking to see if place is open", place );
+    const locationBias = encodeURIComponent(`circle:2000@${location.latitude},${location.longitude}`);
+    const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?&input=${place}&inputtype=textquery&locationbias=${locationBias}&fields=${encodeURIComponent("formatted_address,name,opening_hours,business_status")}&key=${process.env.GOOGLE_PLACES_API_KEY}`
+    
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (
+        data.status === "OK"
+      ) {
+        console.log("found place", data);
+        status.push({
+            stopName: data.candidates[0].name,
+            address: data.candidates[0].formatted_address,
+            isOpen: true
+        });
+      } else {
+        console.log("place not found", data);
+        status.push({
+          stopName: placeName,
+          isOpen: false
+        })
+      } 
+    } catch(e) {
+      console.log(`Error get place information: ${e}`);
+      status.push({
+        stopName: placeName,
+        error: true,
+        isOpen: false
+      })
+    }
+  }
+
+  const locationsToRemove = status.filter(location => location.isOpen === false).map(location => location.stopName).join(", ");
+  const locationDetails = status.filter(location => location.isOpen === true).map(location => `${location.stopName} ${location.address} ${location.editorial_summary}`).join(", ");
+  let promptUpdateIntructions = "";
+  if (locationsToRemove.length !== 0) {
+     promptUpdateIntructions += `Replace these stops with better options that are open and walkable from the previous stop: ${locationsToRemove}.`
+  }
+
+  if (locationDetails.length > 0) {
+    promptUpdateIntructions += `Perfer these names, addresses, and descriptions for stops when adding them on the itinerary: ${locationDetails}.`
+  }
+  return promptUpdateIntructions;
+};
+
 async function getDistanceBetweenLocations(location1, location2) {
   const origin = encodeURIComponent(location1);
   const destination = encodeURIComponent(location2);
@@ -156,12 +213,14 @@ function getPrompt(parameters, exclude) {
     Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
     Do not spend less than 20 minutes at a restaurant.
+    Do not spent more than 60 minutes at any stop.
     Do not duplicate stops.
     Do not include ${exclude}`
 }
 
 function getSystemInstructions() {
   return `
+  You MUST call areStopsCurrentlyOpen to verify that stops are open now.
       After putting together the itinerary, you must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
       Do not abstract citation urls to a different part of the response.
  `
@@ -169,22 +228,28 @@ function getSystemInstructions() {
 
  function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters, exclude) {
   return `
+    Heres is a walking tour itinerary
+    ${itinerary}
+
     Given these distances between locations: ${distancesBetweenLocations},
     
-    and the provided walking tour itinerary,  replace stops that have more than a 15 minute walk distance from the destination origin.
-    ${itinerary}
+    Replace stops that have more than a 15 minute walk distance from the destination origin.
     
     Try to verify replacement locations with Google to check that the stop is open and is walkable from the previous stop.
     Exlude these locations when selecting replacement stops: ${exclude}.
 
-    Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes.
+    Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes. If you need to add more time, consider adding a generic shopping stop on Front Street or a local park.
 
 
     For each stop, include 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
+    Look up the proper stop address using Google Maps.
+
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
     DO NOT MAKE UP INFORMATION.
-    Only include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
+    ONLY include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
+
+
 
 
     ALWAYS Response with an itinerary using this format:
@@ -234,7 +299,7 @@ async function getTourItinerary(parameters, locationDetails) {
     contents: [{
       "role": "user",
       "parts": [{
-        "text": `${getPrompt(parameters, locationDetails)}\n${getSystemInstructions()}`,
+        "text": `${getPrompt(parameters, locationDetails.exclude)}\n${getSystemInstructions()}`,
       }]
     }],
     "tools": [{
@@ -255,6 +320,19 @@ async function getTourItinerary(parameters, locationDetails) {
           },
           required: ["origin", "destination"],
         }
+      }, {
+        name: "areStopsCurrentlyOpen",
+        description: "Returns if the stops are currently open",
+        parameters: {
+          type: "object",
+          properties: {
+            stops: {
+              type: "string",
+              description: "Comma separated stop names and locations (e.g., 'Hertiage Coffee Downtown Juneau, Alaska')",
+            },
+          },
+          required: ["stops"],
+        }
       }],
     }],
     "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
@@ -272,6 +350,8 @@ async function getTourItinerary(parameters, locationDetails) {
 
     const data = await response.json();
 
+    console.log(data);
+
     const itinerary = data.candidates[0].content.parts[0].text;
     const functionCallsRequested = data.candidates[0].content.parts.filter(part => part.functionCall);
     const functionCallResponses = [];
@@ -283,6 +363,13 @@ async function getTourItinerary(parameters, locationDetails) {
           callDetails?.args.origin, callDetails?.args.destination
         );
         functionCallResponses.push(distance);
+      } else if (callDetails?.name == "areStopsCurrentlyOpen") {
+        const isOpenResponse = await areStopsCurrentlyOpen(
+          callDetails?.args.stops, locationDetails, parameters.location
+        );
+        if(isOpenResponse) {
+          functionCallResponses.push(isOpenResponse);
+        }
       }
     }
 
@@ -298,7 +385,7 @@ async function getTourItinerary(parameters, locationDetails) {
         contents: [{
           "role": "user",
           "parts": [{ 
-            "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters, locationDetails)
+            "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters, locationDetails?.exclude)
           }],  
         }],
         "tools": [{
@@ -324,6 +411,7 @@ async function getTourItinerary(parameters, locationDetails) {
     
 
     const finalData = await groundedResponse.json();
+    console.log(finalData)
     console.log("successfully got tour", finalData.candidates[0].content.parts);
     const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => part?.text.indexOf("```json") !== -1);
     console.log(importantPartOfResponse)
