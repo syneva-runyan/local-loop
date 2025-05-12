@@ -31,6 +31,14 @@ const supportedLocations = {
         latitude: "61.2176",
         longitude: "-149.8631",
     },
+    "Sitka, Alaska": {
+        name: "Sitka, AK",
+        googlePlaceId: "ChIJuWN1b4NmBFQRdBzIn0jaQSU",
+        exclude: "",
+        preferedPhotoIdx: 0,
+        latitude: "57.0531",
+        longitude: "-135.3303",
+    }
 }
 
 export default supportedLocations;

@@ -23,6 +23,12 @@ const funFacts = {
         "There are more than 60 glaciers within 50 miles of Downtown Anchorage.",
         "Anchorage was founded in 1914 as a tent city for the Alaska Railroad construction.",
         "Bald eagles, bears, and beluga whales can all be spotted without leaving town."
+    ],
+    "Sitka, Alaska": [
+        "Sitka is recognized as Alaska's oldest city, with indigenous Tlingit roots dating back over 10,000 years.",
+        "Covering 4,811 square miles, Sitka holds the title of the largest city by area in the United States.",
+        "Ranked as the 6th largest port in the U.S. by the value of its seafood harvest, Sitka plays a significant role in the nation's seafood industry.",
+        "Sitka is recognized as Alaska's oldest city, with indigenous Tlingit roots dating back over 10,000 years."
     ]
 }
 

@@ -9,14 +9,16 @@ const supportedLocations = {
     },
     "Am Friedrichshain, Berlin, Germany": {
         googlePlaceId: "ChIJ9-agmxpOqEcR3vMKSk2RLT0",
-        exclude: "",
         preferedPhotoIdx: 3,
     },
     "Downtown Anchorage, Alaska": {
         googlePlaceId: "ChIJFUF2WSiWyFYRCBelYRk-8KY",
-        exclude: "",
         preferedPhotoIdx: 4,
     },
+    "Sitka, Alaska": {
+        googlePlaceId: "ChIJuWN1b4NmBFQRdBzIn0jaQSU",
+        preferedPhotoIdx: 0,
+    }
 }
 
 export default supportedLocations;
