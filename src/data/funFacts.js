@@ -29,6 +29,11 @@ const funFacts = {
         "Covering 4,811 square miles, Sitka holds the title of the largest city by area in the United States.",
         "Ranked as the 6th largest port in the U.S. by the value of its seafood harvest, Sitka plays a significant role in the nation's seafood industry.",
         "Sitka is recognized as Alaska's oldest city, with indigenous Tlingit roots dating back over 10,000 years."
+    ],
+    "Chitina, Alaska": [
+        "Chitina is the ancestral home of the Ahtna Athabascans, who have lived in the region for thousands of years.",
+        "The name \"Chitina\" means \"copper river\" in the Ahtna language.",
+        "Besides salmon, the area around Chitina is rich in wildlife: moose, bears, eagles, and even the occasional lynx.",
     ]
 }
 

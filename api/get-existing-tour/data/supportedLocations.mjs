@@ -18,6 +18,10 @@ const supportedLocations = {
     "Sitka, Alaska": {
         googlePlaceId: "ChIJuWN1b4NmBFQRdBzIn0jaQSU",
         preferedPhotoIdx: 0,
+    },
+    "Chitina, Alaska": {
+        googlePlaceId: "ChIJAfrBn7Y5tFYRPe8_YnPBNj4",
+        preferedPhotoIdx: 8,
     }
 }
 

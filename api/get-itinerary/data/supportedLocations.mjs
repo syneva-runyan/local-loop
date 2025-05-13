@@ -38,6 +38,14 @@ const supportedLocations = {
         preferedPhotoIdx: 0,
         latitude: "57.0531",
         longitude: "-135.3303",
+    },
+    "Chitina, Alaska": {
+        name: "Chitina, AK",
+        googlePlaceId: "ChIJAfrBn7Y5tFYRPe8_YnPBNj4",
+        exclude: "",
+        preferedPhotoIdx: 8,
+        latitude: "61.4272",
+        longitude: "-144.1954",
     }
 }
 
