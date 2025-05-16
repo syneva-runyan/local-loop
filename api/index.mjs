@@ -74,6 +74,14 @@ app.get('/get-place-photo', async (req, res) => {
     }
   });
 
+app.get('/share-feedback', async (req, res) => {
+  const resp = await shareFeedback({
+    queryStringParameters: req.query
+  });
+  console.log("RESPONSE", resp) 
+  res.json(JSON.parse(resp.body));
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

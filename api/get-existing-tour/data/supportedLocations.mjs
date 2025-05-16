@@ -22,7 +22,11 @@ const supportedLocations = {
     "Chitina, Alaska": {
         googlePlaceId: "ChIJAfrBn7Y5tFYRPe8_YnPBNj4",
         preferedPhotoIdx: 8,
-    }
+    },
+    "Inman Park, Atlanta": {
+        googlePlaceId: "ChIJaVNHIAEE9YgRIBKYuApFxwk",
+        preferedPhotoIdx: 0,
+    },
 }
 
 export default supportedLocations;

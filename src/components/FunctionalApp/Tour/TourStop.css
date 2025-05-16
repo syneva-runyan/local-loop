@@ -17,8 +17,22 @@
     margin-top: 30px;
 }
 
+.tourStopProblemReport {
+    border: 0;
+    padding: 10px;
+}
+
+.problemReported {
+    color: var(--primary-color);
+}
+
 @media (max-width: 650px) {
     .nextCta {
+        width: 100%;
+    }
+    .tourStopProblemReport {
+        padding: 7px;
+        margin-top: 5px;
         width: 100%;
     }
 }

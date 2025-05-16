@@ -46,7 +46,15 @@ const supportedLocations = {
         preferedPhotoIdx: 8,
         latitude: "61.4272",
         longitude: "-144.1954",
-    }
+    },
+    "Inman Park, Atlanta": {
+        name: "Atlanta, Georgia",
+        googlePlaceId: "ChIJaVNHIAEE9YgRIBKYuApFxwk",
+        exclude: "",
+        preferedPhotoIdx: 0,
+        latitude: "33.7544",
+        longitude: "-84.3534",
+    },
 }
 
 export default supportedLocations;

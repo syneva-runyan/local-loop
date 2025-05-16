@@ -34,7 +34,13 @@ const funFacts = {
         "Chitina is the ancestral home of the Ahtna Athabascans, who have lived in the region for thousands of years.",
         "The name \"Chitina\" means \"copper river\" in the Ahtna language.",
         "Besides salmon, the area around Chitina is rich in wildlife: moose, bears, eagles, and even the occasional lynx.",
-    ]
+    ],
+    "Inman Park, Atlanta": [
+        "The idea for the BeltLine came from a Georgia Tech student's (Ryan Gravel's) masters thesis",
+        "Inman Park was Atlanta's first planned suburb",
+        "Joel Hurt, the neighborhood's founder, als built Atlanta's first skyscrapper",
+        "The butterfly is Inman Park's symbol"
+    ],
 }
 
 export default funFacts;

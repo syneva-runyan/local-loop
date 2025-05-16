@@ -1,8 +1,6 @@
 import constants from "./constants";
 
 const shareFeedback = async ( sentiment, feedback) => {
-    // return mockedResponse;
-    // construct request url
     const urlParams = new URLSearchParams();
     urlParams.append("sentiment", encodeURIComponent(sentiment));
     urlParams.append("feedback", encodeURIComponent(feedback));

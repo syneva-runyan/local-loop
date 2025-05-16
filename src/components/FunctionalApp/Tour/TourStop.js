@@ -4,6 +4,7 @@ import "./TourStop.css";
 import TourBreadCrumbs from "./TourBreadCrumbs";
 import TourCheckIn from "./TourCheckIn"
 import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
+import shareFeedback from "../../../apiRequests/shareFeedback";
 
 function cleanName(name) {
     return (name && name.replace(/[^A-Za-z0-9\-._ ~]/g, '')) || null;
@@ -47,9 +48,16 @@ async function getLocation(previousStop, tourLocation) {
 const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, previousStopName, location }) => {
     const [userLocation, setUserLocation] = useState(getFallbackLocation(previousStopName, location));
     const citationsArray = Array.isArray(stop?.citations) ? stop?.citations : [stop?.citations];
+    const [problemReported, setProblemReported] = useState(false);
+
+    const reportAProblem = () => {
+        shareFeedback('problem', `Problem with stop ${stop?.stopName} at ${location}. Tour params: ${window.location.search}`);
+        setProblemReported(true);
+    }
 
     // get user location for map on component mount
     useEffect(() => {
+        setProblemReported(false);
         async function fetchUserLocation() {
             const userLocation = await getLocation(previousStopName, location);
             setUserLocation(userLocation);
@@ -81,7 +89,11 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
                     }
                     allowFullScreen>
                 </iframe>
-                <p className="tourStopDetail">{stop?.stopAddress}</p>
+                {
+                    !problemReported ?
+                    <button className="tourStopProblemReport" onClick={reportAProblem}>Report a stop problem</button> :
+                    <p className="tourStopDetail problemReported">Thank you for reporting - We'll be looking into this stop.</p>
+                }
                 <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
                 <TourCheckIn stopName={stop?.stopName} detailsAboutStop={cleanInlineCitations(stop?.detailsAboutStop)} citationsArray={citationsArray} />
                 <TourChat stopName={stop?.stopName} location={location} />
