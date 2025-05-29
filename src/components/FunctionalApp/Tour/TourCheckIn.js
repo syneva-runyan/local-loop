@@ -20,7 +20,7 @@ const TourCheckIn = function({ stopName, detailsAboutStop, citationsArray }) {
 
     return (
         <div className="tour-checkin">
-            <button className="tour-checkin-button button secondaryButton" onClick={() => { setCheckedIn(true) }}>Learn more about { stopName }</button>
+            <button className="tour-checkin-button button secondaryButton" onClick={() => { setCheckedIn(true) }}>Learn More About { stopName }</button>
             {checkedIn && (
                 <FadeIn fadeTimer={100}>
                     <div className="tour-checkin-animation-container">
