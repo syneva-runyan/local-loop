@@ -4,6 +4,7 @@ import AWS  from 'aws-sdk';
 const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
 import supportedLocations from './data/supportedLocations.mjs';
+import vibes from '../../src/data/vibes';
 
 const supportedVibes = ['parks', 'drinking', 'ghosts', 'art', 'history', 'food', 'free photogenic places'];
 
@@ -197,8 +198,12 @@ async function getDistanceBetweenLocations(location1, location2) {
 }
 
 function getPrompt(parameters, exclude) {
+  let additionalInstructions = "";
+  if ('ghosts' in parameters.vibes) {
+    additionalInstructions += "The tour you're creating is a ghost tour.";
+  }
   return `
-  TASK: Come up with a personalized walking tour itinerary.
+  TASK: Come up with a personalized walking tour itinerary. ${additionalInstructions}
   TOUR PARAMETERS:
     location: ${parameters.location}
     duration: ${parameters.hours} hours and ${parameters.minutes} minutes
@@ -210,10 +215,11 @@ function getPrompt(parameters, exclude) {
       Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other.
       The entire itinerary, including walking time, must fit within the allotted time.
       Include backup locations in case the first choice is not available.
+
   Content Guidelines:
     Only include locations in ${parameters.location}.
     Do not include places that are only open during events or events.
-    Focus on unique locally owned businesses.
+    Focus on unique local stops.
     Prefer free stops over paid ones.
     Don not spend less than 10 minutes at any stop.
     Do not spend more than 20 minutes at a shop.
@@ -228,26 +234,32 @@ function getSystemInstructions() {
   You MUST call areStopsCurrentlyOpen to verify that stops are open now, with each stop separated by a ;.
       After putting together the itinerary, you must verify walking distances between each stop using the getDistanceBetweenLocations. If walking distance is unknown, do not include the stop.
       Do not abstract citation urls to a different part of the response.
+      You MUST response with a valid JSON object.
  `
 }
 
  function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters, exclude) {
+  let additionalInstructions = "";
+  let additionalBackgroundInstructions = "";
+  if ('ghosts' in parameters.vibes) {
+    additionalInstructions += "(The tour is a ghost tour)";
+    additionalBackgroundInstructions += "Include ghost stories and local legends.";
+  }
   return `
-    Heres is a walking tour itinerary
+    Heres is a walking tour itinerary ${additionalInstructions}
     ${itinerary}
 
     Given these distances between locations: ${distancesBetweenLocations},
     
     Replace stops that have more than a 15 minute walk distance from the destination origin.
     
-    Try to verify replacement locations with Google to check that the stop is open and is walkable from the previous stop.
     Exlude these locations when selecting replacement stops: ${exclude}.
 
     Tour should span ${parameters.hours} hours and ${parameters.minutes} minutes. If you need to add more time, consider adding a generic shopping stop on Front Street or a local park.
 
 
-    For each stop, include 2 paragraphs of factual, engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
-    Look up the proper stop address using Google Maps.
+    For each stop, include 2 paragraphs of engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
+    ${additionalBackgroundInstructions}
 
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
@@ -257,7 +269,7 @@ function getSystemInstructions() {
 
 
 
-    ALWAYS Response with an itinerary using this format:
+    Do not ask any follow up questions. ALWAYS Response with an itinerary using this format:
     {
           tourName:
           shortTourDescription:
@@ -353,9 +365,12 @@ async function getTourItinerary(parameters, locationDetails) {
       body: JSON.stringify(body)
     });
 
+    console.log('iniital response before json');
     const data = await response.json();
 
-    console.log(data);
+    console.log('iniital response parsed successfully');
+
+    
 
     const itinerary = data.candidates[0].content.parts[0].text;
     const functionCallsRequested = data.candidates[0].content.parts.filter(part => part.functionCall);
@@ -393,36 +408,38 @@ async function getTourItinerary(parameters, locationDetails) {
             "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters, locationDetails?.exclude)
           }],  
         }],
-        "tools": [{
-          "googleMaps": {
-            "authConfig": {
-              "apiKeyConfig": {
-                "apiKeyString": process.env.GEMINI_API_KEY,
-              }
-            }
-          }
-        }],
-        "toolConfig": {
-          "retrievalConfig": {
-            "latLng": {
-              "latitude": locationDetails?.latitude || 0,
-              "longitude": locationDetails?.longitude || 0,
-            }
-          }
-        },
+        "tools": [],
+        // "tools": [{
+        //   "googleMaps": {
+        //     "authConfig": {
+        //       "apiKeyConfig": {
+        //         "apiKeyString": process.env.GEMINI_API_KEY,
+        //       }
+        //     }
+        //   }
+        // }],
+        // "toolConfig": {
+        //   "retrievalConfig": {
+        //     "latLng": {
+        //       "latitude": locationDetails?.latitude || 0,
+        //       "longitude": locationDetails?.longitude || 0,
+        //     }
+        //   }
+        // },
         "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
       })
-    }); 
-    
+    });
 
+    console.log("grounded response", groundedResponse);
     const finalData = await groundedResponse.json();
-    console.log(finalData)
+    console.log('final data', finalData)
     console.log("successfully got tour", finalData.candidates[0].content.parts);
     const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => part?.text.indexOf("```json") !== -1);
     console.log(importantPartOfResponse)
     const tourJSON = JSON.parse(cleanResponse(importantPartOfResponse[0].text));
     return tourJSON
   } catch (e) {
+    console.log("caught in catch")
     throw new Error(e.toString());
   }
 }
