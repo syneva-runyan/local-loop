@@ -47,6 +47,12 @@ function FunctionalApp() {
         const vibes = e.target.elements.vibes.value || "free photogenic places";
         // TODO handle error
         const tourItinerary = await getItineraryRequest(location, { hours, minutes}, vibes);
+        window.amplitude?.logEvent('Creating tour', {
+            location,
+            hours,
+            minutes,
+            vibes
+        });
         if (!tourItinerary || tourItinerary.error) {
             setIsError(true);
         } else {
