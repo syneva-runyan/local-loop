@@ -4,7 +4,6 @@ import AWS  from 'aws-sdk';
 const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
 import supportedLocations from './data/supportedLocations.mjs';
-import vibes from '../../src/data/vibes';
 
 const supportedVibes = ['parks', 'drinking', 'ghosts', 'art', 'history', 'food', 'free photogenic places'];
 
@@ -199,8 +198,8 @@ async function getDistanceBetweenLocations(location1, location2) {
 
 function getPrompt(parameters, exclude) {
   let additionalInstructions = "";
-  if ('ghosts' in parameters.vibes) {
-    additionalInstructions += "The tour you're creating is a ghost tour.";
+  if (parameters.vibes.includes('ghosts')) {
+    additionalInstructions += "The tour is a ghost tour.";
   }
   return `
   TASK: Come up with a personalized walking tour itinerary. ${additionalInstructions}
@@ -241,9 +240,9 @@ function getSystemInstructions() {
  function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters, exclude) {
   let additionalInstructions = "";
   let additionalBackgroundInstructions = "";
-  if ('ghosts' in parameters.vibes) {
+  if (parameters.vibes.includes('ghosts')) {
     additionalInstructions += "(The tour is a ghost tour)";
-    additionalBackgroundInstructions += "Include ghost stories and local legends.";
+    additionalBackgroundInstructions += "Include ghost stories and local legends - suggest what the user should do to interact with the ghosts at each stop.";
   }
   return `
     Heres is a walking tour itinerary ${additionalInstructions}

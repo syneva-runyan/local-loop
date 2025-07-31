@@ -4,7 +4,7 @@ import './AppHeader.css';
 function AppHeader() {
     return (
         <header className="appHeader">
-            <div className='appHeaderLogoContainer'>
+            <div className='appHeaderLogoContainer' onClick={() => window.location.href = '/app'}>
             <img alt="local loop logo" className="appHeaderLogo" src="./LocalLoopLogo.png" />
             <p className="appHeaderTitle">Local Loop</p>
             </div>
