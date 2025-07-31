@@ -1,5 +1,4 @@
 // src/App.js
-import React from 'react';
 import './fonts.css';
 import './App.css';
 import HomeSection from './components/HomeSection';
@@ -11,6 +10,7 @@ import WhatIsLocalLoop from './components/WhatIsLocalLoop';
 import CustomerDiscovery from './components/CustomerDiscovery';
 import { Routes, Route } from "react-router";
 import FunctionalApp from './components/FunctionalApp/FunctionalApp';
+
 
 function HomePage() {
   return (

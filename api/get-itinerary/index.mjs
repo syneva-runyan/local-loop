@@ -5,7 +5,7 @@ const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
 import supportedLocations from './data/supportedLocations.mjs';
 
-const supportedVibes = ['parks', 'drinking', 'boutiques', 'art', 'history', 'food', 'free photogenic places'];
+const supportedVibes = ['parks', 'drinking', 'ghosts', 'art', 'history', 'food', 'free photogenic places'];
 
 function cleanResponse(text) {
   return text
