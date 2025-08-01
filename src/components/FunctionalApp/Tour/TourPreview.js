@@ -17,22 +17,19 @@ function TourPreview({ tour, startTour }) {
     <div className='tourBody'>
         {/* <p className="tourAsside tourPreviewDurationTitle">Walking Distance: {tour.walkingDistanceCoveredInTour}</p> */}
         <p>{tour.shortTourDescription}</p>
-            <Accordion>
-                <AccordionItem header="Preview Stops">
-                    <ul className='tourStopsPreview'>
-                        {tour?.stops?.map(stop => {
-                            return (
-                                <li className='previewTourStop tourStop' key={`stop=${stop.stopName}`}>
-                                    <p className='tourStopName'><strong>{stop.stopName}</strong></p>
-                                    <p className='tourAsside tourPreviewDurationTitle'>Suggested duration</p>
-                                    <p className='tourAsside tourPreviewDuration'>{stop.durationToSpendAt}</p>
-                                    <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </AccordionItem>
-            </Accordion>
+        <h3 className="tourStopsPreviewHeader">Stop Previews</h3>
+        <ul className='tourStopsPreview'>
+            {tour?.stops?.map(stop => {
+                return (
+                    <li className='previewTourStop tourStop' key={`stop=${stop.stopName}`}>
+                        <p className='tourStopName'><strong>{stop.stopName}</strong></p>
+                        <p className='tourAsside tourPreviewDurationTitle'>Suggested duration</p>
+                        <p className='tourAsside tourPreviewDuration'>{stop.durationToSpendAt}</p>
+                        <p className="tourPreviewStopDescription">{cleanInlineCitations(stop.shortDescription)}</p>
+                    </li>
+                );
+            })}
+        </ul>
             <button className='button startTour' onClick={() => startTour(-1) }>Start Tour</button><br/>
             <button className='button secondaryButton startTour' onClick={retry}>Craft a Different Tour</button>
         </div>

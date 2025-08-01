@@ -2,7 +2,7 @@ const supportedLocations = {
     "Downtown Juneau, Alaska": {
         name: "Juneau",
         googlePlaceId: "ChIJU8srZ53fAFQRrrxJtoUYdjw",
-        exclude: "Perseverance Theater, Sandy Beach, Rainforest Botique, Alaskan Distillery, Devil's Hideaway, Red Spruce Baking Company, Juneau Food Tours",
+        exclude: "Perseverance Theater, Sandy Beach, Rainforest Botique, Alaskan Distillery, Devil's Hideaway, Red Spruce Baking Company, Juneau Food Tours, Juneau Downtown, Downtown Juneau",
         latitude: "58.3019",
         longitude: "-134.4197",
         preferedPhotoIdx: 0,

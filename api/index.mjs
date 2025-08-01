@@ -6,7 +6,6 @@ import { Readable } from 'stream';
 const app = express();
 const port = 3030;
 
-
 dotenv.config();
 
 import { handler as getItinerary } from "./get-itinerary/index.mjs";

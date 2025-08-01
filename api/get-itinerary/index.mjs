@@ -8,12 +8,11 @@ import supportedLocations from './data/supportedLocations.mjs';
 const supportedVibes = ['parks', 'drinking', 'ghosts', 'art', 'history', 'food', 'free photogenic places'];
 
 function cleanResponse(text) {
-  return text
-    .replace(/^```json\n/, '')   // Remove leading ```json\n
-    .replace(/^```/, '')         // Just in case it's only ``` at the start
-    .replace(/```$/, '')         // Remove trailing ```
-    .trim();                     // Trim extra whitespace
+  const match = text.match(/```json\s*([\s\S]*?)\s*```/i);
+  if (!match) return text;
+  return match[1].trim();
 }
+
 
 function isValidRequest(parameters) {
   if (!parameters || !parameters.hours || !parameters.minutes || !parameters.vibes) {
@@ -196,19 +195,32 @@ async function getDistanceBetweenLocations(location1, location2) {
   }
 }
 
+function getGhostTourInstructions() {
+  return `
+  You are a travel content writer creating a ghost tour for tourists visiting Juneau, Alaska. 
+
+- Include haunted or legendary locations.
+- Add walking times between stops.
+- Do not assert any claims as factual — frame them as local stories or legends.
+- Use a spooky but respectful tone.
+`;
+}
+
 function getPrompt(parameters, exclude) {
-  let additionalInstructions = "";
+  let task = "Come up with a personalized walking tour itinerary with specific location stops.";
+  let sourceOfTruth = "DO NOT MAKE UP INFORMATION"
   if (parameters.vibes.includes('ghosts')) {
-    additionalInstructions += "The tour is a ghost tour.";
+    sourceOfTruth = "Local legends";
+    task = getGhostTourInstructions()
   }
   return `
-  TASK: Come up with a personalized walking tour itinerary. ${additionalInstructions}
+  TASK:  ${task}
   TOUR PARAMETERS:
     location: ${parameters.location}
     duration: ${parameters.hours} hours and ${parameters.minutes} minutes
     theme: ${parameters.vibes}
   REQUIREMENTS:
-    Source of Truth: DO NOT MAKE UP INFORMATION.
+    Source of Truth: ${sourceOfTruth}
     Tour Design:
       Start the tour in  ${parameters.location}.
       Only include stops that are within a ten minute walk (about 1 mile / 1.6 kilometers) of each other.
@@ -238,11 +250,11 @@ function getSystemInstructions() {
 }
 
  function getGroundedResponsePrompt(itinerary, distancesBetweenLocations, parameters, exclude) {
-  let additionalInstructions = "";
+  let additionalInstructions = "DO NOT MAKE UP INFORMATION. ONLY include facts you can verify with a reliable source. For each fact, include the source URL where it was found.";
   let additionalBackgroundInstructions = "";
   if (parameters.vibes.includes('ghosts')) {
     additionalInstructions += "(The tour is a ghost tour)";
-    additionalBackgroundInstructions += "Include ghost stories and local legends - suggest what the user should do to interact with the ghosts at each stop.";
+    additionalBackgroundInstructions += "Include ghost stories - suggest what the user could do to interact with the ghosts or provide background on specific ghost stories at each stop.";
   }
   return `
     Heres is a walking tour itinerary ${additionalInstructions}
@@ -262,11 +274,6 @@ function getSystemInstructions() {
 
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
-    DO NOT MAKE UP INFORMATION.
-    ONLY include facts you can verify with a reliable source. For each fact, include the source URL where it was found.
-
-
-
 
     Do not ask any follow up questions. ALWAYS Response with an itinerary using this format:
     {
@@ -407,24 +414,9 @@ async function getTourItinerary(parameters, locationDetails) {
             "text": getGroundedResponsePrompt(itinerary, functionCallResponses, parameters, locationDetails?.exclude)
           }],  
         }],
-        "tools": [],
-        // "tools": [{
-        //   "googleMaps": {
-        //     "authConfig": {
-        //       "apiKeyConfig": {
-        //         "apiKeyString": process.env.GEMINI_API_KEY,
-        //       }
-        //     }
-        //   }
-        // }],
-        // "toolConfig": {
-        //   "retrievalConfig": {
-        //     "latLng": {
-        //       "latitude": locationDetails?.latitude || 0,
-        //       "longitude": locationDetails?.longitude || 0,
-        //     }
-        //   }
-        // },
+        "tools": [{
+          "googleSearch": {}
+        }],
         "model": `projects/${projectId}/locations/${gLocation}/publishers/google/models/${modelId}`,
       })
     });
@@ -433,9 +425,10 @@ async function getTourItinerary(parameters, locationDetails) {
     const finalData = await groundedResponse.json();
     console.log('final data', finalData)
     console.log("successfully got tour", finalData.candidates[0].content.parts);
-    const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => part?.text.indexOf("```json") !== -1);
+    const importantPartOfResponse = finalData.candidates[0].content.parts.filter(part => (part?.text.indexOf("```json") !== -1) || part?.text.indexOf('{') !== -1);
     console.log(importantPartOfResponse)
     const tourJSON = JSON.parse(cleanResponse(importantPartOfResponse[0].text));
+    console.log(tourJSON);
     return tourJSON
   } catch (e) {
     console.log("caught in catch")

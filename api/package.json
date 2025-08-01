@@ -11,6 +11,8 @@
         "nodemon": "^3.1.9"
     },
     "dependencies": {
-        "@google/genai": "^0.10.0"
+        "@aws-sdk/client-ses": "^3.858.0",
+        "@google/genai": "^0.10.0",
+        "aws-sdk": "^2.1692.0"
     }
 }
