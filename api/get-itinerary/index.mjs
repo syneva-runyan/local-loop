@@ -197,7 +197,7 @@ async function getDistanceBetweenLocations(location1, location2) {
 
 function getGhostTourInstructions() {
   return `
-  You are a travel content writer creating a ghost tour for tourists visiting Juneau, Alaska. 
+  You are a travel content writer putting together stops for a ghost tour for tourists. 
 
 - Include haunted or legendary locations.
 - Add walking times between stops.
@@ -272,10 +272,12 @@ function getSystemInstructions() {
     For each stop, include 2 paragraphs of engaging background, emphasizing historical or cultural significance and including why the stop was included on the tour.
     ${additionalBackgroundInstructions}
 
+    Do not embellish stop names with prefixes such as start, end, or stop number.
+
     Include one to two sentences in a short tour description that encourages someone to take the tour.
     Inclue a welcomeNarration for the tour that is 1 paragraph long and kicks off the tour in a friendly and engaging way and references local history and if appropriate for the area, indigenous culture.
 
-    Do not ask any follow up questions. ALWAYS Response with an itinerary using this format:
+    Do not ask any follow up questions. ALWAYS Response with an itinerary using this properly formatted JSON response:
     {
           tourName:
           shortTourDescription:
@@ -283,7 +285,7 @@ function getSystemInstructions() {
           walkingDistanceCoveredInTour:
           welcomeNarration:
           stops: [{
-              stopName:
+              stopName: "plain name no embellishments"
               stopAddress:
               durationToSpendAt: "x minutes"
               detailsAboutStop:

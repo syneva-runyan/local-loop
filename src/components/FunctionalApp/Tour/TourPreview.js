@@ -1,6 +1,5 @@
 import "./TourPreview.css";
 import TourPhoto from './TourPhoto';
-import { Accordion, AccordionItem } from '@szhsin/react-accordion';
 import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
 function TourPreview({ tour, startTour }) {
