@@ -104,3 +104,6 @@ const TourStop = ({ stop, stopNumber, totalStops, isLastStop, onNext, onPrev, pr
 }
 
 export default TourStop;
+
+// Export utility functions for testing
+export { cleanName, getFallbackLocation };
