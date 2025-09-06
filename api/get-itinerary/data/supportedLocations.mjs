@@ -7,6 +7,22 @@ const supportedLocations = {
         longitude: "-134.4197",
         preferedPhotoIdx: 0,
     },
+    "Haines, Alaska": {
+        name: "Haines Alaska",
+        googlePlaceId: "ChIJjblRKJcfAFQRjhH96mCa8bQ",
+        exclude: "",
+        latitude: "59.234772",
+        longitude: "-135.442368",
+        preferedPhotoIdx: 2,
+    },
+    "Ketchikan, Alaska": {
+        name: "ketchikan, Alaska",
+        googlePlaceId: "ChIJW-EphwglDFQRdAbGz2vlkH4",
+        exclude: "",
+        latitude: "55.341942",
+        longitude: "-131.642760",
+        preferedPhotoIdx: 6,
+    },
     "National Mall, Washington, D.C.": {
         name: "Washington, DC",
         googlePlaceId: "ChIJMT3_Wpu3t4kRQScGokyrCDo",
@@ -54,6 +70,14 @@ const supportedLocations = {
         preferedPhotoIdx: 0,
         latitude: "33.7544",
         longitude: "-84.3534",
+    },
+    "Skagway, Alaska": {
+        name: "Skagway, Alaska",
+        googlePlaceId: "ChIJQZHeACWpqlYRalM6MncXJV4",
+        exclude: "",
+        preferedPhotoIdx: 9,
+        latitude: "59.566492",
+        longitude: "-135.331458",
     },
 }
 

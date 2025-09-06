@@ -85,7 +85,7 @@ function FunctionalApp() {
     } else {
         innerContent = (
             <>
-            <h1 className='functionalAppHeader'>Let's Explore</h1>
+            <h1 className='functionalAppHeader'>Let's Explore Alaska!</h1>
             <form className='tourInput' onSubmit={onSubmit}>
                 <WhereAreYou tourLocation={tourLocation} setTourLocation={setTourLocation} />
                 <HowMuchTimeDoYouHave />

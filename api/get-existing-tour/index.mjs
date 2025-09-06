@@ -48,6 +48,7 @@ import supportedLocations from './data/supportedLocations.mjs';
     const googlePlaceId = supportedLocations[decodeURIComponent(location)]?.googlePlaceId;
     const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${googlePlaceId}&key=${process.env.GOOGLE_PLACES_API_KEY}&maxheight=400`;
     const response = await fetch(url);
+
     try {
       const json = await response.json();
       // arbitrarily select first photo for now.

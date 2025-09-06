@@ -101,6 +101,7 @@ async function getMainTourPhoto(location) {
   const response = await fetch(url);
   try {
     const json = await response.json();
+    console.log(json)
     // arbitrarily select first photo for now.
     //const randomSelection = Math.round((json.result.photos.length - 1) * Math.random());
     const photo = json.result.photos[supportedLocations[location]?.preferedPhotoIdx || 0];
