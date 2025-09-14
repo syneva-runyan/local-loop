@@ -37,7 +37,7 @@ function Tour({tour, location }) {
     }
     
 
-    let body = <TourPreview tour={tour} startTour={setCurrentStop} />
+    let body = <TourPreview tour={tour} startTour={setCurrentStop} location={location} />
     
     switch(currentStop) {
         case -1:
@@ -48,7 +48,7 @@ function Tour({tour, location }) {
                 />);
             break;
         case null:
-            body = <TourPreview tour={tour} startTour={setCurrentStop} />
+            body = <TourPreview tour={tour} startTour={setCurrentStop} location={location} />
             break;
         default:
             body = <TourStop 

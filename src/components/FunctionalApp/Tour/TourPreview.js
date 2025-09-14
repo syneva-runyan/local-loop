@@ -2,7 +2,7 @@ import "./TourPreview.css";
 import TourPhoto from './TourPhoto';
 import cleanInlineCitations from "../utilComponents/cleanInlineCitations";
 
-function TourPreview({ tour, startTour }) {
+function TourPreview({ tour, startTour, location }) {
     const retry = () => {
         window.location.href =  window.location.href.split("?")[0];
     }
@@ -12,7 +12,7 @@ function TourPreview({ tour, startTour }) {
         <h1 className='functionalAppHeader'>{tour.tourName}</h1>
         <p className='tourAsside'><em>✨ A tour made just for you!</em></p>
     </div>
-    <TourPhoto tourPhoto={tour.photo} />
+    <TourPhoto tourPhoto={tour.photo} location={location} />
     <div className='tourBody'>
         {/* <p className="tourAsside tourPreviewDurationTitle">Walking Distance: {tour.walkingDistanceCoveredInTour}</p> */}
         <p>{tour.shortTourDescription}</p>
