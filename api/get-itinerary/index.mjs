@@ -53,7 +53,9 @@ export const handler = async (event) => {
   
   const location = decodeURIComponent(event.queryStringParameters.location);
   const vibes = decodeURIComponent(event.queryStringParameters.vibes);
-  console.log(`Received request for ${location}, duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
+  const hours = event.queryStringParameters.hours;
+  const minutes = event.queryStringParameters.minutes;
+  console.log(`Received request for ${location}, duration ${hours} hours and ${minutes} minutes with vibes ${vibes}`);
   
   // Call LLM & google maps to create tour
   try {
@@ -64,7 +66,7 @@ export const handler = async (event) => {
 
     const tour = { ...itineraryResponse }
 
-    const tourId = await saveGeneratedTour(location, tour, vibes);
+    const tourId = await saveGeneratedTour(location, tour, vibes, hours, minutes);
     const responseBody = {
       ...itineraryResponse,
       photo: mainTourPhoto,
@@ -440,8 +442,8 @@ async function getTourItinerary(parameters, locationDetails) {
   }
 }
 
-async function saveGeneratedTour(location, tour,vibes) {
-  const uniqueId = Math.random().toString(36);
+async function saveGeneratedTour(location, tour, vibes, hours, minutes) {
+  const randomNumber = Math.random().toString(36);
   // Configure your AWS credentials and region
   AWS.config.update({
     region: 'us-east-1', // change to your region
@@ -452,10 +454,12 @@ async function saveGeneratedTour(location, tour,vibes) {
   // Create S3 instance
   const s3 = new AWS.S3();
 
+  const uniqueId = `${encodeURIComponent(vibes)}/${hours}hours${minutes}minutes/${randomNumber}`;
+
   // Upload to S3
   const params = {
     Bucket: 'local-loop',
-    Key: `tours/${encodeURIComponent(location)}/${encodeURIComponent(vibes)}/${uniqueId}.json`, // Specify the path and filename
+    Key: `tours/${encodeURIComponent(location)}/${uniqueId}.json`, // Specify the path and filename
     Body: JSON.stringify({
       location,
       ...tour
@@ -464,5 +468,5 @@ async function saveGeneratedTour(location, tour,vibes) {
   };
 
   const response = await s3.upload(params).promise();
-  return `${encodeURIComponent(vibes)}/${uniqueId}`;
+  return uniqueId;
 }
