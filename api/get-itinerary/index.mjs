@@ -52,6 +52,7 @@ export const handler = async (event) => {
 
   
   const location = decodeURIComponent(event.queryStringParameters.location);
+  const vibes = decodeURIComponent(event.queryStringParameters.vibes);
   console.log(`Received request for ${location}, duration ${event.queryStringParameters.hours} hours and ${event.queryStringParameters.minutes} minutes with vibes ${event.queryStringParameters.vibes}`);
   
   // Call LLM & google maps to create tour
@@ -63,7 +64,7 @@ export const handler = async (event) => {
 
     const tour = { ...itineraryResponse }
 
-    const tourId = await saveGeneratedTour(location, tour);
+    const tourId = await saveGeneratedTour(location, tour, vibes);
     const responseBody = {
       ...itineraryResponse,
       photo: mainTourPhoto,
@@ -439,7 +440,7 @@ async function getTourItinerary(parameters, locationDetails) {
   }
 }
 
-async function saveGeneratedTour(location, tour) {
+async function saveGeneratedTour(location, tour,vibes) {
   const uniqueId = Math.random().toString(36);
   // Configure your AWS credentials and region
   AWS.config.update({
@@ -454,7 +455,7 @@ async function saveGeneratedTour(location, tour) {
   // Upload to S3
   const params = {
     Bucket: 'local-loop',
-    Key: `tours/${encodeURIComponent(location)}/${uniqueId}.json`, // Specify the path and filename
+    Key: `tours/${encodeURIComponent(location)}/${encodeURIComponent(vibes)}/${uniqueId}.json`, // Specify the path and filename
     Body: JSON.stringify({
       location,
       ...tour
@@ -463,5 +464,5 @@ async function saveGeneratedTour(location, tour) {
   };
 
   const response = await s3.upload(params).promise();
-  return uniqueId;
+  return `${encodeURIComponent(vibes)}/${uniqueId}`;
 }
