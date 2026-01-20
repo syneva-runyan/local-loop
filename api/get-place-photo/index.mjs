@@ -1,4 +1,4 @@
-import { Readable } from 'stream';
+import { getFetch } from '../util/fetch.mjs';
 
 export const handler = async (event) => {
   const queryParams = event.queryStringParameters || {};
@@ -14,6 +14,7 @@ export const handler = async (event) => {
   const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxheight=400&photoreference=${ref}&key=${process.env.GOOGLE_PLACES_API_KEY}`;
 
   try {
+    const fetch = await getFetch();
     const response = await fetch(photoUrl, { redirect: 'follow' });
 
     const contentType = response.headers.get('content-type') || 'image/jpeg';

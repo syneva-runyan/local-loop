@@ -9,7 +9,7 @@ export const handler = async (event) => {
     return await sendEmail(sentiment, feedback);
   } catch(e) {
     console.log(`Received error - Error: ${e}`);
-    returnError(e.toString());
+    return returnError(e.toString());
   }
 }
 

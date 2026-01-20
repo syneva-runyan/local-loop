@@ -1,6 +1,12 @@
 import AWS from 'aws-sdk';
 
 import supportedLocations from './data/supportedLocations.mjs';
+import { getFetch } from '../util/fetch.mjs';
+
+async function fetch(...args) {
+  const fetch = await getFetch();
+  return fetch(...args);
+}
   
   export const handler = async (event) => {
     const location = event.queryStringParameters.location;

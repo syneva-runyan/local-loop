@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { Readable } from 'stream';
+import { getFetch } from './util/fetch.mjs';
 
 const app = express();
 const port = 3030;
@@ -24,12 +25,23 @@ app.use(function(req, res, next) {
     next();
 });
 
+function sendLambdaJson(res, resp) {
+  if (!resp || typeof resp.body !== 'string') {
+    return res.status(500).json({ error: 'Handler returned no body', resp });
+  }
+  try {
+    return res.status(resp.statusCode || 200).json(JSON.parse(resp.body));
+  } catch (e) {
+    return res.status(500).json({ error: 'Failed to parse handler JSON body', body: resp.body });
+  }
+}
+
 
 app.get('/get-itinerary', async (req, res) => {
     const resp = await getItinerary({
         queryStringParameters: req.query
     });
-    res.json(JSON.parse(resp.body));
+  return sendLambdaJson(res, resp);
 })
 
 app.get('/ask-question', async (req, res) => {
@@ -37,7 +49,7 @@ app.get('/ask-question', async (req, res) => {
       queryStringParameters: req.query
   });
   console.log("RESPONSE", resp) 
-  res.json(JSON.parse(resp.body));
+  return sendLambdaJson(res, resp);
 })
 
 app.get('/get-existing-tour', async (req, res) => {
@@ -45,7 +57,7 @@ app.get('/get-existing-tour', async (req, res) => {
       queryStringParameters: req.query
   });
   console.log("RESPONSE", resp) 
-  res.json(JSON.parse(resp.body));
+  return sendLambdaJson(res, resp);
 })
 
 
@@ -58,15 +70,23 @@ app.get('/get-place-photo', async (req, res) => {
     console.log(photoUrl);
   
     try {
+      const fetch = await getFetch();
       const photoResponse = await fetch(photoUrl, { redirect: 'follow' });
+      if (!photoResponse) throw new Error('No response from fetch');
       
       // Set appropriate headers
       res.set('Content-Type', photoResponse.headers.get('content-type') || 'image/jpeg');
       res.set('Cache-Control', 'public, max-age=86400');
   
-      const webStream = photoResponse.body;
-      const nodeStream = Readable.fromWeb(webStream); // 👈 convert
-      nodeStream.pipe(res); // ✅ now works!
+      const body = photoResponse.body;
+      if (!body) throw new Error('Response has no body');
+
+      // Node 18+ fetch => WebReadableStream, node-fetch => Node Readable
+      if (typeof body.pipe === 'function') {
+        body.pipe(res);
+      } else {
+        Readable.fromWeb(body).pipe(res);
+      }
     } catch (error) {
       console.error('Error fetching photo:', error);
       res.status(500).send('Error retrieving photo');
@@ -78,7 +98,7 @@ app.get('/share-feedback', async (req, res) => {
     queryStringParameters: req.query
   });
   console.log("RESPONSE", resp) 
-  res.json(JSON.parse(resp.body));
+  return sendLambdaJson(res, resp);
 });
 
 app.listen(port, () => {

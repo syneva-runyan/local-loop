@@ -5,6 +5,7 @@ const secretsManager = new AWS.SecretsManager({ region: 'us-east-1' });
 
 import supportedLocations from './data/supportedLocations.mjs';
 
+
 const supportedVibes = ['parks', 'drinking', 'ghosts', 'art', 'history', 'food', 'free photogenic places'];
 
 function cleanResponse(text) {
@@ -75,7 +76,7 @@ export const handler = async (event) => {
     return returnSuccess(responseBody);
   } catch(e) {
     console.log(`Received error - Error: ${e}`);
-    returnError(e.toString());
+    return returnError(e.toString());
   }
 }
 
